@@ -1,9 +1,7 @@
 import "@repo/ui/styles.css";
 import "./globals.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-
-const inter = Inter({ subsets: ["latin"] });
+import { fontClasses } from "../lib/fonts";
 
 export const metadata: Metadata = {
   title: "Sontine - Tontine Meets Blockchain | Solana-Powered Rotating Savings",
@@ -33,8 +31,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html lang="en" className={fontClasses.variable}>
+      <body className={fontClasses.sans}>{children}</body>
     </html>
   );
 }

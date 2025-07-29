@@ -33,9 +33,24 @@ export function HeroSection() {
           transition={{ duration: 0.6, delay: 0.1 }}
           className="hidden md:flex items-center space-x-8"
         >
-          <a href="#features" className="text-gray-600 hover:text-emerald-600 transition-colors">Features</a>
-          <a href="#how-it-works" className="text-gray-600 hover:text-emerald-600 transition-colors">How it Works</a>
-          <a href="#pricing" className="text-gray-600 hover:text-emerald-600 transition-colors">Pricing</a>
+          <a
+            href="#features"
+            className="text-gray-600 hover:text-emerald-600 transition-colors"
+          >
+            Features
+          </a>
+          <a
+            href="#how-it-works"
+            className="text-gray-600 hover:text-emerald-600 transition-colors"
+          >
+            How it Works
+          </a>
+          <a
+            href="#pricing"
+            className="text-gray-600 hover:text-emerald-600 transition-colors"
+          >
+            Pricing
+          </a>
           <button className="bg-emerald-600 text-white px-6 py-2 rounded-lg hover:bg-emerald-700 transition-colors">
             Join Beta
           </button>
@@ -57,20 +72,22 @@ export function HeroSection() {
                 <Zap className="w-4 h-4" />
                 <span>Powered by Solana</span>
               </div>
-              
-              <h1 className="text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
+
+              <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 leading-tight font-pixeloid">
                 Tontine Meets
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-purple-600">
-                  {" "}Blockchain
+                  {" "}
+                  Blockchain
                 </span>
               </h1>
-              
-              <p className="text-xl text-gray-600 leading-relaxed">
-                Join the future of rotating savings with Sontine. Built on Solana blockchain for transparent, 
-                automated, and global tontine groups. Fast, cheap, and secure.
+
+              <p className="text-lg text-gray-600 leading-relaxed">
+                Join the future of rotating savings with Sontine. Built on
+                Solana blockchain for transparent, automated, and global tontine
+                groups. Fast, cheap, and secure.
               </p>
-              
-              <p className="text-lg text-gray-500 font-medium">
+
+              <p className="text-base text-gray-500 font-medium font-pixeloid">
                 Hụi Gặp Blockchain - Tương Lai Tài Chính Thông Minh
               </p>
             </motion.div>
@@ -85,7 +102,7 @@ export function HeroSection() {
                 <Download className="w-5 h-5" />
                 <span>Download App</span>
               </button>
-              
+
               <button className="border-2 border-gray-300 text-gray-700 px-8 py-4 rounded-xl font-semibold text-lg hover:border-emerald-600 hover:text-emerald-600 transition-all flex items-center justify-center space-x-2">
                 <Play className="w-5 h-5" />
                 <span>Watch Demo</span>
@@ -132,7 +149,7 @@ export function HeroSection() {
                     <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-yellow-500 rounded-full"></div>
                     <div className="absolute top-1/2 -left-2 transform -translate-y-1/2 w-4 h-4 bg-emerald-500 rounded-full"></div>
                   </div>
-                  
+
                   {/* Inner Ring - Tontine Members */}
                   <div className="absolute inset-8 border-2 border-purple-200 rounded-full animate-spin-reverse">
                     {[...Array(8)].map((_, i) => (
@@ -140,14 +157,14 @@ export function HeroSection() {
                         key={i}
                         className="absolute w-3 h-3 bg-purple-400 rounded-full"
                         style={{
-                          top: '50%',
-                          left: '50%',
+                          top: "50%",
+                          left: "50%",
                           transform: `translate(-50%, -50%) rotate(${i * 45}deg) translateY(-60px)`,
                         }}
                       ></div>
                     ))}
                   </div>
-                  
+
                   {/* Center - Sontine Logo */}
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="w-20 h-20 bg-gradient-to-br from-emerald-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-2xl">

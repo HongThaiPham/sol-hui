@@ -60,3 +60,22 @@ html {
 .gradient-emerald-yellow {
   background: linear-gradient(135deg, #10b981 0%, #f59e0b 100%);
 }
+
+/* Pixel font optimizations */
+.font-pixeloid,
+.font-pixeloid-mono {
+  font-smooth: never;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: unset;
+  text-rendering: optimizeSpeed;
+}
+
+/* Pixel-perfect rendering */
+@media (max-resolution: 1dppx) {
+  .font-pixeloid,
+  .font-pixeloid-mono {
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+  }
+}
