@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="600" viewBox="0 0 1200 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Twitter Card Image for Sontine - 1200x600 -->
+  <defs>
+    <linearGradient id="twitterBackground" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#C5FFF8;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#8DFFF0;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#14F1B2;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="twitterGradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00B49F;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#14F1B2;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="twitterGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#134158;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00B49F;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1200" height="600" fill="url(#twitterBackground)"/>
+  
+  <!-- Center layout for Twitter -->
+  <g transform="translate(600, 300)">
+    <!-- Main Sontine Logo (centered) -->
+    <circle cx="0" cy="-50" r="120" fill="none" stroke="url(#twitterGradient1)" stroke-width="8" opacity="0.3"/>
+    <circle cx="0" cy="-50" r="85" fill="none" stroke="url(#twitterGradient2)" stroke-width="6" opacity="0.5"/>
+    
+    <!-- Member dots -->
+    <circle cx="0" cy="-170" r="10" fill="#14F1B2"/>
+    <circle cx="85" cy="-120" r="10" fill="#00B49F"/>
+    <circle cx="120" cy="-50" r="10" fill="#14F1B2"/>
+    <circle cx="85" cy="20" r="10" fill="#00B49F"/>
+    <circle cx="0" cy="70" r="10" fill="#14F1B2"/>
+    <circle cx="-85" cy="20" r="10" fill="#00B49F"/>
+    <circle cx="-120" cy="-50" r="10" fill="#14F1B2"/>
+    <circle cx="-85" cy="-120" r="10" fill="#00B49F"/>
+    
+    <!-- Center S -->
+    <rect x="-35" y="-85" width="70" height="70" rx="18" fill="url(#twitterGradient1)"/>
+    <text x="0" y="-35" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="48" font-weight="bold">S</text>
+    
+    <!-- Connection lines -->
+    <line x1="0" y1="-170" x2="0" y2="-85" stroke="#8DFFF0" stroke-width="4" opacity="0.6"/>
+    <line x1="85" y1="-120" x2="35" y2="-85" stroke="#8DFFF0" stroke-width="4" opacity="0.6"/>
+    <line x1="120" y1="-50" x2="35" y2="-50" stroke="#8DFFF0" stroke-width="4" opacity="0.6"/>
+    <line x1="85" y1="20" x2="35" y2="-15" stroke="#8DFFF0" stroke-width="4" opacity="0.6"/>
+    
+    <!-- Title -->
+    <text x="0" y="140" text-anchor="middle" fill="#134158" font-family="Arial, sans-serif" font-size="48" font-weight="bold">
+      Sontine
+    </text>
+    
+    <!-- Subtitle -->
+    <text x="0" y="180" text-anchor="middle" fill="#00B49F" font-family="Arial, sans-serif" font-size="28" font-weight="600">
+      Tontine Meets Blockchain
+    </text>
+    
+    <!-- Description -->
+    <text x="0" y="220" text-anchor="middle" fill="#134158" font-family="Arial, sans-serif" font-size="20" font-weight="400">
+      Solana-powered rotating savings • Global tontines, local trust
+    </text>
+  </g>
+  
+  <!-- Twitter branding -->
+  <g transform="translate(50, 50)">
+    <rect x="0" y="0" width="180" height="35" rx="18" fill="#00B49F" opacity="0.1"/>
+    <text x="20" y="23" fill="#00B49F" font-family="Arial, sans-serif" font-size="14" font-weight="600">⚡ Powered by Solana</text>
+  </g>
+</svg>

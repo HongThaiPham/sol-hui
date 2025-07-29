@@ -1,6 +1,7 @@
 // External Assets
 export const EXTERNAL_ASSETS = {
-  SMH_LOGO: "https://cdn.prod.website-files.com/685357732354043b88fbf118/68633775110b5e798b5ad243_smh_logo_col2.svg",
+  SMH_LOGO:
+    "https://cdn.prod.website-files.com/685357732354043b88fbf118/68633775110b5e798b5ad243_smh_logo_col2.svg",
 } as const;
 
 // App Configuration
@@ -8,7 +9,8 @@ export const APP_CONFIG = {
   NAME: "Sontine",
   TAGLINE: "Tontine Meets Blockchain",
   TAGLINE_VI: "Hụi Gặp Blockchain - Tương Lai Tài Chính Thông Minh",
-  DESCRIPTION: "Join the future of rotating savings with Sontine. Built on Solana blockchain for transparent, automated, and global tontine groups.",
+  DESCRIPTION:
+    "Join the future of rotating savings with Sontine. Built on Solana blockchain for transparent, automated, and global tontine groups.",
 } as const;
 
 // Social Links
@@ -16,9 +18,9 @@ export const SOCIAL_LINKS = {
   TWITTER: "https://twitter.com/SontineApp",
   DISCORD: "https://discord.gg/sontine",
   GITHUB: "https://github.com/sontine",
-  EMAIL: "hello@sontine.com",
-  SUPPORT: "support@sontine.com",
-  BUSINESS: "business@sontine.com",
+  EMAIL: "hello@sontine.fun",
+  SUPPORT: "support@sontine.fun",
+  BUSINESS: "business@sontine.fun",
 } as const;
 
 // Solana Configuration
@@ -33,7 +35,7 @@ export const SOLANA_CONFIG = {
 // Supported Wallets
 export const SUPPORTED_WALLETS = [
   "Phantom",
-  "Solflare", 
+  "Solflare",
   "Backpack",
   "Glow",
 ] as const;
@@ -47,14 +49,14 @@ export const PRICING_TIERS = {
     PERIOD: "forever",
   },
   PREMIUM: {
-    NAME: "Premium", 
+    NAME: "Premium",
     PRICE: "0.1",
     CURRENCY: "SOL",
     PERIOD: "per month",
   },
   ORGANIZER: {
     NAME: "Organizer",
-    PRICE: "0.5", 
+    PRICE: "0.5",
     CURRENCY: "SOL",
     PERIOD: "per month",
   },
@@ -64,7 +66,7 @@ export const PRICING_TIERS = {
 export const FONT_CONFIG = {
   PIXEL_SIZES: {
     XS: "9px",
-    SM: "18px", 
+    SM: "18px",
     BASE: "36px",
     LG: "72px",
     XL: "144px",
@@ -82,7 +84,7 @@ export const ANIMATION_DURATIONS = {
 // Breakpoints (matching Tailwind)
 export const BREAKPOINTS = {
   SM: "640px",
-  MD: "768px", 
+  MD: "768px",
   LG: "1024px",
   XL: "1280px",
   "2XL": "1536px",

@@ -157,8 +157,8 @@ NEXT_PUBLIC_SOLANA_NETWORK=mainnet-beta
 NEXT_PUBLIC_RPC_ENDPOINT=https://api.mainnet-beta.solana.com
 
 # App Configuration
-NEXT_PUBLIC_APP_URL=https://sontine.com
-NEXT_PUBLIC_API_URL=https://api.sontine.com
+NEXT_PUBLIC_APP_URL=https://sontine.fun
+NEXT_PUBLIC_API_URL=https://api.sontine.fun
 ```
 
 ---
@@ -248,15 +248,15 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ### Documentation
 
-- **User Guide**: [docs.sontine.com](https://docs.sontine.com)
-- **API Reference**: [api.sontine.com](https://api.sontine.com)
-- **Developer Portal**: [dev.sontine.com](https://dev.sontine.com)
+- **User Guide**: [docs.sontine.fun](https://docs.sontine.fun)
+- **API Reference**: [api.sontine.fun](https://api.sontine.fun)
+- **Developer Portal**: [dev.sontine.fun](https://dev.sontine.fun)
 
 ### Contact
 
-- **Email**: hello@sontine.com
-- **Support**: support@sontine.com
-- **Business**: business@sontine.com
+- **Email**: hello@sontine.fun
+- **Support**: support@sontine.fun
+- **Business**: business@sontine.fun
 
 ---
 

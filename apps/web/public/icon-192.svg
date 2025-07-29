@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="192" height="192" viewBox="0 0 192 192" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Sontine PWA Icon 192x192 -->
+  <defs>
+    <linearGradient id="pwaGradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00B49F;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#14F1B2;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="pwaGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#134158;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00B49F;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="pwaBackground" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#C5FFF8;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8DFFF0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="192" height="192" fill="url(#pwaBackground)" rx="24"/>
+  
+  <!-- Outer Circle - Blockchain Network -->
+  <circle cx="96" cy="96" r="88" fill="none" stroke="url(#pwaGradient1)" stroke-width="8" opacity="0.3"/>
+  
+  <!-- Inner Circle - Tontine Group -->
+  <circle cx="96" cy="96" r="64" fill="none" stroke="url(#pwaGradient2)" stroke-width="6" opacity="0.5"/>
+  
+  <!-- Member Dots around circle -->
+  <circle cx="96" cy="32" r="8" fill="#14F1B2"/>
+  <circle cx="141.3" cy="50.7" r="8" fill="#00B49F"/>
+  <circle cx="160" cy="96" r="8" fill="#14F1B2"/>
+  <circle cx="141.3" cy="141.3" r="8" fill="#00B49F"/>
+  <circle cx="96" cy="160" r="8" fill="#14F1B2"/>
+  <circle cx="50.7" cy="141.3" r="8" fill="#00B49F"/>
+  <circle cx="32" cy="96" r="8" fill="#14F1B2"/>
+  <circle cx="50.7" cy="50.7" r="8" fill="#00B49F"/>
+  
+  <!-- Center Logo - S -->
+  <rect x="64" y="64" width="64" height="64" rx="16" fill="url(#pwaGradient1)"/>
+  <text x="96" y="112" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="48" font-weight="bold">S</text>
+  
+  <!-- Blockchain connection lines -->
+  <line x1="96" y1="32" x2="96" y2="64" stroke="#8DFFF0" stroke-width="4" opacity="0.6"/>
+  <line x1="141.3" y1="50.7" x2="128" y2="64" stroke="#8DFFF0" stroke-width="4" opacity="0.6"/>
+  <line x1="160" y1="96" x2="128" y2="96" stroke="#8DFFF0" stroke-width="4" opacity="0.6"/>
+  <line x1="141.3" y1="141.3" x2="128" y2="128" stroke="#8DFFF0" stroke-width="4" opacity="0.6"/>
+  <line x1="96" y1="160" x2="96" y2="128" stroke="#8DFFF0" stroke-width="4" opacity="0.6"/>
+  <line x1="50.7" y1="141.3" x2="64" y2="128" stroke="#8DFFF0" stroke-width="4" opacity="0.6"/>
+  <line x1="32" y1="96" x2="64" y2="96" stroke="#8DFFF0" stroke-width="4" opacity="0.6"/>
+  <line x1="50.7" y1="50.7" x2="64" y2="64" stroke="#8DFFF0" stroke-width="4" opacity="0.6"/>
+</svg>

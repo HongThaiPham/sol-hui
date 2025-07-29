@@ -1,0 +1,70 @@
+# Sontine Robots.txt
+# https://sontine.fun/robots.txt
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://sontine.fun/sitemap.xml
+
+# Disallow admin and private areas (when they exist)
+Disallow: /admin/
+Disallow: /api/
+Disallow: /_next/
+Disallow: /private/
+
+# Allow important pages
+Allow: /
+Allow: /about
+Allow: /how-it-works
+Allow: /join
+Allow: /create
+Allow: /pricing
+Allow: /faq
+Allow: /contact
+Allow: /privacy
+Allow: /terms
+
+# Allow static assets
+Allow: /favicon.svg
+Allow: /icon-*.svg
+Allow: /apple-touch-icon.svg
+Allow: /opengraph-image.svg
+Allow: /twitter-image.svg
+Allow: /manifest.json
+
+# Crawl delay (optional)
+Crawl-delay: 1
+
+# Specific bot instructions
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Slurp
+Allow: /
+Crawl-delay: 1
+
+# Social media bots
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+# Block bad bots (optional)
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
