@@ -8,7 +8,6 @@ import { SocialProofSection } from "./components/SocialProofSection";
 import { PricingSection } from "./components/PricingSection";
 import { FAQSection } from "./components/FAQSection";
 import { DownloadSection } from "./components/DownloadSection";
-import { FontDemo } from "./components/FontDemo";
 import { Footer } from "./components/Footer";
 
 export default function Page() {
@@ -24,7 +23,6 @@ export default function Page() {
       <PricingSection />
       <FAQSection />
       <DownloadSection />
-      <FontDemo />
       <Footer />
     </main>
   );

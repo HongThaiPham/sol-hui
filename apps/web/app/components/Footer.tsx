@@ -1,17 +1,19 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { 
-  Twitter, 
-  Github, 
-  MessageCircle, 
-  Mail, 
-  MapPin, 
+import {
+  Twitter,
+  Github,
+  MessageCircle,
+  Mail,
+  MapPin,
   Phone,
   Zap,
   Shield,
-  Globe
+  Globe,
 } from "lucide-react";
+import { Logo } from "./Logo";
+import { APP_CONFIG, SOCIAL_LINKS } from "../../lib/constants";
 
 const footerLinks = {
   product: [
@@ -19,41 +21,61 @@ const footerLinks = {
     { name: "How it Works", href: "#how-it-works" },
     { name: "Pricing", href: "#pricing" },
     { name: "Security", href: "#security" },
-    { name: "API", href: "#api" }
+    { name: "API", href: "#api" },
   ],
   resources: [
     { name: "Documentation", href: "#docs" },
     { name: "Help Center", href: "#help" },
     { name: "Community", href: "#community" },
     { name: "Blog", href: "#blog" },
-    { name: "Tutorials", href: "#tutorials" }
+    { name: "Tutorials", href: "#tutorials" },
   ],
   company: [
     { name: "About Us", href: "#about" },
     { name: "Careers", href: "#careers" },
     { name: "Press Kit", href: "#press" },
     { name: "Contact", href: "#contact" },
-    { name: "Partners", href: "#partners" }
+    { name: "Partners", href: "#partners" },
   ],
   legal: [
     { name: "Privacy Policy", href: "#privacy" },
     { name: "Terms of Service", href: "#terms" },
     { name: "Cookie Policy", href: "#cookies" },
     { name: "Compliance", href: "#compliance" },
-    { name: "Licenses", href: "#licenses" }
-  ]
+    { name: "Licenses", href: "#licenses" },
+  ],
 };
 
 const socialLinks = [
-  { name: "Twitter", icon: Twitter, href: "#", color: "hover:text-blue-400" },
-  { name: "Discord", icon: MessageCircle, href: "#", color: "hover:text-purple-400" },
-  { name: "GitHub", icon: Github, href: "#", color: "hover:text-gray-400" },
-  { name: "Email", icon: Mail, href: "mailto:hello@sontine.com", color: "hover:text-emerald-400" }
+  {
+    name: "Twitter",
+    icon: Twitter,
+    href: SOCIAL_LINKS.TWITTER,
+    color: "hover:text-blue-400",
+  },
+  {
+    name: "Discord",
+    icon: MessageCircle,
+    href: SOCIAL_LINKS.DISCORD,
+    color: "hover:text-purple-400",
+  },
+  {
+    name: "GitHub",
+    icon: Github,
+    href: SOCIAL_LINKS.GITHUB,
+    color: "hover:text-gray-400",
+  },
+  {
+    name: "Email",
+    icon: Mail,
+    href: `mailto:${SOCIAL_LINKS.EMAIL}`,
+    color: "hover:text-emerald-400",
+  },
 ];
 
 export function Footer() {
   return (
-    <footer className="bg-gray-900 text-white">
+    <footer className="bg-dark-500 text-white">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
         {/* Main Footer Content */}
         <div className="py-16">
@@ -68,20 +90,16 @@ export function Footer() {
                 className="space-y-6"
               >
                 {/* Logo */}
-                <div className="flex items-center space-x-3">
-                  <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center">
-                    <span className="text-white font-bold text-xl">S</span>
-                  </div>
-                  <span className="text-2xl font-bold">Sontine</span>
-                </div>
+                <Logo size="lg" variant="white" />
 
                 <p className="text-gray-300 leading-relaxed max-w-md">
-                  Revolutionizing traditional tontines with Solana blockchain technology. 
-                  Join the global community of savers building their financial future together.
+                  Revolutionizing traditional tontines with Solana blockchain
+                  technology. Join the global community of savers building their
+                  financial future together.
                 </p>
 
                 <div className="space-y-3">
-                  <p className="text-emerald-400 font-semibold">
+                  <p className="text-teal-400 font-semibold">
                     Tontine Meets Blockchain
                   </p>
                   <p className="text-gray-400 text-sm">
@@ -92,15 +110,15 @@ export function Footer() {
                 {/* Key Features */}
                 <div className="flex flex-wrap gap-4">
                   <div className="flex items-center space-x-2 text-sm text-gray-300">
-                    <Zap className="w-4 h-4 text-yellow-400" />
+                    <Zap className="w-4 h-4 text-primary-200" />
                     <span>Solana Powered</span>
                   </div>
                   <div className="flex items-center space-x-2 text-sm text-gray-300">
-                    <Shield className="w-4 h-4 text-emerald-400" />
+                    <Shield className="w-4 h-4 text-teal-400" />
                     <span>Secure & Transparent</span>
                   </div>
                   <div className="flex items-center space-x-2 text-sm text-gray-300">
-                    <Globe className="w-4 h-4 text-blue-400" />
+                    <Globe className="w-4 h-4 text-primary-100" />
                     <span>Global Access</span>
                   </div>
                 </div>
@@ -120,7 +138,7 @@ export function Footer() {
                 <ul className="space-y-3">
                   {footerLinks.product.map((link, index) => (
                     <li key={index}>
-                      <a 
+                      <a
                         href={link.href}
                         className="text-gray-300 hover:text-emerald-400 transition-colors text-sm"
                       >
@@ -142,7 +160,7 @@ export function Footer() {
                 <ul className="space-y-3">
                   {footerLinks.resources.map((link, index) => (
                     <li key={index}>
-                      <a 
+                      <a
                         href={link.href}
                         className="text-gray-300 hover:text-emerald-400 transition-colors text-sm"
                       >
@@ -164,7 +182,7 @@ export function Footer() {
                 <ul className="space-y-3">
                   {footerLinks.company.map((link, index) => (
                     <li key={index}>
-                      <a 
+                      <a
                         href={link.href}
                         className="text-gray-300 hover:text-emerald-400 transition-colors text-sm"
                       >
@@ -186,7 +204,7 @@ export function Footer() {
                 <ul className="space-y-3">
                   {footerLinks.legal.map((link, index) => (
                     <li key={index}>
-                      <a 
+                      <a
                         href={link.href}
                         className="text-gray-300 hover:text-emerald-400 transition-colors text-sm"
                       >
@@ -214,7 +232,8 @@ export function Footer() {
                 Stay Updated
               </h3>
               <p className="text-gray-300 text-sm">
-                Get the latest news about Sontine features, tontine opportunities, and blockchain savings.
+                Get the latest news about Sontine features, tontine
+                opportunities, and blockchain savings.
               </p>
             </div>
             <div className="flex space-x-3">
@@ -241,8 +260,10 @@ export function Footer() {
               viewport={{ once: true }}
               className="text-gray-400 text-sm"
             >
-              <p>© 2024 Sontine. All rights reserved.</p>
-              <p className="mt-1">Built on Solana blockchain for global financial inclusion.</p>
+              <p>© 2024 {APP_CONFIG.NAME}. All rights reserved.</p>
+              <p className="mt-1">
+                Built on Solana blockchain for global financial inclusion.
+              </p>
             </motion.div>
 
             {/* Social Links */}

@@ -1,58 +1,64 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { 
-  Zap, 
-  Shield, 
-  Users, 
-  Bell, 
-  Star, 
-  Globe, 
-  Coins, 
+import {
+  Zap,
+  Shield,
+  Users,
+  Bell,
+  Star,
+  Globe,
+  Coins,
   BarChart3,
   Lock,
   Smartphone,
   ArrowUpDown,
-  CheckCircle
+  CheckCircle,
 } from "lucide-react";
 
 const features = [
   {
     icon: Zap,
     title: "Solana Smart Contracts",
-    description: "Automated tontine operations with lightning-fast Solana blockchain technology. No manual intervention needed.",
-    color: "emerald"
+    description:
+      "Automated tontine operations with lightning-fast Solana blockchain technology. No manual intervention needed.",
+    color: "emerald",
   },
   {
     icon: Shield,
     title: "Transparent Bidding",
-    description: "Fair and transparent bidding system where all members can see bids and participate equally in the process.",
-    color: "blue"
+    description:
+      "Fair and transparent bidding system where all members can see bids and participate equally in the process.",
+    color: "blue",
   },
   {
     icon: Users,
     title: "Multi-Tontine Management",
-    description: "Join multiple tontine groups simultaneously and manage all your participations from one dashboard.",
-    color: "purple"
+    description:
+      "Join multiple tontine groups simultaneously and manage all your participations from one dashboard.",
+    color: "purple",
   },
   {
     icon: Bell,
     title: "Real-time Notifications",
-    description: "Stay updated with instant notifications for contributions, bidding rounds, and payout distributions.",
-    color: "yellow"
+    description:
+      "Stay updated with instant notifications for contributions, bidding rounds, and payout distributions.",
+    color: "yellow",
   },
   {
     icon: Star,
     title: "Reputation System",
-    description: "Build your reputation score through consistent participation and reliable contributions to unlock better groups.",
-    color: "pink"
+    description:
+      "Build your reputation score through consistent participation and reliable contributions to unlock better groups.",
+    color: "pink",
   },
   {
     icon: Globe,
     title: "Cross-border Capabilities",
-    description: "Participate in tontines globally with automatic currency conversion and international accessibility.",
-    color: "indigo"
-  }
+    description:
+      "Participate in tontines globally with automatic currency conversion and international accessibility.",
+    color: "indigo",
+  },
 ];
 
 export function FeaturesSection() {
@@ -67,13 +73,14 @@ export function FeaturesSection() {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
+          <h2 className="text-4xl lg:text-5xl font-bold text-dark-500 mb-6">
             Powerful Features for Modern
-            <span className="text-emerald-600"> Tontines</span>
+            <span className="text-teal-500"> Tontines</span>
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Experience the next generation of rotating savings with advanced blockchain features 
-            designed for transparency, security, and global accessibility.
+            Experience the next generation of rotating savings with advanced
+            blockchain features designed for transparency, security, and global
+            accessibility.
           </p>
         </motion.div>
 
@@ -82,12 +89,12 @@ export function FeaturesSection() {
           {features.map((feature, index) => {
             const Icon = feature.icon;
             const colorClasses = {
-              emerald: "bg-emerald-500 text-white",
-              blue: "bg-blue-500 text-white",
-              purple: "bg-purple-500 text-white",
-              yellow: "bg-yellow-500 text-white",
-              pink: "bg-pink-500 text-white",
-              indigo: "bg-indigo-500 text-white"
+              emerald: "bg-teal-500 text-white",
+              blue: "bg-primary-200 text-white",
+              purple: "bg-navy-400 text-white",
+              yellow: "bg-primary-100 text-dark-500",
+              pink: "bg-primary-50 text-teal-600",
+              indigo: "bg-dark-500 text-white",
             };
 
             return (
@@ -99,7 +106,9 @@ export function FeaturesSection() {
                 viewport={{ once: true }}
                 className="bg-white p-8 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 group"
               >
-                <div className={`w-14 h-14 ${colorClasses[feature.color as keyof typeof colorClasses]} rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                <div
+                  className={`w-14 h-14 ${colorClasses[feature.color as keyof typeof colorClasses]} rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}
+                >
                   <Icon className="w-7 h-7" />
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-3">
@@ -119,7 +128,7 @@ export function FeaturesSection() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
           viewport={{ once: true }}
-          className="bg-gradient-to-r from-emerald-600 to-purple-600 rounded-3xl p-8 lg:p-12 text-white"
+          className="bg-gradient-to-r from-teal-500 to-primary-200 rounded-3xl p-8 lg:p-12 text-white"
         >
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
@@ -127,10 +136,11 @@ export function FeaturesSection() {
                 Built for the Solana Ecosystem
               </h3>
               <p className="text-lg text-emerald-100 mb-8">
-                Leverage Solana's high-speed, low-cost infrastructure for seamless tontine operations. 
-                Experience sub-second transaction finality and minimal fees.
+                Leverage Solana's high-speed, low-cost infrastructure for
+                seamless tontine operations. Experience sub-second transaction
+                finality and minimal fees.
               </p>
-              
+
               <div className="grid grid-cols-2 gap-6">
                 <div className="flex items-center space-x-3">
                   <CheckCircle className="w-6 h-6 text-emerald-300" />

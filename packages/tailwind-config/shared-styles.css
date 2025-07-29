@@ -1,7 +1,182 @@
 @import "tailwindcss";
 
 @theme {
-  --color-blue-1000: #2a8af6;
-  --color-purple-1000: #a853ba;
-  --color-red-1000: #e92a67;
+  /* Sontine Brand Colors - New Palette */
+  --color-primary-50: #c5fff8; /* Lightest mint */
+  --color-primary-100: #8dfff0; /* Light mint */
+  --color-primary-200: #14f1b2; /* Bright teal */
+  --color-primary-300: #00b49f; /* Main teal */
+  --color-primary-400: #134158; /* Navy blue */
+  --color-primary-500: #0e151a; /* Darkest */
+  --color-primary-600: #0a1014; /* Darker variant */
+  --color-primary-700: #070b0e; /* Even darker */
+  --color-primary-800: #040608; /* Almost black */
+  --color-primary-900: #020304; /* Pure dark */
+
+  /* Emerald variations (for compatibility) */
+  --color-emerald-50: #c5fff8;
+  --color-emerald-100: #8dfff0;
+  --color-emerald-200: #14f1b2;
+  --color-emerald-300: #00b49f;
+  --color-emerald-400: #00a08a;
+  --color-emerald-500: #00b49f; /* Main brand color */
+  --color-emerald-600: #008a7a;
+  --color-emerald-700: #006b5f;
+  --color-emerald-800: #004d44;
+  --color-emerald-900: #002e29;
+
+  /* Teal variations */
+  --color-teal-50: #c5fff8;
+  --color-teal-100: #8dfff0;
+  --color-teal-200: #14f1b2;
+  --color-teal-300: #00b49f;
+  --color-teal-400: #00a08a;
+  --color-teal-500: #008a7a;
+  --color-teal-600: #006b5f;
+  --color-teal-700: #004d44;
+  --color-teal-800: #002e29;
+  --color-teal-900: #001a17;
+
+  /* Navy variations */
+  --color-navy-50: #e8f4f8;
+  --color-navy-100: #d1e9f1;
+  --color-navy-200: #a3d3e3;
+  --color-navy-300: #75bdd5;
+  --color-navy-400: #47a7c7;
+  --color-navy-500: #134158;
+  --color-navy-600: #0f3749;
+  --color-navy-700: #0b2d3a;
+  --color-navy-800: #07232b;
+  --color-navy-900: #03191c;
+
+  /* Dark variations */
+  --color-dark-50: #f0f2f3;
+  --color-dark-100: #e1e5e7;
+  --color-dark-200: #c3cbcf;
+  --color-dark-300: #a5b1b7;
+  --color-dark-400: #87979f;
+  --color-dark-500: #0e151a;
+  --color-dark-600: #0b1116;
+  --color-dark-700: #080d11;
+  --color-dark-800: #05090b;
+  --color-dark-900: #020506;
+
+  /* Font Family */
+  --font-family-sans: var(--font-pixeloid-sans), Arial, sans-serif;
+  --font-family-mono: var(--font-pixeloid-mono), "Courier New", monospace;
+  --font-family-pixeloid: var(--font-pixeloid-sans), Arial, sans-serif;
+  --font-family-pixeloid-mono:
+    var(--font-pixeloid-mono), "Courier New", monospace;
+
+  /* Pixel-perfect font sizes for Pixeloid */
+  --font-size-pixel-xs: 9px;
+  --line-height-pixel-xs: 12px;
+  --font-size-pixel-sm: 18px;
+  --line-height-pixel-sm: 24px;
+  --font-size-pixel-base: 36px;
+  --line-height-pixel-base: 48px;
+  --font-size-pixel-lg: 72px;
+  --line-height-pixel-lg: 96px;
+  --font-size-pixel-xl: 144px;
+  --line-height-pixel-xl: 192px;
+
+  /* Custom animations */
+  --animate-spin-slow: spin 20s linear infinite;
+  --animate-spin-reverse: spin-reverse 15s linear infinite;
+}
+
+/* Custom keyframes */
+@keyframes spin-reverse {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+/* Custom utilities */
+/* Pixel-perfect text sizes */
+.text-pixel-xs {
+  font-size: var(--font-size-pixel-xs);
+  line-height: var(--line-height-pixel-xs);
+}
+
+.text-pixel-sm {
+  font-size: var(--font-size-pixel-sm);
+  line-height: var(--line-height-pixel-sm);
+}
+
+.text-pixel-base {
+  font-size: var(--font-size-pixel-base);
+  line-height: var(--line-height-pixel-base);
+}
+
+.text-pixel-lg {
+  font-size: var(--font-size-pixel-lg);
+  line-height: var(--line-height-pixel-lg);
+}
+
+.text-pixel-xl {
+  font-size: var(--font-size-pixel-xl);
+  line-height: var(--line-height-pixel-xl);
+}
+
+/* Font family utilities */
+.font-pixeloid {
+  font-family: var(--font-family-pixeloid);
+}
+
+.font-pixeloid-mono {
+  font-family: var(--font-family-pixeloid-mono);
+}
+
+/* Pixel font optimizations */
+.font-pixeloid,
+.font-pixeloid-mono {
+  font-smooth: never;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: unset;
+  text-rendering: optimizeSpeed;
+}
+
+/* Animation utilities */
+.animate-spin-slow {
+  animation: var(--animate-spin-slow);
+}
+
+.animate-spin-reverse {
+  animation: var(--animate-spin-reverse);
+}
+
+/* Custom gradient backgrounds */
+.gradient-teal-mint {
+  background: linear-gradient(135deg, #00b49f 0%, #14f1b2 100%);
+}
+
+.gradient-navy-teal {
+  background: linear-gradient(135deg, #134158 0%, #00b49f 100%);
+}
+
+.gradient-dark-teal {
+  background: linear-gradient(135deg, #0e151a 0%, #00b49f 100%);
+}
+
+.gradient-mint-light {
+  background: linear-gradient(135deg, #8dfff0 0%, #c5fff8 100%);
+}
+
+/* Pixel-perfect rendering for low DPI displays */
+@media (max-resolution: 1dppx) {
+  .font-pixeloid,
+  .font-pixeloid-mono {
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+  }
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
 }
