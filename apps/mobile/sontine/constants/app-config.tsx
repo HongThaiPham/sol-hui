@@ -3,8 +3,8 @@ import { Cluster } from '@/components/cluster/cluster'
 import { ClusterNetwork } from '@/components/cluster/cluster-network'
 
 export class AppConfig {
-  static name = 'web3js-expo-paper'
-  static uri = 'https://example.com'
+  static name = 'sontine'
+  static uri = 'https://soltine.fun'
   static clusters: Cluster[] = [
     {
       id: 'solana:devnet',
