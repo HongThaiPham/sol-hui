@@ -17,10 +17,46 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background: white;
+}
+
+/* Custom animations for Sontine */
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spin-reverse {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 20s linear infinite;
+}
+
+.animate-spin-reverse {
+  animation: spin-reverse 15s linear infinite;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom gradient backgrounds */
+.gradient-emerald-purple {
+  background: linear-gradient(135deg, #10b981 0%, #8b5cf6 100%);
+}
+
+.gradient-emerald-yellow {
+  background: linear-gradient(135deg, #10b981 0%, #f59e0b 100%);
 }
