@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, ButtonProps } from 'react-native-paper'
+import { Button, ButtonProps, ActivityIndicator } from 'react-native-paper'
 import { StyleProp, ViewStyle } from 'react-native'
 import { useAppTheme } from '@/components/app-theme'
 
@@ -109,16 +109,69 @@ export function SontineButton({
     }
   }
 
+  const getContentStyle = () => {
+    return {
+      paddingHorizontal: props.icon ? spacing.xs : 0, // Điều chỉnh padding khi có icon
+      flexDirection: 'row' as const,
+      alignItems: 'center' as const,
+    }
+  }
+
   return (
     <Button
       mode={getMode()}
       style={[getButtonStyle(), style]}
       textColor={getTextColor()}
       labelStyle={getLabelStyle()}
+      contentStyle={getContentStyle()}
       theme={paperTheme}
       {...props}
     >
       {children}
     </Button>
+  )
+}
+
+// SontineActionButton với tính năng loading
+export interface SontineActionButtonProps extends SontineButtonProps {
+  isLoading?: boolean
+  loadingText?: string
+}
+
+export function SontineActionButton({
+  isLoading = false,
+  loadingText,
+  children,
+  disabled,
+  onPress,
+  ...props
+}: SontineActionButtonProps) {
+  const { colors } = useAppTheme()
+
+  const getLoadingIndicatorColor = () => {
+    switch (props.variant) {
+      case 'primary':
+      case 'navy':
+        return colors.onPrimary
+      case 'accent':
+      case 'mint':
+        return '#0E151A'
+      case 'outline':
+      case 'ghost':
+        return colors.primary
+      default:
+        return colors.onPrimary
+    }
+  }
+
+  return (
+    <SontineButton
+      {...props}
+      disabled={disabled || isLoading}
+      onPress={isLoading ? undefined : onPress}
+      icon={isLoading ? () => <ActivityIndicator size="small" color={getLoadingIndicatorColor()} /> : props.icon}
+    >
+      {isLoading && loadingText ? loadingText : children}
+    </SontineButton>
   )
 }

@@ -20,10 +20,10 @@ const getStyles = ({ spacing, colors }: AppTheme) =>
       gap: spacing.md,
     },
     buttonContent: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'center',
-      gap: spacing.sm,
+      // flexDirection: 'row',
+      // alignItems: 'center',
+      // justifyContent: 'center',
+      // gap: spacing.sm,
     },
   })
 
@@ -34,21 +34,21 @@ export function QuickActions() {
   const actions = [
     {
       title: 'Browse Tontines',
-      icon: 'magnifyingglass',
+      icon: 'clipboard-search-outline',
       variant: 'primary' as const,
       iconColor: theme.colors.onPrimary,
       onPress: () => router.push('/(tabs)/tontines/browse'),
     },
     {
       title: 'Create Group',
-      icon: 'plus.circle.fill',
+      icon: 'account-group',
       variant: 'accent' as const,
       iconColor: '#0E151A',
       onPress: () => router.push('/(tabs)/tontines/create'),
     },
     {
       title: 'My Wallet',
-      icon: 'wallet.pass.fill',
+      icon: 'wallet',
       variant: 'navy' as const,
       iconColor: theme.colors.onPrimary,
       onPress: () => router.push('/(tabs)/profile/wallet'),
@@ -68,12 +68,12 @@ export function QuickActions() {
           <SontineButton
             key={index}
             variant={action.variant}
-            size="lg"
+            size="md"
             fullWidth
             onPress={action.onPress}
             style={styles.buttonContent}
+            icon={action.icon}
           >
-            <UiIconSymbol name={action.icon as any} size={22} color={action.iconColor} />
             {action.title}
           </SontineButton>
         ))}
