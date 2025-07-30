@@ -1,6 +1,7 @@
 import React from 'react'
 import { View, FlatList } from 'react-native'
 import { AppText } from '@/components/app-text'
+import { AppHeading, AppBody, DateText, TontineAmount } from '@/components/ui/typography'
 import { SontineCard, SontineCardContent } from '@/components/ui/sontine-card'
 import { UiIconSymbol } from '@/components/ui/ui-icon-symbol'
 import { useAppTheme } from '@/components/app-theme'
@@ -119,7 +120,7 @@ export function ActivityFeed() {
           marginBottom: spacing.md,
         }}
       >
-        <AppText
+        <AppHeading
           variant="titleMedium"
           style={{
             color: colors.onSurface,
@@ -127,7 +128,7 @@ export function ActivityFeed() {
           }}
         >
           Recent Activity
-        </AppText>
+        </AppHeading>
 
         <AppText
           variant="bodySmall"

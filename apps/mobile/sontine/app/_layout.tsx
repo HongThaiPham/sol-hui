@@ -20,7 +20,8 @@ export default function RootLayout() {
   })
   const [loaded] = useFonts({
     'PixeloidMono-Regular': require('../assets/fonts/PixeloidMono-Regular.ttf'),
-    'SpaceMono-Regular': require('../assets/fonts/SpaceMono-Regular.ttf'),
+    'PixeloidSans-Regular': require('../assets/fonts/PixeloidSans-Regular.ttf'),
+    'PixeloidSans-Bold': require('../assets/fonts/PixeloidSans-Bold.ttf'),
   })
 
   const onLayoutRootView = useCallback(async () => {

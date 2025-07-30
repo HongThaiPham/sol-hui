@@ -13,7 +13,7 @@ function useSignMessage({ address }: { address: PublicKey }) {
   const { signMessage } = useWalletUi()
   return useMutation({
     mutationFn: async (input: { message: string }) => {
-      return signMessage(Buffer.from(input.message, 'utf8')).then((signature) => signature.toString())
+      return signMessage(new Uint8Array(Buffer.from(input.message, 'utf8'))).then((signature) => signature.toString())
     },
   })
 }
@@ -28,7 +28,7 @@ export function DemoFeatureSignMessage({ address }: { address: PublicKey }) {
       <AppText variant="headlineMedium">Sign message with connected wallet.</AppText>
       <Snackbar
         style={{ backgroundColor: colors.background, zIndex: 1000 }}
-        theme={{ colors: { surface: theme.colors.text } }}
+        theme={{ colors: { surface: colors.onBackground } }}
         visible={showSnackbar}
         onDismiss={() => setShowSnackbar(false)}
       >

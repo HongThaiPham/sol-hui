@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import { useRouter } from 'expo-router'
-import { AppText } from '@/components/app-text'
+import { AppHeading } from '@/components/ui/typography'
 import { SontineButton } from '@/components/ui/sontine-button'
 import { UiIconSymbol } from '@/components/ui/ui-icon-symbol'
 import { useAppTheme, type AppTheme } from '@/components/app-theme'
@@ -59,9 +59,9 @@ export function QuickActions() {
 
   return (
     <View style={styles.container}>
-      <AppText variant="titleMedium" style={styles.sectionTitle}>
+      <AppHeading variant="titleMedium" style={styles.sectionTitle}>
         Quick Actions
-      </AppText>
+      </AppHeading>
 
       <View style={styles.actionsContainer}>
         {actions.map((action, index) => (

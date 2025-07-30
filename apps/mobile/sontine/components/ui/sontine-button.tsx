@@ -17,7 +17,7 @@ export function SontineButton({
   children,
   ...props
 }: SontineButtonProps) {
-  const { paperTheme, colors, spacing, borderRadius } = useAppTheme()
+  const { paperTheme, colors, spacing, borderRadius, fontFamily, fontsLoaded } = useAppTheme()
 
   const getButtonStyle = (): StyleProp<ViewStyle> => {
     const baseStyle: ViewStyle = {
@@ -100,8 +100,24 @@ export function SontineButton({
     }
   }
 
+  const getLabelStyle = () => {
+    if (!fontsLoaded) return {}
+
+    return {
+      fontFamily: fontFamily.primary, // Sử dụng PixeloidSans-Regular cho button text
+      fontSize: size === 'sm' ? 14 : size === 'md' ? 16 : 18,
+    }
+  }
+
   return (
-    <Button mode={getMode()} style={[getButtonStyle(), style]} textColor={getTextColor()} theme={paperTheme} {...props}>
+    <Button
+      mode={getMode()}
+      style={[getButtonStyle(), style]}
+      textColor={getTextColor()}
+      labelStyle={getLabelStyle()}
+      theme={paperTheme}
+      {...props}
+    >
       {children}
     </Button>
   )

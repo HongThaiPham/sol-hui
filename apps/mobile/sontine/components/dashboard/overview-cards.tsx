@@ -1,6 +1,7 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import { AppText } from '@/components/app-text'
+import { AppHeading, TontineAmount, TontineCount } from '@/components/ui/typography'
 import { SontineCard, SontineCardContent } from '@/components/ui/sontine-card'
 import { UiIconSymbol } from '@/components/ui/ui-icon-symbol'
 import { useAppTheme, type AppTheme } from '@/components/app-theme'
@@ -85,9 +86,9 @@ export function OverviewCards() {
 
   return (
     <View style={styles.container}>
-      <AppText variant="titleMedium" style={styles.sectionTitle}>
+      <AppHeading variant="titleMedium" style={styles.sectionTitle}>
         Overview
-      </AppText>
+      </AppHeading>
 
       <View style={styles.cardsGrid}>
         {cards.map((card, index) => (
@@ -98,11 +99,23 @@ export function OverviewCards() {
                   <UiIconSymbol name={card.icon as any} size={28} color={card.textColor} />
                 </View>
 
-                <AppText variant="headlineMedium" style={[styles.cardValue, { color: card.textColor }]}>
-                  {card.value}
-                </AppText>
+                {/* Sử dụng component phù hợp dựa trên loại data */}
+                {card.title.includes('SOL') ? (
+                  <TontineAmount
+                    amount={parseFloat(card.value.replace(' SOL', ''))}
+                    variant="headlineMedium"
+                    style={[styles.cardValue, { color: card.textColor }]}
+                  />
+                ) : (
+                  <TontineCount
+                    count={parseInt(card.value)}
+                    label=""
+                    variant="headlineMedium"
+                    style={[styles.cardValue, { color: card.textColor }]}
+                  />
+                )}
 
-                <AppText variant="bodySmall" style={[styles.cardTitle, { color: card.textColor }]}>
+                <AppText fontType="sans" variant="bodySmall" style={[styles.cardTitle, { color: card.textColor }]}>
                   {card.title}
                 </AppText>
               </SontineCardContent>

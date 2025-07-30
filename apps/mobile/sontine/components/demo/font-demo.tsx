@@ -4,47 +4,51 @@ import { AppText } from '@/components/app-text'
 import { SontineCard, SontineCardContent } from '@/components/ui/sontine-card'
 import { useAppTheme, type AppTheme } from '@/components/app-theme'
 
-const getStyles = ({ spacing, colors }: AppTheme) => StyleSheet.create({
-  container: {
-    padding: spacing.md,
-    gap: spacing.lg,
-  },
-  sectionTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: colors.onSurface,
-    marginBottom: spacing.md,
-  },
-  fontSample: {
-    marginBottom: spacing.sm,
-  },
-  fontLabel: {
-    fontSize: 12,
-    color: colors.onSurface,
-    opacity: 0.7,
-    marginBottom: spacing.xs,
-  },
-  fontText: {
-    fontSize: 16,
-    color: colors.onSurface,
-  },
-  systemFont: {
-    fontFamily: 'System',
-  },
-  pixeloidFont: {
-    fontFamily: 'PixeloidMono-Regular',
-  },
-  spaceMonoFont: {
-    fontFamily: 'SpaceMono-Regular',
-  },
-})
+const getStyles = ({ spacing, colors }: AppTheme) =>
+  StyleSheet.create({
+    container: {
+      padding: spacing.md,
+      gap: spacing.lg,
+    },
+    sectionTitle: {
+      fontSize: 20,
+      fontWeight: 'bold',
+      color: colors.onSurface,
+      marginBottom: spacing.md,
+    },
+    fontSample: {
+      marginBottom: spacing.sm,
+    },
+    fontLabel: {
+      fontSize: 12,
+      color: colors.onSurface,
+      opacity: 0.7,
+      marginBottom: spacing.xs,
+    },
+    fontText: {
+      fontSize: 16,
+      color: colors.onSurface,
+    },
+    systemFont: {
+      fontFamily: 'System',
+    },
+    pixeloidSansRegular: {
+      fontFamily: 'PixeloidSans-Regular',
+    },
+    pixeloidSansBold: {
+      fontFamily: 'PixeloidSans-Bold',
+    },
+    pixeloidMono: {
+      fontFamily: 'PixeloidMono-Regular',
+    },
+  })
 
 export function FontDemo() {
   const theme = useAppTheme()
   const styles = React.useMemo(() => getStyles(theme), [theme])
 
-  const sampleText = "The quick brown fox jumps over the lazy dog"
-  const numbersText = "0123456789 !@#$%^&*()"
+  const sampleText = 'The quick brown fox jumps over the lazy dog'
+  const numbersText = '0123456789 !@#$%^&*()'
 
   return (
     <View style={styles.container}>
@@ -55,7 +59,7 @@ export function FontDemo() {
       <SontineCard variant="elevated" padding="md">
         <SontineCardContent>
           <AppText variant="titleMedium" style={{ marginBottom: theme.spacing.md }}>
-            Font Comparison
+            Font Family Showcase
           </AppText>
 
           {/* System Font */}
@@ -63,38 +67,35 @@ export function FontDemo() {
             <AppText variant="bodySmall" style={styles.fontLabel}>
               System Font (Default)
             </AppText>
-            <NativeText style={[styles.fontText, styles.systemFont]}>
-              {sampleText}
-            </NativeText>
-            <NativeText style={[styles.fontText, styles.systemFont]}>
-              {numbersText}
-            </NativeText>
+            <NativeText style={[styles.fontText, styles.systemFont]}>{sampleText}</NativeText>
+            <NativeText style={[styles.fontText, styles.systemFont]}>{numbersText}</NativeText>
           </View>
 
-          {/* PixeloidMono Font */}
+          {/* PixeloidSans Regular */}
           <View style={styles.fontSample}>
             <AppText variant="bodySmall" style={styles.fontLabel}>
-              PixeloidMono-Regular (Primary)
+              PixeloidSans-Regular (Primary Font)
             </AppText>
-            <NativeText style={[styles.fontText, styles.pixeloidFont]}>
-              {sampleText}
-            </NativeText>
-            <NativeText style={[styles.fontText, styles.pixeloidFont]}>
-              {numbersText}
-            </NativeText>
+            <NativeText style={[styles.fontText, styles.pixeloidSansRegular]}>{sampleText}</NativeText>
+            <NativeText style={[styles.fontText, styles.pixeloidSansRegular]}>{numbersText}</NativeText>
           </View>
 
-          {/* SpaceMono Font */}
+          {/* PixeloidSans Bold */}
           <View style={styles.fontSample}>
             <AppText variant="bodySmall" style={styles.fontLabel}>
-              SpaceMono-Regular (Mono)
+              PixeloidSans-Bold (Headings)
             </AppText>
-            <NativeText style={[styles.fontText, styles.spaceMonoFont]}>
-              {sampleText}
-            </NativeText>
-            <NativeText style={[styles.fontText, styles.spaceMonoFont]}>
-              {numbersText}
-            </NativeText>
+            <NativeText style={[styles.fontText, styles.pixeloidSansBold]}>{sampleText}</NativeText>
+            <NativeText style={[styles.fontText, styles.pixeloidSansBold]}>{numbersText}</NativeText>
+          </View>
+
+          {/* PixeloidMono */}
+          <View style={styles.fontSample}>
+            <AppText variant="bodySmall" style={styles.fontLabel}>
+              PixeloidMono-Regular (Code/Numbers)
+            </AppText>
+            <NativeText style={[styles.fontText, styles.pixeloidMono]}>{sampleText}</NativeText>
+            <NativeText style={[styles.fontText, styles.pixeloidMono]}>{numbersText}</NativeText>
           </View>
         </SontineCardContent>
       </SontineCard>
@@ -102,23 +103,31 @@ export function FontDemo() {
       <SontineCard variant="primary" padding="md">
         <SontineCardContent>
           <AppText variant="titleMedium" style={{ color: '#FFFFFF', marginBottom: theme.spacing.md }}>
-            AppText Component (Using PixeloidMono)
+            AppText Component (Smart Font Selection)
           </AppText>
-          
+
+          <AppText variant="displaySmall" style={{ color: '#FFFFFF', marginBottom: theme.spacing.sm }}>
+            Display: Uses PixeloidSans-Bold
+          </AppText>
+
           <AppText variant="headlineSmall" style={{ color: '#FFFFFF', marginBottom: theme.spacing.sm }}>
-            Headline: {theme.fontsLoaded ? 'Font Loaded ✓' : 'Loading...'}
+            Headline: Uses PixeloidSans-Bold
           </AppText>
-          
+
+          <AppText variant="titleLarge" style={{ color: '#FFFFFF', marginBottom: theme.spacing.sm }}>
+            Title: Uses PixeloidSans-Bold
+          </AppText>
+
           <AppText variant="bodyLarge" style={{ color: '#FFFFFF', marginBottom: theme.spacing.sm }}>
-            Body Large: This is using the PixeloidMono font
+            Body Large: Uses PixeloidSans-Regular
           </AppText>
-          
+
           <AppText variant="bodyMedium" style={{ color: '#FFFFFF', marginBottom: theme.spacing.sm }}>
-            Body Medium: Perfect for UI text and descriptions
+            Body Medium: Uses PixeloidSans-Regular
           </AppText>
-          
-          <AppText variant="bodySmall" style={{ color: '#FFFFFF' }}>
-            Body Small: Great for captions and labels
+
+          <AppText variant="labelLarge" style={{ color: '#FFFFFF' }}>
+            Label: Uses PixeloidMono-Regular (for numbers/code)
           </AppText>
         </SontineCardContent>
       </SontineCard>

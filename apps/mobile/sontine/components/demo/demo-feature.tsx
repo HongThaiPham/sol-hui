@@ -1,8 +1,9 @@
 import { AppView } from '@/components/app-view'
-import { AppText } from '@/components/app-text'
+import { AppHeading } from '@/components/ui/typography'
 import { DemoFeatureSignMessage } from './demo-feature-sign-message'
 import { ColorPaletteDemo } from './color-palette-demo'
 import { FontDemo } from './font-demo'
+import { TypographyDemo } from './typography-demo'
 import { useWalletUi } from '@/components/solana/use-wallet-ui'
 import { PublicKey } from '@solana/web3.js'
 import { ScrollView, View } from 'react-native'
@@ -16,13 +17,19 @@ export function DemoFeature() {
   return (
     <ScrollView style={{ flex: 1 }}>
       <View style={{ padding: spacing.md }}>
-        <AppText variant="titleMedium" style={{ marginBottom: spacing.md }}>
+        <AppHeading variant="titleMedium" style={{ marginBottom: spacing.md }}>
           Demo page
-        </AppText>
-        <AppText style={{ marginBottom: spacing.lg }}>Start building your features here.</AppText>
+        </AppHeading>
+        <AppHeading fontType="sans" style={{ marginBottom: spacing.lg }}>
+          Start building your features here.
+        </AppHeading>
 
         <View style={{ marginBottom: spacing.xl }}>
           <DemoFeatureSignMessage address={account?.publicKey as PublicKey} />
+        </View>
+
+        <View style={{ marginBottom: spacing.xl }}>
+          <TypographyDemo />
         </View>
 
         <View style={{ marginBottom: spacing.xl }}>
