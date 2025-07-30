@@ -82,7 +82,7 @@ const mockReputation = {
   level: 'Trusted Member',
   totalTransactions: 47,
   successRate: 98.5,
-  totalSaved: 12.5, // SOL
+  totalSaved: 12.5, // USDC
   activePools: 3,
 }
 
@@ -198,7 +198,7 @@ export function ReputationDisplay({ scrollY }: { scrollY: Animated.Value }) {
         ]}
       >
         <View style={styles.statItem}>
-          <AppText style={styles.statValue}>{mockReputation.totalSaved} SOL</AppText>
+          <AppText style={styles.statValue}>{mockReputation.totalSaved} USDC</AppText>
           <AppText style={styles.statLabel}>Total Saved</AppText>
         </View>
 

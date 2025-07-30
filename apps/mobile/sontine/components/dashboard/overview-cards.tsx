@@ -2,83 +2,118 @@ import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import { AppText } from '@/components/app-text'
 import { AppHeading, TontineAmount, TontineCount } from '@/components/ui/typography'
-import { SontineCard, SontineCardContent } from '@/components/ui/sontine-card'
 import { UiIconSymbol } from '@/components/ui/ui-icon-symbol'
 import { useAppTheme, type AppTheme } from '@/components/app-theme'
 
 const getStyles = ({ spacing, colors }: AppTheme) =>
   StyleSheet.create({
     container: {
-      marginBottom: spacing.sm,
+      marginBottom: spacing.xl,
     },
     sectionTitle: {
-      marginBottom: spacing.md,
+      marginBottom: spacing.xl,
       color: colors.onSurface,
-      fontWeight: 'bold',
+      fontSize: 18,
+      fontWeight: '600',
     },
     cardsGrid: {
+      gap: spacing.lg,
+    },
+    cardRow: {
       flexDirection: 'row',
-      flexWrap: 'wrap',
-      gap: spacing.sm,
+      gap: spacing.lg,
     },
     cardWrapper: {
-      width: '48%',
+      flex: 1,
+      aspectRatio: 1, // Makes cards square
+    },
+    card: {
+      backgroundColor: colors.surface,
+      padding: spacing.lg,
+      borderRadius: 16,
+      // Square dimensions
+      flex: 1,
+      justifyContent: 'space-between',
+      // Minimal shadow
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 1,
+      },
+      shadowOpacity: 0.05,
+      shadowRadius: 2,
+      elevation: 1,
     },
     cardHeader: {
       flexDirection: 'row',
       alignItems: 'center',
-      justifyContent: 'flex-end',
-      marginBottom: spacing.sm,
+      justifyContent: 'space-between',
+      marginBottom: spacing.md,
     },
-    cardValue: {
-      fontWeight: 'bold',
-      marginBottom: spacing.xs,
+    iconContainer: {
+      width: 32,
+      height: 32,
+      borderRadius: 8,
+      backgroundColor: colors.primaryContainer,
+      alignItems: 'center',
+      justifyContent: 'center',
     },
     cardTitle: {
-      opacity: 0.85,
-      fontSize: 12,
+      fontSize: 13,
+      color: colors.onSurface,
+      opacity: 0.6,
+      fontWeight: '500',
+      letterSpacing: 0.3,
+      flex: 1,
+    },
+    cardValue: {
+      fontSize: 28,
+      fontWeight: '700',
+      color: colors.onSurface,
+      lineHeight: 32,
     },
   })
 
-// Mock data
-const mockData = {
-  activeTontines: 3,
-  totalContributed: 125.5,
-  nextPayout: 450.0,
-  pendingContributions: 2,
+// System overview data
+const systemData = {
+  totalGroups: 1247, // Tổng số group trong hệ thống
+  totalFundsRaised: 89432.5, // Tổng số tiền đã huy động (USDC)
+  activeMembers: 5683, // Số thành viên đang hoạt động
+  completedCycles: 892, // Số chu kỳ đã hoàn thành
 }
 
 export function OverviewCards() {
   const theme = useAppTheme()
+  const { colors } = theme
 
   const cards = [
     {
-      title: 'Active Tontines',
-      value: mockData.activeTontines.toString(),
+      title: 'Total Groups',
+      value: systemData.totalGroups,
+      isCurrency: false,
       icon: 'person.3.fill',
-      variant: 'primary' as const,
-      textColor: '#FFFFFF',
+      iconColor: colors.primary,
     },
     {
-      title: 'Total Contributed',
-      value: `${mockData.totalContributed} SOL`,
+      title: 'Funds Raised',
+      value: systemData.totalFundsRaised,
+      isCurrency: true,
       icon: 'dollarsign.circle.fill',
-      variant: 'accent' as const,
-      textColor: '#0E151A',
+      iconColor: colors.secondary,
     },
     {
-      title: 'Next Payout',
-      value: `${mockData.nextPayout} SOL`,
-      icon: 'trophy.fill',
-      variant: 'mint' as const,
-      textColor: '#0E151A',
+      title: 'Active Members',
+      value: systemData.activeMembers,
+      isCurrency: false,
+      icon: 'heart.fill',
+      iconColor: colors.tertiary,
     },
     {
-      title: 'Pending',
-      value: mockData.pendingContributions.toString(),
-      icon: 'clock.fill',
-      variant: 'navy' as const,
-      textColor: '#FFFFFF',
+      title: 'Completed Cycles',
+      value: systemData.completedCycles,
+      isCurrency: false,
+      icon: 'checkmark.circle.fill',
+      iconColor: colors.primary,
     },
   ]
 
@@ -87,41 +122,57 @@ export function OverviewCards() {
   return (
     <View style={styles.container}>
       <AppHeading variant="titleMedium" style={styles.sectionTitle}>
-        Overview
+        System Overview
       </AppHeading>
 
       <View style={styles.cardsGrid}>
-        {cards.map((card, index) => (
-          <View key={index} style={styles.cardWrapper}>
-            <SontineCard variant={card.variant} padding="md">
-              <SontineCardContent>
+        {/* First row */}
+        <View style={styles.cardRow}>
+          {cards.slice(0, 2).map((card, index) => (
+            <View key={index} style={styles.cardWrapper}>
+              <View style={styles.card}>
+                {/* Header with title and icon */}
                 <View style={styles.cardHeader}>
-                  <UiIconSymbol name={card.icon as any} size={28} color={card.textColor} />
+                  <AppText style={styles.cardTitle}>{card.title}</AppText>
+                  <View style={styles.iconContainer}>
+                    <UiIconSymbol name={card.icon as any} size={18} color={card.iconColor} />
+                  </View>
                 </View>
 
-                {/* Sử dụng component phù hợp dựa trên loại data */}
-                {card.title.includes('SOL') ? (
-                  <TontineAmount
-                    amount={parseFloat(card.value.replace(' SOL', ''))}
-                    variant="headlineMedium"
-                    style={[styles.cardValue, { color: card.textColor }]}
-                  />
+                {/* Value */}
+                {card.isCurrency ? (
+                  <TontineAmount amount={card.value} variant="headlineMedium" style={styles.cardValue} />
                 ) : (
-                  <TontineCount
-                    count={parseInt(card.value)}
-                    label=""
-                    variant="headlineMedium"
-                    style={[styles.cardValue, { color: card.textColor }]}
-                  />
+                  <TontineCount count={card.value} label="" variant="headlineMedium" style={styles.cardValue} />
                 )}
+              </View>
+            </View>
+          ))}
+        </View>
 
-                <AppText fontType="sans" variant="bodySmall" style={[styles.cardTitle, { color: card.textColor }]}>
-                  {card.title}
-                </AppText>
-              </SontineCardContent>
-            </SontineCard>
-          </View>
-        ))}
+        {/* Second row */}
+        <View style={styles.cardRow}>
+          {cards.slice(2, 4).map((card, index) => (
+            <View key={index + 2} style={styles.cardWrapper}>
+              <View style={styles.card}>
+                {/* Header with title and icon */}
+                <View style={styles.cardHeader}>
+                  <AppText style={styles.cardTitle}>{card.title}</AppText>
+                  <View style={styles.iconContainer}>
+                    <UiIconSymbol name={card.icon as any} size={18} color={card.iconColor} />
+                  </View>
+                </View>
+
+                {/* Value */}
+                {card.isCurrency ? (
+                  <TontineAmount amount={card.value} variant="headlineMedium" style={styles.cardValue} />
+                ) : (
+                  <TontineCount count={card.value} label="" variant="headlineMedium" style={styles.cardValue} />
+                )}
+              </View>
+            </View>
+          ))}
+        </View>
       </View>
     </View>
   )
