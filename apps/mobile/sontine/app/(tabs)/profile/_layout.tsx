@@ -19,7 +19,7 @@ export default function ProfileLayout() {
       <Stack.Screen
         name="index"
         options={{
-          headerTitle: () => <HeaderTitleWithIcon title="Profile" iconName="person.crop.circle.fill" />,
+          headerShown: false,
         }}
       />
       <Stack.Screen

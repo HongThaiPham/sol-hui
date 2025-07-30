@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, RefreshControl, StyleSheet, Animated } from 'react-native'
+import { View, RefreshControl, StyleSheet, Animated, StatusBar } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useAppTheme, type AppTheme } from '@/components/app-theme'
 import { OverviewCards } from './overview-cards'
@@ -77,6 +77,9 @@ export function DashboardFeature() {
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
+      {/* Set status bar to match header background */}
+      <StatusBar backgroundColor={theme.colors.primary} barStyle="light-content" />
+
       {/* Animated Header with gradient background */}
       <Animated.View style={[styles.header, { height: headerHeight }]}>
         <GradientBackground variant="full-spectrum" />

@@ -1,18 +1,17 @@
 import React from 'react'
-import { ScrollView, View } from 'react-native'
+import { View, ScrollView, StatusBar } from 'react-native'
 import { useRouter } from 'expo-router'
-import { AppPage } from '@/components/app-page'
 import { AppText } from '@/components/app-text'
 import { SontineCard, SontineCardContent } from '@/components/ui/sontine-card'
 import { SontineButton } from '@/components/ui/sontine-button'
 import { UiIconSymbol } from '@/components/ui/ui-icon-symbol'
-import { GradientBackground } from '@/components/ui/gradient-background'
+import { ProfileHeader } from '@/components/profile/profile-header'
 import { useAppTheme } from '@/components/app-theme'
 
 // Mock user data
 const mockUser = {
-  name: 'Alex Johnson',
-  email: 'alex.johnson@email.com',
+  name: 'Leo Pham',
+  email: 'hongthaipro@gmail.com',
   walletAddress: '7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU',
   reputation: 4.6,
   totalTransactions: 47,
@@ -87,179 +86,19 @@ export default function ProfileScreen() {
   ]
 
   return (
-    <AppPage>
+    <View style={{ flex: 1, backgroundColor: colors.background }}>
+      {/* Set status bar to match header background */}
+      <StatusBar backgroundColor="#00B49F" barStyle="light-content" />
+
+      {/* Profile Header */}
+      <ProfileHeader />
+
+      {/* Scrollable Content */}
       <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: spacing.xl }}>
-        {/* Profile Header */}
-        <View style={{ height: 200, position: 'relative' }}>
-          <GradientBackground variant="primary-accent" />
-          <View
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              justifyContent: 'center',
-              alignItems: 'center',
-              paddingHorizontal: spacing.md,
-            }}
-          >
-            {/* Avatar */}
-            <View
-              style={{
-                width: 80,
-                height: 80,
-                borderRadius: 40,
-                backgroundColor: 'rgba(255, 255, 255, 0.2)',
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginBottom: spacing.md,
-              }}
-            >
-              <AppText
-                variant="headlineLarge"
-                style={{
-                  color: colors.onPrimary,
-                  fontWeight: 'bold',
-                }}
-              >
-                {mockUser.name
-                  .split(' ')
-                  .map((n) => n[0])
-                  .join('')}
-              </AppText>
-            </View>
-
-            <AppText
-              variant="titleLarge"
-              style={{
-                color: colors.onPrimary,
-                fontWeight: 'bold',
-                marginBottom: spacing.xs,
-              }}
-            >
-              {mockUser.name}
-            </AppText>
-
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                marginBottom: spacing.xs,
-              }}
-            >
-              {[0, 1, 2, 3, 4].map((index) => (
-                <UiIconSymbol
-                  key={index}
-                  name="star.fill"
-                  size={16}
-                  color={index < Math.floor(mockUser.reputation) ? '#FFD700' : 'rgba(255, 255, 255, 0.3)'}
-                  style={{ marginLeft: index > 0 ? 2 : 0 }}
-                />
-              ))}
-              <AppText
-                variant="bodyMedium"
-                style={{
-                  color: colors.onPrimary,
-                  marginLeft: spacing.sm,
-                  fontWeight: 'bold',
-                }}
-              >
-                {mockUser.reputation} ({mockUser.totalTransactions} transactions)
-              </AppText>
-            </View>
-
-            <AppText
-              variant="bodyMedium"
-              style={{
-                color: colors.onPrimary,
-                opacity: 0.9,
-              }}
-            >
-              Member since {mockUser.memberSince}
-            </AppText>
-          </View>
-        </View>
-
-        {/* Stats Cards */}
-        <View
-          style={{
-            marginTop: -spacing.lg,
-            paddingHorizontal: spacing.md,
-            marginBottom: spacing.lg,
-          }}
-        >
-          <View
-            style={{
-              flexDirection: 'row',
-              gap: spacing.sm,
-            }}
-          >
-            <SontineCard variant="elevated" padding="md" style={{ flex: 1 }}>
-              <SontineCardContent>
-                <AppText
-                  variant="titleMedium"
-                  style={{
-                    color: colors.onSurface,
-                    fontWeight: 'bold',
-                    marginBottom: spacing.xs,
-                  }}
-                >
-                  {mockUser.totalContributed} USDC
-                </AppText>
-                <AppText
-                  variant="bodySmall"
-                  style={{
-                    color: colors.onSurface,
-                    opacity: 0.7,
-                  }}
-                >
-                  Total Contributed
-                </AppText>
-              </SontineCardContent>
-            </SontineCard>
-
-            <SontineCard variant="elevated" padding="md" style={{ flex: 1 }}>
-              <SontineCardContent>
-                <AppText
-                  variant="titleMedium"
-                  style={{
-                    color: colors.onSurface,
-                    fontWeight: 'bold',
-                    marginBottom: spacing.xs,
-                  }}
-                >
-                  {mockUser.totalReceived} USDC
-                </AppText>
-                <AppText
-                  variant="bodySmall"
-                  style={{
-                    color: colors.onSurface,
-                    opacity: 0.7,
-                  }}
-                >
-                  Total Received
-                </AppText>
-              </SontineCardContent>
-            </SontineCard>
-          </View>
-        </View>
-
         {/* Menu Items */}
-        <View style={{ paddingHorizontal: spacing.md }}>
-          <AppText
-            variant="titleMedium"
-            style={{
-              color: colors.onSurface,
-              fontWeight: 'bold',
-              marginBottom: spacing.md,
-            }}
-          >
-            Account Management
-          </AppText>
-
+        <View style={{ paddingHorizontal: spacing.md, paddingTop: spacing.md }}>
           {menuItems.map((item, index) => (
-            <SontineCard key={index} variant="default" padding="md" style={{ marginBottom: spacing.sm }}>
+            <SontineCard key={index} variant="default" padding="none" style={{ marginBottom: spacing.sm }}>
               <SontineCardContent>
                 <SontineButton
                   variant="ghost"
@@ -298,7 +137,7 @@ export default function ProfileScreen() {
                         style={{
                           color: colors.onSurface,
                           fontWeight: 'bold',
-                          marginBottom: spacing.xs,
+                          marginBottom: spacing.xs / 2,
                         }}
                       >
                         {item.title}
@@ -322,6 +161,6 @@ export default function ProfileScreen() {
           ))}
         </View>
       </ScrollView>
-    </AppPage>
+    </View>
   )
 }
