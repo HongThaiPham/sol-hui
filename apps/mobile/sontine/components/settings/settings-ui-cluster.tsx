@@ -9,7 +9,6 @@ export function SettingsUiCluster() {
   const { selectedCluster, clusters, setSelectedCluster } = useCluster()
   return (
     <AppView>
-      <AppText variant="titleMedium">Cluster</AppText>
       <ClusterUiVersion selectedCluster={selectedCluster} />
       <ClusterUiGenesisHash selectedCluster={selectedCluster} />
       <AppView style={{ alignItems: 'flex-end' }}>

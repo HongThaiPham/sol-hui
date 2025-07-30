@@ -48,6 +48,7 @@ const MAPPING: Record<string, string> = {
   'paperplane.fill': 'send',
   'square.and.arrow.down.fill': 'download',
   'square.and.arrow.up.fill': 'upload',
+  'network.fill': 'network-check',
 }
 
 /**

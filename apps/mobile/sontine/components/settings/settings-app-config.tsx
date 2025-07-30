@@ -6,7 +6,6 @@ import { AppExternalLink, AppExternalLinkProps } from '@/components/app-external
 export function SettingsAppConfig() {
   return (
     <AppView>
-      <AppText variant="titleMedium">App Config</AppText>
       <AppText>
         Name: <AppText>{AppConfig.name}</AppText>
       </AppText>

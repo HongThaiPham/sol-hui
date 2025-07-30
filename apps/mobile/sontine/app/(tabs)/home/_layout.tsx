@@ -1,6 +1,7 @@
 import { Stack } from 'expo-router'
 import React from 'react'
 import { useAppTheme } from '@/components/app-theme'
+import { HeaderTitleWithIcon } from '@/components/ui/header-title-with-icon'
 
 export default function HomeLayout() {
   const { colors, fontFamily, fontsLoaded } = useAppTheme()
@@ -38,8 +39,16 @@ export default function HomeLayout() {
       <Stack.Screen
         name="notifications"
         options={{
-          headerTitle: 'Notifications',
+          headerTitle: () => (
+            <HeaderTitleWithIcon
+              title="Notifications"
+              iconName="bell.fill"
+              iconColor={colors.onPrimary}
+              textColor={colors.onPrimary}
+            />
+          ),
           headerBackTitle: 'Back',
+          headerShown: true,
         }}
       />
     </Stack>

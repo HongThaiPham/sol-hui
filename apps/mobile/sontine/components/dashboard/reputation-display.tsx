@@ -113,7 +113,7 @@ export function ReputationDisplay({ scrollY }: { scrollY: Animated.Value }) {
 
   const welcomeTextOpacity = scrollY.interpolate({
     inputRange: [0, 50, 100],
-    outputRange: [1, 0.8, 0.6],
+    outputRange: [1, 0.6, 0.8],
     extrapolate: 'clamp',
   })
 

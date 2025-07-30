@@ -29,8 +29,36 @@ export default function ProfileScreen() {
 
   const menuItems = [
     {
+      title: 'Account Overview',
+      description: 'View wallet balance and details',
+      icon: 'person.crop.circle.fill',
+      route: '/(tabs)/profile/account',
+      color: colors.primary,
+    },
+    {
+      title: 'Send USDC',
+      description: 'Transfer USDC to other wallets',
+      icon: 'paperplane.fill',
+      route: '/(tabs)/profile/send',
+      color: '#10B981',
+    },
+    {
+      title: 'Receive USDC',
+      description: 'Get your wallet address to receive',
+      icon: 'square.and.arrow.down.fill',
+      route: '/(tabs)/profile/receive',
+      color: '#3B82F6',
+    },
+    {
+      title: 'Request Airdrop',
+      description: 'Get test USDC for development',
+      icon: 'gift.fill',
+      route: '/(tabs)/profile/airdrop',
+      color: '#F59E0B',
+    },
+    {
       title: 'Wallet Management',
-      description: 'View balance, send & receive SOL',
+      description: 'Advanced wallet features',
       icon: 'wallet.pass.fill',
       route: '/(tabs)/profile/wallet',
       color: colors.primary,
@@ -177,7 +205,7 @@ export default function ProfileScreen() {
                     marginBottom: spacing.xs,
                   }}
                 >
-                  {mockUser.totalContributed} SOL
+                  {mockUser.totalContributed} USDC
                 </AppText>
                 <AppText
                   variant="bodySmall"
@@ -201,7 +229,7 @@ export default function ProfileScreen() {
                     marginBottom: spacing.xs,
                   }}
                 >
-                  {mockUser.totalReceived} SOL
+                  {mockUser.totalReceived} USDC
                 </AppText>
                 <AppText
                   variant="bodySmall"

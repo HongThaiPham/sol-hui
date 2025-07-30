@@ -1,5 +1,4 @@
 import { Tabs } from 'expo-router'
-import React from 'react'
 import { UiIconSymbol } from '@/components/ui/ui-icon-symbol'
 
 export default function TabLayout() {
@@ -43,6 +42,18 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <UiIconSymbol size={24} name="person.crop.circle.fill" color={color} />,
         }}
       />
+
+      <Tabs.Screen
+        name="settings"
+        options={{
+          title: 'Settings',
+          tabBarIcon: ({ color }) => <UiIconSymbol size={24} name="gearshape.fill" color={color} />,
+        }}
+      />
+
+      {/* Hide account and demo tabs since they're moved to stacks */}
+      <Tabs.Screen name="account" options={{ tabBarItemStyle: { display: 'none' } }} />
+      <Tabs.Screen name="demo" options={{ tabBarItemStyle: { display: 'none' } }} />
     </Tabs>
   )
 }
