@@ -9,7 +9,7 @@ export interface SontineCardProps extends CardProps {
 }
 
 export function SontineCard({ variant = 'default', padding = 'md', style, children, ...props }: SontineCardProps) {
-  const { theme, colors, spacing, borderRadius, shadows } = useAppTheme()
+  const { paperTheme, colors, spacing, borderRadius, shadows } = useAppTheme()
 
   const getCardStyle = (): StyleProp<ViewStyle> => {
     const baseStyle: ViewStyle = {
@@ -71,7 +71,7 @@ export function SontineCard({ variant = 'default', padding = 'md', style, childr
   }
 
   return (
-    <Card style={[getCardStyle(), style]} theme={theme} {...props}>
+    <Card style={[getCardStyle(), style]} theme={paperTheme} {...props}>
       {children}
     </Card>
   )

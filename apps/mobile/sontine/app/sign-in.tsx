@@ -43,18 +43,18 @@ const getStyles = ({ spacing }: AppTheme) =>
       marginBottom: spacing.lg,
     },
     appName: {
-      fontSize: 32,
+      fontSize: 28,
       fontWeight: 'bold',
       color: '#0E151A',
       marginBottom: spacing.sm,
       textAlign: 'center',
     },
     subtitle: {
-      fontSize: 16,
+      fontSize: 14,
       color: '#134158',
       textAlign: 'center',
       opacity: 0.8,
-      lineHeight: 24,
+      lineHeight: 22,
     },
     buttonContainer: {
       width: '100%',

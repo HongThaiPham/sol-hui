@@ -20,7 +20,7 @@ export function SontineInput({
   style,
   ...props
 }: SontineInputProps) {
-  const { theme, colors, spacing, borderRadius } = useAppTheme()
+  const { paperTheme, colors, spacing, borderRadius } = useAppTheme()
 
   const getInputStyle = (): StyleProp<ViewStyle> => {
     const baseStyle: ViewStyle = {
@@ -48,9 +48,9 @@ export function SontineInput({
         error={error}
         style={[getInputStyle(), style]}
         theme={{
-          ...theme,
+          ...paperTheme,
           colors: {
-            ...theme.colors,
+            ...paperTheme.colors,
             primary: colors.primary,
             outline: error ? colors.error : colors.outline,
             onSurfaceVariant: colors.onSurface,

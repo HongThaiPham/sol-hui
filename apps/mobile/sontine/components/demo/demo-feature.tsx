@@ -2,6 +2,7 @@ import { AppView } from '@/components/app-view'
 import { AppText } from '@/components/app-text'
 import { DemoFeatureSignMessage } from './demo-feature-sign-message'
 import { ColorPaletteDemo } from './color-palette-demo'
+import { FontDemo } from './font-demo'
 import { useWalletUi } from '@/components/solana/use-wallet-ui'
 import { PublicKey } from '@solana/web3.js'
 import { ScrollView, View } from 'react-native'
@@ -22,6 +23,10 @@ export function DemoFeature() {
 
         <View style={{ marginBottom: spacing.xl }}>
           <DemoFeatureSignMessage address={account?.publicKey as PublicKey} />
+        </View>
+
+        <View style={{ marginBottom: spacing.xl }}>
+          <FontDemo />
         </View>
 
         <ColorPaletteDemo />

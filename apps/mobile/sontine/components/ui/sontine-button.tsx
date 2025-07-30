@@ -17,7 +17,7 @@ export function SontineButton({
   children,
   ...props
 }: SontineButtonProps) {
-  const { theme, colors, spacing, borderRadius } = useAppTheme()
+  const { paperTheme, colors, spacing, borderRadius } = useAppTheme()
 
   const getButtonStyle = (): StyleProp<ViewStyle> => {
     const baseStyle: ViewStyle = {
@@ -101,7 +101,7 @@ export function SontineButton({
   }
 
   return (
-    <Button mode={getMode()} style={[getButtonStyle(), style]} textColor={getTextColor()} theme={theme} {...props}>
+    <Button mode={getMode()} style={[getButtonStyle(), style]} textColor={getTextColor()} theme={paperTheme} {...props}>
       {children}
     </Button>
   )

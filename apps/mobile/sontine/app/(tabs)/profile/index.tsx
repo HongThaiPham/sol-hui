@@ -19,7 +19,7 @@ const mockUser = {
   successRate: 98.5,
   memberSince: 'June 2023',
   totalContributed: 1250.75,
-  totalReceived: 890.50,
+  totalReceived: 890.5,
   activeTontines: 3,
 }
 
@@ -60,54 +60,66 @@ export default function ProfileScreen() {
 
   return (
     <AppPage>
-      <ScrollView 
-        style={{ flex: 1 }}
-        contentContainerStyle={{ paddingBottom: spacing.xl }}
-      >
+      <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: spacing.xl }}>
         {/* Profile Header */}
         <View style={{ height: 200, position: 'relative' }}>
-          <GradientBackground variant="teal-mint" />
-          <View style={{ 
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            justifyContent: 'center',
-            alignItems: 'center',
-            paddingHorizontal: spacing.md,
-          }}>
-            {/* Avatar */}
-            <View style={{
-              width: 80,
-              height: 80,
-              borderRadius: 40,
-              backgroundColor: 'rgba(255, 255, 255, 0.2)',
-              alignItems: 'center',
+          <GradientBackground variant="primary-accent" />
+          <View
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
               justifyContent: 'center',
-              marginBottom: spacing.md,
-            }}>
-              <AppText variant="headlineLarge" style={{ 
-                color: colors.onPrimary,
-                fontWeight: 'bold',
-              }}>
-                {mockUser.name.split(' ').map(n => n[0]).join('')}
+              alignItems: 'center',
+              paddingHorizontal: spacing.md,
+            }}
+          >
+            {/* Avatar */}
+            <View
+              style={{
+                width: 80,
+                height: 80,
+                borderRadius: 40,
+                backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginBottom: spacing.md,
+              }}
+            >
+              <AppText
+                variant="headlineLarge"
+                style={{
+                  color: colors.onPrimary,
+                  fontWeight: 'bold',
+                }}
+              >
+                {mockUser.name
+                  .split(' ')
+                  .map((n) => n[0])
+                  .join('')}
               </AppText>
             </View>
 
-            <AppText variant="titleLarge" style={{ 
-              color: colors.onPrimary,
-              fontWeight: 'bold',
-              marginBottom: spacing.xs,
-            }}>
+            <AppText
+              variant="titleLarge"
+              style={{
+                color: colors.onPrimary,
+                fontWeight: 'bold',
+                marginBottom: spacing.xs,
+              }}
+            >
               {mockUser.name}
             </AppText>
 
-            <View style={{ 
-              flexDirection: 'row',
-              alignItems: 'center',
-              marginBottom: spacing.xs,
-            }}>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginBottom: spacing.xs,
+              }}
+            >
               {[0, 1, 2, 3, 4].map((index) => (
                 <UiIconSymbol
                   key={index}
@@ -117,47 +129,63 @@ export default function ProfileScreen() {
                   style={{ marginLeft: index > 0 ? 2 : 0 }}
                 />
               ))}
-              <AppText variant="bodyMedium" style={{ 
-                color: colors.onPrimary,
-                marginLeft: spacing.sm,
-                fontWeight: 'bold',
-              }}>
+              <AppText
+                variant="bodyMedium"
+                style={{
+                  color: colors.onPrimary,
+                  marginLeft: spacing.sm,
+                  fontWeight: 'bold',
+                }}
+              >
                 {mockUser.reputation} ({mockUser.totalTransactions} transactions)
               </AppText>
             </View>
 
-            <AppText variant="bodyMedium" style={{ 
-              color: colors.onPrimary,
-              opacity: 0.9,
-            }}>
+            <AppText
+              variant="bodyMedium"
+              style={{
+                color: colors.onPrimary,
+                opacity: 0.9,
+              }}
+            >
               Member since {mockUser.memberSince}
             </AppText>
           </View>
         </View>
 
         {/* Stats Cards */}
-        <View style={{ 
-          marginTop: -spacing.lg,
-          paddingHorizontal: spacing.md,
-          marginBottom: spacing.lg,
-        }}>
-          <View style={{ 
-            flexDirection: 'row',
-            gap: spacing.sm,
-          }}>
+        <View
+          style={{
+            marginTop: -spacing.lg,
+            paddingHorizontal: spacing.md,
+            marginBottom: spacing.lg,
+          }}
+        >
+          <View
+            style={{
+              flexDirection: 'row',
+              gap: spacing.sm,
+            }}
+          >
             <SontineCard variant="elevated" padding="md" style={{ flex: 1 }}>
               <SontineCardContent>
-                <AppText variant="titleMedium" style={{ 
-                  color: colors.onSurface,
-                  fontWeight: 'bold',
-                  marginBottom: spacing.xs,
-                }}>
+                <AppText
+                  variant="titleMedium"
+                  style={{
+                    color: colors.onSurface,
+                    fontWeight: 'bold',
+                    marginBottom: spacing.xs,
+                  }}
+                >
                   {mockUser.totalContributed} SOL
                 </AppText>
-                <AppText variant="bodySmall" style={{ 
-                  color: colors.onSurface,
-                  opacity: 0.7,
-                }}>
+                <AppText
+                  variant="bodySmall"
+                  style={{
+                    color: colors.onSurface,
+                    opacity: 0.7,
+                  }}
+                >
                   Total Contributed
                 </AppText>
               </SontineCardContent>
@@ -165,17 +193,23 @@ export default function ProfileScreen() {
 
             <SontineCard variant="elevated" padding="md" style={{ flex: 1 }}>
               <SontineCardContent>
-                <AppText variant="titleMedium" style={{ 
-                  color: colors.onSurface,
-                  fontWeight: 'bold',
-                  marginBottom: spacing.xs,
-                }}>
+                <AppText
+                  variant="titleMedium"
+                  style={{
+                    color: colors.onSurface,
+                    fontWeight: 'bold',
+                    marginBottom: spacing.xs,
+                  }}
+                >
                   {mockUser.totalReceived} SOL
                 </AppText>
-                <AppText variant="bodySmall" style={{ 
-                  color: colors.onSurface,
-                  opacity: 0.7,
-                }}>
+                <AppText
+                  variant="bodySmall"
+                  style={{
+                    color: colors.onSurface,
+                    opacity: 0.7,
+                  }}
+                >
                   Total Received
                 </AppText>
               </SontineCardContent>
@@ -185,21 +219,19 @@ export default function ProfileScreen() {
 
         {/* Menu Items */}
         <View style={{ paddingHorizontal: spacing.md }}>
-          <AppText variant="titleMedium" style={{ 
-            color: colors.onSurface,
-            fontWeight: 'bold',
-            marginBottom: spacing.md,
-          }}>
+          <AppText
+            variant="titleMedium"
+            style={{
+              color: colors.onSurface,
+              fontWeight: 'bold',
+              marginBottom: spacing.md,
+            }}
+          >
             Account Management
           </AppText>
 
           {menuItems.map((item, index) => (
-            <SontineCard 
-              key={index}
-              variant="default" 
-              padding="md" 
-              style={{ marginBottom: spacing.sm }}
-            >
+            <SontineCard key={index} variant="default" padding="md" style={{ marginBottom: spacing.sm }}>
               <SontineCardContent>
                 <SontineButton
                   variant="ghost"
@@ -211,49 +243,50 @@ export default function ProfileScreen() {
                     paddingHorizontal: 0,
                   }}
                 >
-                  <View style={{ 
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    flex: 1,
-                  }}>
-                    <View style={{
-                      width: 40,
-                      height: 40,
-                      borderRadius: 20,
-                      backgroundColor: `${item.color}20`,
+                  <View
+                    style={{
+                      flexDirection: 'row',
                       alignItems: 'center',
-                      justifyContent: 'center',
-                      marginRight: spacing.md,
-                    }}>
-                      <UiIconSymbol 
-                        name={item.icon as any}
-                        size={20}
-                        color={item.color}
-                      />
+                      flex: 1,
+                    }}
+                  >
+                    <View
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        backgroundColor: `${item.color}20`,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        marginRight: spacing.md,
+                      }}
+                    >
+                      <UiIconSymbol name={item.icon as any} size={20} color={item.color} />
                     </View>
-                    
+
                     <View style={{ flex: 1 }}>
-                      <AppText variant="titleSmall" style={{ 
-                        color: colors.onSurface,
-                        fontWeight: 'bold',
-                        marginBottom: spacing.xs,
-                      }}>
+                      <AppText
+                        variant="titleSmall"
+                        style={{
+                          color: colors.onSurface,
+                          fontWeight: 'bold',
+                          marginBottom: spacing.xs,
+                        }}
+                      >
                         {item.title}
                       </AppText>
-                      <AppText variant="bodySmall" style={{ 
-                        color: colors.onSurface,
-                        opacity: 0.7,
-                      }}>
+                      <AppText
+                        variant="bodySmall"
+                        style={{
+                          color: colors.onSurface,
+                          opacity: 0.7,
+                        }}
+                      >
                         {item.description}
                       </AppText>
                     </View>
-                    
-                    <UiIconSymbol 
-                      name="arrow.right"
-                      size={16}
-                      color={colors.onSurface}
-                      style={{ opacity: 0.5 }}
-                    />
+
+                    <UiIconSymbol name="arrow.right" size={16} color={colors.onSurface} style={{ opacity: 0.5 }} />
                   </View>
                 </SontineButton>
               </SontineCardContent>

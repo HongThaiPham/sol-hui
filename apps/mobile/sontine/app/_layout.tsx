@@ -19,7 +19,8 @@ export default function RootLayout() {
     console.log(`Track ${pathname}`, { params })
   })
   const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    'PixeloidMono-Regular': require('../assets/fonts/PixeloidMono-Regular.ttf'),
+    'SpaceMono-Regular': require('../assets/fonts/SpaceMono-Regular.ttf'),
   })
 
   const onLayoutRootView = useCallback(async () => {

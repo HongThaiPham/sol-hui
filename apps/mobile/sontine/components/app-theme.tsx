@@ -6,7 +6,7 @@ import {
 import { PropsWithChildren } from 'react'
 import { adaptNavigationTheme, MD3DarkTheme, MD3LightTheme, PaperProvider } from 'react-native-paper'
 import { useColorScheme } from '@/hooks/use-color-scheme'
-import merge from 'deepmerge'
+import { useCustomFonts } from '@/hooks/use-fonts'
 
 const { LightTheme, DarkTheme } = adaptNavigationTheme({ reactNavigationLight, reactNavigationDark })
 
@@ -14,8 +14,8 @@ const { LightTheme, DarkTheme } = adaptNavigationTheme({ reactNavigationLight, r
 const SontineColors = {
   // Primary colors from the new palette
   darkest: '#0E151A', // Darkest navy-black
-  dark: '#134158', // Navy blue
-  primary: '#00B43F', // Green primary
+  dark: '#134156', // Navy blue
+  primary: '#00B49F', // Green primary
   accent: '#14F1B2', // Bright mint accent
   light: '#8DFFF0', // Light mint
   lightest: '#C5FFF8', // Lightest mint
@@ -36,12 +36,13 @@ const SontineColors = {
   outline: '#E0F2F1', // Light outline
   outlineVariant: '#C5FFF8', // Mint outline
   error: '#DC2626', // Error red
-  success: '#00B43F', // Success using primary green
+  success: '#00B49F', // Success using primary green
   warning: '#F59E0B', // Warning amber
 }
 
-// Custom Sontine Light Theme
-const SontineThemeLight = merge(MD3LightTheme, LightTheme, {
+// Custom Sontine Light Theme for Paper
+const SontinePaperThemeLight = {
+  ...MD3LightTheme,
   colors: {
     ...MD3LightTheme.colors,
     // Primary colors
@@ -78,13 +79,26 @@ const SontineThemeLight = merge(MD3LightTheme, LightTheme, {
 
     // Utility colors
     error: SontineColors.error,
-    success: SontineColors.success,
-    warning: SontineColors.warning,
   },
-})
+}
 
-// Custom Sontine Dark Theme
-const SontineThemeDark = merge(MD3DarkTheme, DarkTheme, {
+// Custom Sontine Light Theme for Navigation
+const SontineNavigationThemeLight = {
+  ...LightTheme,
+  colors: {
+    ...LightTheme.colors,
+    primary: SontineColors.primary,
+    background: SontineColors.background,
+    card: SontineColors.surface,
+    text: SontineColors.onSurface,
+    border: SontineColors.outline,
+    notification: SontineColors.accent,
+  },
+}
+
+// Custom Sontine Dark Theme for Paper
+const SontinePaperThemeDark = {
+  ...MD3DarkTheme,
   colors: {
     ...MD3DarkTheme.colors,
     // Primary colors
@@ -121,20 +135,38 @@ const SontineThemeDark = merge(MD3DarkTheme, DarkTheme, {
 
     // Utility colors
     error: SontineColors.error,
-    success: SontineColors.success,
-    warning: SontineColors.warning,
   },
-})
+}
+
+// Custom Sontine Dark Theme for Navigation
+const SontineNavigationThemeDark = {
+  ...DarkTheme,
+  colors: {
+    ...DarkTheme.colors,
+    primary: SontineColors.accent,
+    background: SontineColors.darkest,
+    card: '#1A1A1A',
+    text: '#FFFFFF',
+    border: '#404040',
+    notification: SontineColors.accent,
+  },
+}
 
 export function useAppTheme() {
   const colorScheme = useColorScheme()
+  const { fontsLoaded, fontFamily } = useCustomFonts()
   const isDark = colorScheme === 'dark'
-  const theme = isDark ? SontineThemeDark : SontineThemeLight
+  const paperTheme = isDark ? SontinePaperThemeDark : SontinePaperThemeLight
+  const navigationTheme = isDark ? SontineNavigationThemeDark : SontineNavigationThemeLight
+
   return {
     colorScheme,
     isDark,
-    theme,
-    colors: theme.colors,
+    paperTheme,
+    navigationTheme,
+    colors: paperTheme.colors,
+    fontsLoaded,
+    fontFamily,
     spacing: {
       xs: 4,
       sm: 8,
@@ -179,11 +211,11 @@ export function useAppTheme() {
 export type AppTheme = ReturnType<typeof useAppTheme>
 
 export function AppTheme({ children }: PropsWithChildren) {
-  const { theme } = useAppTheme()
+  const { paperTheme, navigationTheme } = useAppTheme()
 
   return (
-    <PaperProvider theme={theme}>
-      <ThemeProvider value={theme}>{children}</ThemeProvider>
+    <PaperProvider theme={paperTheme}>
+      <ThemeProvider value={navigationTheme}>{children}</ThemeProvider>
     </PaperProvider>
   )
 }

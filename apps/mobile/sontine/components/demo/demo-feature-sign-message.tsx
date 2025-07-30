@@ -22,12 +22,12 @@ export function DemoFeatureSignMessage({ address }: { address: PublicKey }) {
   const signMessage = useSignMessage({ address })
   const [message, setMessage] = useState('Hello world')
   const [showSnackbar, setShowSnackbar] = React.useState(false)
-  const { theme } = useAppTheme()
+  const { colors } = useAppTheme()
   return (
     <AppView>
       <AppText variant="headlineMedium">Sign message with connected wallet.</AppText>
       <Snackbar
-        style={{ backgroundColor: theme.colors.background, zIndex: 1000 }}
+        style={{ backgroundColor: colors.background, zIndex: 1000 }}
         theme={{ colors: { surface: theme.colors.text } }}
         visible={showSnackbar}
         onDismiss={() => setShowSnackbar(false)}
