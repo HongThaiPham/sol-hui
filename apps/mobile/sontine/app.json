@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "sontine",
+    "name": "Sontine",
     "slug": "sontine",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -17,7 +17,7 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.anonymous.sontine"
+      "package": "com.leopham.sontine"
     },
     "web": {
       "bundler": "metro",

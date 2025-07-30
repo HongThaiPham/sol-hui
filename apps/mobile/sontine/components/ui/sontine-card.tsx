@@ -4,17 +4,11 @@ import { StyleProp, ViewStyle } from 'react-native'
 import { useAppTheme } from '@/components/app-theme'
 
 export interface SontineCardProps extends CardProps {
-  variant?: 'default' | 'elevated' | 'outlined' | 'gradient'
+  variant?: 'default' | 'elevated' | 'outlined' | 'primary' | 'accent' | 'mint' | 'navy'
   padding?: 'none' | 'sm' | 'md' | 'lg'
 }
 
-export function SontineCard({
-  variant = 'default',
-  padding = 'md',
-  style,
-  children,
-  ...props
-}: SontineCardProps) {
+export function SontineCard({ variant = 'default', padding = 'md', style, children, ...props }: SontineCardProps) {
   const { theme, colors, spacing, borderRadius, shadows } = useAppTheme()
 
   const getCardStyle = (): StyleProp<ViewStyle> => {
@@ -25,11 +19,8 @@ export function SontineCard({
 
     // Apply padding
     if (padding !== 'none') {
-      const paddingValue = 
-        padding === 'sm' ? spacing.sm :
-        padding === 'md' ? spacing.md :
-        spacing.lg
-      
+      const paddingValue = padding === 'sm' ? spacing.sm : padding === 'md' ? spacing.md : spacing.lg
+
       baseStyle.padding = paddingValue
     }
 
@@ -47,10 +38,29 @@ export function SontineCard({
           borderColor: colors.outline,
           backgroundColor: colors.surface,
         }
-      case 'gradient':
+      case 'primary':
         return {
           ...baseStyle,
-          backgroundColor: colors.surfaceVariant,
+          backgroundColor: colors.primary,
+          ...shadows.sm,
+        }
+      case 'accent':
+        return {
+          ...baseStyle,
+          backgroundColor: colors.secondary,
+          ...shadows.sm,
+        }
+      case 'mint':
+        return {
+          ...baseStyle,
+          backgroundColor: '#8DFFF0', // Light mint
+          ...shadows.sm,
+        }
+      case 'navy':
+        return {
+          ...baseStyle,
+          backgroundColor: '#134158', // Navy blue
+          ...shadows.sm,
         }
       default:
         return {
@@ -61,11 +71,7 @@ export function SontineCard({
   }
 
   return (
-    <Card
-      style={[getCardStyle(), style]}
-      theme={theme}
-      {...props}
-    >
+    <Card style={[getCardStyle(), style]} theme={theme} {...props}>
       {children}
     </Card>
   )
@@ -82,12 +88,9 @@ export function SontineCardContent({ children, style, ...props }: any) {
 
 export function SontineCardActions({ children, style, ...props }: any) {
   const { spacing } = useAppTheme()
-  
+
   return (
-    <Card.Actions 
-      style={[{ paddingTop: spacing.sm }, style]} 
-      {...props}
-    >
+    <Card.Actions style={[{ paddingTop: spacing.sm }, style]} {...props}>
       {children}
     </Card.Actions>
   )

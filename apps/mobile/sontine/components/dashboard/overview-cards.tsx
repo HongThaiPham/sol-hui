@@ -1,9 +1,43 @@
 import React from 'react'
-import { View } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import { AppText } from '@/components/app-text'
 import { SontineCard, SontineCardContent } from '@/components/ui/sontine-card'
 import { UiIconSymbol } from '@/components/ui/ui-icon-symbol'
-import { useAppTheme } from '@/components/app-theme'
+import { useAppTheme, type AppTheme } from '@/components/app-theme'
+
+const getStyles = ({ spacing, colors }: AppTheme) =>
+  StyleSheet.create({
+    container: {
+      marginBottom: spacing.sm,
+    },
+    sectionTitle: {
+      marginBottom: spacing.md,
+      color: colors.onSurface,
+      fontWeight: 'bold',
+    },
+    cardsGrid: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: spacing.sm,
+    },
+    cardWrapper: {
+      width: '48%',
+    },
+    cardHeader: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'flex-end',
+      marginBottom: spacing.sm,
+    },
+    cardValue: {
+      fontWeight: 'bold',
+      marginBottom: spacing.xs,
+    },
+    cardTitle: {
+      opacity: 0.85,
+      fontSize: 12,
+    },
+  })
 
 // Mock data
 const mockData = {
@@ -14,79 +48,61 @@ const mockData = {
 }
 
 export function OverviewCards() {
-  const { spacing, colors } = useAppTheme()
+  const theme = useAppTheme()
 
   const cards = [
     {
       title: 'Active Tontines',
       value: mockData.activeTontines.toString(),
       icon: 'person.3.fill',
-      color: colors.primary,
+      variant: 'primary' as const,
+      textColor: '#FFFFFF',
     },
     {
       title: 'Total Contributed',
       value: `${mockData.totalContributed} SOL`,
       icon: 'dollarsign.circle.fill',
-      color: colors.secondary,
+      variant: 'accent' as const,
+      textColor: '#0E151A',
     },
     {
       title: 'Next Payout',
       value: `${mockData.nextPayout} SOL`,
       icon: 'trophy.fill',
-      color: '#F59E0B', // Warning color
+      variant: 'mint' as const,
+      textColor: '#0E151A',
     },
     {
       title: 'Pending',
       value: mockData.pendingContributions.toString(),
       icon: 'clock.fill',
-      color: '#DC2626', // Error color
+      variant: 'navy' as const,
+      textColor: '#FFFFFF',
     },
   ]
 
+  const styles = React.useMemo(() => getStyles(theme), [theme])
+
   return (
-    <View>
-      <AppText variant="titleMedium" style={{ 
-        marginBottom: spacing.md,
-        color: colors.onSurface,
-        fontWeight: 'bold',
-      }}>
+    <View style={styles.container}>
+      <AppText variant="titleMedium" style={styles.sectionTitle}>
         Overview
       </AppText>
-      
-      <View style={{ 
-        flexDirection: 'row', 
-        flexWrap: 'wrap',
-        gap: spacing.sm,
-      }}>
+
+      <View style={styles.cardsGrid}>
         {cards.map((card, index) => (
-          <View key={index} style={{ width: '48%' }}>
-            <SontineCard variant="elevated" padding="md">
+          <View key={index} style={styles.cardWrapper}>
+            <SontineCard variant={card.variant} padding="md">
               <SontineCardContent>
-                <View style={{ 
-                  flexDirection: 'row', 
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  marginBottom: spacing.xs,
-                }}>
-                  <UiIconSymbol 
-                    name={card.icon as any}
-                    size={24}
-                    color={card.color}
-                  />
+                <View style={styles.cardHeader}>
+                  <UiIconSymbol name={card.icon as any} size={28} color={card.textColor} />
                 </View>
-                
-                <AppText variant="headlineSmall" style={{ 
-                  color: colors.onSurface,
-                  fontWeight: 'bold',
-                  marginBottom: spacing.xs,
-                }}>
+
+                <AppText variant="headlineMedium" style={[styles.cardValue, { color: card.textColor }]}>
                   {card.value}
                 </AppText>
-                
-                <AppText variant="bodySmall" style={{ 
-                  color: colors.onSurface,
-                  opacity: 0.7,
-                }}>
+
+                <AppText variant="bodySmall" style={[styles.cardTitle, { color: card.textColor }]}>
                   {card.title}
                 </AppText>
               </SontineCardContent>

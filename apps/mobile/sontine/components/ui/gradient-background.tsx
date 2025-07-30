@@ -4,24 +4,28 @@ import { LinearGradient } from 'expo-linear-gradient'
 import { useAppTheme } from '@/components/app-theme'
 
 export interface GradientBackgroundProps {
-  variant?: 'teal-mint' | 'navy-teal' | 'dark-teal' | 'mint-light'
+  variant?: 'primary-accent' | 'navy-primary' | 'dark-primary' | 'accent-light' | 'full-spectrum' | 'subtle-mint'
   children?: React.ReactNode
   style?: ViewProps['style']
 }
 
-export function GradientBackground({ variant = 'teal-mint', children, style }: GradientBackgroundProps) {
+export function GradientBackground({ variant = 'primary-accent', children, style }: GradientBackgroundProps) {
   const { colors } = useAppTheme()
 
   const getGradientColors = () => {
     switch (variant) {
-      case 'teal-mint':
-        return [colors.primary, colors.secondary] // #00B49F to #14F1B2
-      case 'navy-teal':
-        return ['#134158', colors.primary] // Navy to teal
-      case 'dark-teal':
-        return ['#0E151A', colors.primary] // Dark to teal
-      case 'mint-light':
-        return [colors.secondary, colors.surfaceVariant] // #14F1B2 to #C5FFF8
+      case 'primary-accent':
+        return [colors.primary, colors.secondary] // Green to bright mint
+      case 'navy-primary':
+        return ['#134158', colors.primary] // Navy to green
+      case 'dark-primary':
+        return ['#0E151A', colors.primary] // Darkest to green
+      case 'accent-light':
+        return [colors.secondary, '#8DFFF0'] // Bright mint to light mint
+      case 'full-spectrum':
+        return ['#0E151A', '#134158', colors.primary, colors.secondary, '#8DFFF0'] // Full gradient
+      case 'subtle-mint':
+        return ['#8DFFF0', '#C5FFF8'] // Light mint to lightest mint
       default:
         return [colors.primary, colors.secondary]
     }

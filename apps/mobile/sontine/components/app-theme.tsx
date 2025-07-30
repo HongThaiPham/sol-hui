@@ -10,25 +10,33 @@ import merge from 'deepmerge'
 
 const { LightTheme, DarkTheme } = adaptNavigationTheme({ reactNavigationLight, reactNavigationDark })
 
-// Sontine Brand Colors
+// Sontine Brand Colors - Updated with new palette
 const SontineColors = {
-  primary: '#00B49F', // Main teal
-  primaryLight: '#14F1B2', // Bright teal
-  primaryDark: '#134158', // Navy blue
-  secondary: '#14F1B2', // Bright teal accent
-  tertiary: '#134158', // Navy blue
+  // Primary colors from the new palette
+  darkest: '#0E151A', // Darkest navy-black
+  dark: '#134158', // Navy blue
+  primary: '#00B43F', // Green primary
+  accent: '#14F1B2', // Bright mint accent
+  light: '#8DFFF0', // Light mint
+  lightest: '#C5FFF8', // Lightest mint
+
+  // Semantic colors
   surface: '#FFFFFF', // Clean white
-  surfaceVariant: '#C5FFF8', // Light mint
   background: '#FFFFFF', // White background
-  backgroundVariant: '#F8FFFE', // Very light mint
+  backgroundVariant: '#F8FFFE', // Very light mint tint
+
+  // Text colors
   onPrimary: '#FFFFFF', // White text on primary
-  onSecondary: '#000000', // Black text on secondary
+  onSecondary: '#0E151A', // Dark text on secondary
   onSurface: '#0E151A', // Dark text on surface
   onBackground: '#0E151A', // Dark text on background
+  onAccent: '#0E151A', // Dark text on accent
+
+  // Utility colors
   outline: '#E0F2F1', // Light outline
   outlineVariant: '#C5FFF8', // Mint outline
   error: '#DC2626', // Error red
-  success: '#10B981', // Success green
+  success: '#00B43F', // Success using primary green
   warning: '#F59E0B', // Warning amber
 }
 
@@ -36,26 +44,42 @@ const SontineColors = {
 const SontineThemeLight = merge(MD3LightTheme, LightTheme, {
   colors: {
     ...MD3LightTheme.colors,
-    ...SontineColors,
+    // Primary colors
     primary: SontineColors.primary,
     onPrimary: SontineColors.onPrimary,
-    primaryContainer: SontineColors.surfaceVariant,
-    onPrimaryContainer: SontineColors.primaryDark,
-    secondary: SontineColors.secondary,
-    onSecondary: SontineColors.onSecondary,
-    secondaryContainer: SontineColors.backgroundVariant,
-    onSecondaryContainer: SontineColors.primaryDark,
-    tertiary: SontineColors.tertiary,
+    primaryContainer: SontineColors.lightest,
+    onPrimaryContainer: SontineColors.dark,
+
+    // Secondary colors using accent
+    secondary: SontineColors.accent,
+    onSecondary: SontineColors.onAccent,
+    secondaryContainer: SontineColors.light,
+    onSecondaryContainer: SontineColors.darkest,
+
+    // Tertiary colors using dark navy
+    tertiary: SontineColors.dark,
     onTertiary: SontineColors.onPrimary,
+    tertiaryContainer: SontineColors.lightest,
+    onTertiaryContainer: SontineColors.darkest,
+
+    // Surface colors
     surface: SontineColors.surface,
     onSurface: SontineColors.onSurface,
-    surfaceVariant: SontineColors.surfaceVariant,
-    onSurfaceVariant: SontineColors.primaryDark,
+    surfaceVariant: SontineColors.lightest,
+    onSurfaceVariant: SontineColors.dark,
+
+    // Background colors
     background: SontineColors.background,
     onBackground: SontineColors.onBackground,
+
+    // Outline colors
     outline: SontineColors.outline,
     outlineVariant: SontineColors.outlineVariant,
+
+    // Utility colors
     error: SontineColors.error,
+    success: SontineColors.success,
+    warning: SontineColors.warning,
   },
 })
 
@@ -63,20 +87,42 @@ const SontineThemeLight = merge(MD3LightTheme, LightTheme, {
 const SontineThemeDark = merge(MD3DarkTheme, DarkTheme, {
   colors: {
     ...MD3DarkTheme.colors,
-    primary: SontineColors.primary,
-    onPrimary: SontineColors.onPrimary,
-    primaryContainer: SontineColors.primaryDark,
-    onPrimaryContainer: SontineColors.surfaceVariant,
-    secondary: SontineColors.secondary,
-    onSecondary: SontineColors.onSecondary,
-    tertiary: SontineColors.tertiary,
+    // Primary colors
+    primary: SontineColors.accent, // Use bright accent in dark mode
+    onPrimary: SontineColors.darkest,
+    primaryContainer: SontineColors.dark,
+    onPrimaryContainer: SontineColors.light,
+
+    // Secondary colors
+    secondary: SontineColors.primary,
+    onSecondary: SontineColors.onPrimary,
+    secondaryContainer: SontineColors.darkest,
+    onSecondaryContainer: SontineColors.accent,
+
+    // Tertiary colors
+    tertiary: SontineColors.light,
+    onTertiary: SontineColors.darkest,
+    tertiaryContainer: SontineColors.dark,
+    onTertiaryContainer: SontineColors.lightest,
+
+    // Surface colors for dark theme
     surface: '#1A1A1A',
     onSurface: '#FFFFFF',
     surfaceVariant: '#2A2A2A',
-    background: '#121212',
+    onSurfaceVariant: SontineColors.light,
+
+    // Background colors for dark theme
+    background: SontineColors.darkest,
     onBackground: '#FFFFFF',
+
+    // Outline colors for dark theme
     outline: '#404040',
+    outlineVariant: '#2A2A2A',
+
+    // Utility colors
     error: SontineColors.error,
+    success: SontineColors.success,
+    warning: SontineColors.warning,
   },
 })
 
@@ -129,6 +175,8 @@ export function useAppTheme() {
     },
   }
 }
+
+export type AppTheme = ReturnType<typeof useAppTheme>
 
 export function AppTheme({ children }: PropsWithChildren) {
   const { theme } = useAppTheme()

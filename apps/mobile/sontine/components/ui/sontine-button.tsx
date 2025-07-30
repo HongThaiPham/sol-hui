@@ -4,7 +4,7 @@ import { StyleProp, ViewStyle } from 'react-native'
 import { useAppTheme } from '@/components/app-theme'
 
 export interface SontineButtonProps extends Omit<ButtonProps, 'mode'> {
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'gradient'
+  variant?: 'primary' | 'accent' | 'navy' | 'mint' | 'outline' | 'ghost'
   size?: 'sm' | 'md' | 'lg'
   fullWidth?: boolean
 }
@@ -36,10 +36,20 @@ export function SontineButton({
           ...baseStyle,
           backgroundColor: colors.primary,
         }
-      case 'secondary':
+      case 'accent':
         return {
           ...baseStyle,
-          backgroundColor: colors.secondary,
+          backgroundColor: colors.secondary, // Bright mint accent
+        }
+      case 'navy':
+        return {
+          ...baseStyle,
+          backgroundColor: '#134158', // Navy blue
+        }
+      case 'mint':
+        return {
+          ...baseStyle,
+          backgroundColor: '#8DFFF0', // Light mint
         }
       case 'outline':
         return {
@@ -53,11 +63,6 @@ export function SontineButton({
           ...baseStyle,
           backgroundColor: 'transparent',
         }
-      case 'gradient':
-        return {
-          ...baseStyle,
-          backgroundColor: colors.primary, // Fallback, gradient will be handled separately
-        }
       default:
         return baseStyle
     }
@@ -66,9 +71,11 @@ export function SontineButton({
   const getTextColor = () => {
     switch (variant) {
       case 'primary':
-      case 'secondary':
-      case 'gradient':
+      case 'navy':
         return colors.onPrimary
+      case 'accent':
+      case 'mint':
+        return '#0E151A' // Dark text on light backgrounds
       case 'outline':
       case 'ghost':
         return colors.primary
@@ -80,8 +87,9 @@ export function SontineButton({
   const getMode = (): ButtonProps['mode'] => {
     switch (variant) {
       case 'primary':
-      case 'secondary':
-      case 'gradient':
+      case 'accent':
+      case 'navy':
+      case 'mint':
         return 'contained'
       case 'outline':
         return 'outlined'
@@ -93,13 +101,7 @@ export function SontineButton({
   }
 
   return (
-    <Button
-      mode={getMode()}
-      style={[getButtonStyle(), style]}
-      textColor={getTextColor()}
-      theme={theme}
-      {...props}
-    >
+    <Button mode={getMode()} style={[getButtonStyle(), style]} textColor={getTextColor()} theme={theme} {...props}>
       {children}
     </Button>
   )

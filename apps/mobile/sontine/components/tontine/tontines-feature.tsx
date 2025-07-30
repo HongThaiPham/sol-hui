@@ -21,13 +21,15 @@ export function TontinesFeature() {
   return (
     <View style={{ flex: 1 }}>
       {/* Header Actions */}
-      <View style={{ 
-        flexDirection: 'row',
-        gap: spacing.sm,
-        paddingHorizontal: spacing.md,
-        paddingVertical: spacing.md,
-        backgroundColor: colors.background,
-      }}>
+      <View
+        style={{
+          flexDirection: 'row',
+          gap: spacing.sm,
+          paddingHorizontal: spacing.md,
+          paddingVertical: spacing.md,
+          backgroundColor: colors.background,
+        }}
+      >
         <SontineButton
           variant="primary"
           size="md"
@@ -37,31 +39,33 @@ export function TontinesFeature() {
           <UiIconSymbol name="magnifyingglass" size={16} color={colors.onPrimary} />
           Browse
         </SontineButton>
-        
+
         <SontineButton
-          variant="secondary"
+          variant="accent"
           size="md"
           style={{ flex: 1 }}
           onPress={() => router.push('/(tabs)/tontines/create')}
         >
-          <UiIconSymbol name="plus.circle.fill" size={16} color={colors.onPrimary} />
+          <UiIconSymbol name="plus.circle.fill" size={16} color="#0E151A" />
           Create
         </SontineButton>
       </View>
 
       {/* Tab Navigation */}
-      <View style={{ 
-        flexDirection: 'row',
-        backgroundColor: colors.surface,
-        paddingHorizontal: spacing.md,
-        paddingTop: spacing.sm,
-      }}>
+      <View
+        style={{
+          flexDirection: 'row',
+          backgroundColor: colors.surface,
+          paddingHorizontal: spacing.md,
+          paddingTop: spacing.sm,
+        }}
+      >
         {tabs.map((tab) => (
           <SontineButton
             key={tab.key}
             variant={activeTab === tab.key ? 'primary' : 'ghost'}
             size="sm"
-            style={{ 
+            style={{
               flex: 1,
               marginHorizontal: spacing.xs,
             }}
@@ -73,9 +77,9 @@ export function TontinesFeature() {
       </View>
 
       {/* Content */}
-      <ScrollView 
+      <ScrollView
         style={{ flex: 1 }}
-        contentContainerStyle={{ 
+        contentContainerStyle={{
           padding: spacing.md,
           paddingBottom: spacing.xl,
         }}
