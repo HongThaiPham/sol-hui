@@ -1,5 +1,6 @@
 import React from 'react'
-import { ScrollView, View, RefreshControl, StyleSheet } from 'react-native'
+import { View, RefreshControl, StyleSheet, Animated } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import { useAppTheme, type AppTheme } from '@/components/app-theme'
 import { OverviewCards } from './overview-cards'
 import { QuickActions } from './quick-actions'
@@ -14,18 +15,20 @@ const getStyles = ({ spacing, colors }: AppTheme) =>
       backgroundColor: colors.background,
     },
     header: {
-      height: 160,
       position: 'relative',
+      overflow: 'hidden',
     },
     headerContent: {
       position: 'absolute',
-      top: 0,
+      top: 0, // Start from safe area
       left: 0,
       right: 0,
-      bottom: 0,
-      justifyContent: 'flex-end',
-      paddingHorizontal: spacing.md,
-      paddingBottom: spacing.lg,
+      bottom: 10, // Minimal bottom space
+      justifyContent: 'flex-start',
+      paddingTop: spacing.sm,
+    },
+    safeAreaHeader: {
+      backgroundColor: 'transparent',
     },
     scrollView: {
       flex: 1,
@@ -52,6 +55,9 @@ const getStyles = ({ spacing, colors }: AppTheme) =>
 export function DashboardFeature() {
   const theme = useAppTheme()
   const [refreshing, setRefreshing] = React.useState(false)
+  const scrollY = React.useRef(new Animated.Value(0)).current
+
+  console.log('DashboardFeature rendering...') // Debug log
 
   const onRefresh = React.useCallback(async () => {
     setRefreshing(true)
@@ -62,22 +68,31 @@ export function DashboardFeature() {
 
   const styles = React.useMemo(() => getStyles(theme), [theme])
 
+  // Animated values for header - compact but sufficient height
+  const headerHeight = scrollY.interpolate({
+    inputRange: [0, 120],
+    outputRange: [200, 80], // More compact when collapsed
+    extrapolate: 'clamp',
+  })
+
   return (
-    <View style={styles.container}>
-      {/* Header with gradient background */}
-      <View style={styles.header}>
+    <SafeAreaView style={styles.container} edges={['top']}>
+      {/* Animated Header with gradient background */}
+      <Animated.View style={[styles.header, { height: headerHeight }]}>
         <GradientBackground variant="full-spectrum" />
         <View style={styles.headerContent}>
-          <ReputationDisplay />
+          <ReputationDisplay scrollY={scrollY} />
         </View>
-      </View>
+      </Animated.View>
 
       {/* Main content */}
-      <ScrollView
+      <Animated.ScrollView
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
         showsVerticalScrollIndicator={false}
+        onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], { useNativeDriver: false })}
+        scrollEventThrottle={8}
       >
         {/* Overview Cards */}
         <View style={styles.overviewSection}>
@@ -93,7 +108,7 @@ export function DashboardFeature() {
         <View style={styles.activitySection}>
           <ActivityFeed />
         </View>
-      </ScrollView>
-    </View>
+      </Animated.ScrollView>
+    </SafeAreaView>
   )
 }

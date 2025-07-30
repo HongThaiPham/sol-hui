@@ -18,7 +18,7 @@ export default function HomeLayout() {
   return (
     <Stack
       screenOptions={{
-        headerShown: true,
+        headerShown: false,
         headerStyle: {
           backgroundColor: colors.primary,
         },
