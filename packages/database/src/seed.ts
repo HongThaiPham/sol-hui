@@ -1,15 +1,19 @@
 import { prisma } from "./client"
 
+// Wallet and group addresses used in seed data
+const WALLET_ADDRESS_USER1 = '9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM';
+const WALLET_ADDRESS_USER2 = '8VzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWN';
+const GROUP_ONCHAIN_ADDRESS = 'GorkwbJYHK36X3nmEu9RY8rgZ9sFnudx9voNQskjiF67';
 
 async function main() {
   console.log('🌱 Starting database seed...')
 
   // Create sample users
   const user1 = await prisma.user.upsert({
-    where: { walletAddress: '9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM' },
+    where: { walletAddress: WALLET_ADDRESS_USER1 },
     update: {},
     create: {
-      walletAddress: '9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM',
+      walletAddress: WALLET_ADDRESS_USER1,
       name: 'John Doe',
       email: 'john@example.com',
       reputation: 100,
