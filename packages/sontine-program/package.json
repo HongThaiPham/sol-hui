@@ -1,0 +1,26 @@
+{
+  "name": "@repo/sontine-program",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "tsc --watch",
+    "generate": "bunx ts-node ./generate-client.ts",
+    "build": "tsc"
+  },
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "devDependencies": {
+    "@repo/typescript-config": "workspace:*",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2"
+  },
+  "dependencies": {
+    "@codama/nodes-from-anchor": "^1.2.3",
+    "@codama/renderers-js": "^1.3.2",
+    "@solana/kit": "^2.3.0",
+    "codama": "^1.3.1"
+  }
+}
