@@ -1,0 +1,55 @@
+publisher:
+  name: Sontine Team
+  website: https://sontine.fun
+  email: hello@sontine.fun
+app:
+  name: Sontine
+  address: Gg2P3w1kVprHSsru7UhfkZ79M2fDDNTmH12fY3phzqRc
+  android_package: com.leopham.sontine
+  urls:
+    license_url: https://sontine.fun/terms
+    copyright_url: https://sontine.fun/terms
+    privacy_policy_url: https://sontine.fun/privacy
+    website: https://sontine.fun
+  media:
+    - purpose: icon
+      uri: ./media/app_icon.png
+release:
+  address: ''
+  media:
+    - purpose: icon
+      uri: ./media/release_icon.png
+    - purpose: banner
+      uri: ./media/banner.png
+    - purpose: featureGraphic
+      uri: ./media/feature_graphic.png
+    - purpose: screenshot
+      uri: ./media/screenshot_1.png
+    - purpose: screenshot
+      uri: ./media/screenshot_2.png
+    - purpose: screenshot
+      uri: ./media/screenshot_3.png
+    - purpose: screenshot
+      uri: ./media/screenshot_4.png
+    - purpose: screenshot
+      uri: ./media/screenshot_5.png
+    - purpose: screenshot
+      uri: ./media/screenshot_6.png
+  files:
+    - purpose: install
+      uri: ./files/sontine-release.apk
+  catalog:
+    en-US:
+      name: Sontine
+      short_description: Solana-Powered Rotating Saving
+      long_description: Join the future of rotating savings with Sontine. Built on Solana blockchain for transparent, automated, and global tontine groups. Fast, cheap, and secure financial inclusion for everyone. Create or join rotating savings groups (tontines) with friends, family, or community members worldwide.
+      new_in_version: Initial release with core tontine functionality, wallet integration, and secure group management
+solana_mobile_dapp_publisher_portal:
+  google_store_package: com.leopham.sontine
+  testing_instructions: |
+    1. Install the app and create a new wallet or connect existing Solana wallet
+    2. Browse available tontine groups or create a new one
+    3. Test joining a tontine group and making contributions
+    4. Verify wallet transactions and USDC transfers
+    5. Test bidding functionality and group management features
+    6. Ensure biometric authentication works properly on supported devices
