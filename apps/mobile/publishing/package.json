@@ -1,0 +1,13 @@
+{
+  "name": "publishing",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@solana-mobile/dapp-store-cli": "^0.11.0",
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}
