@@ -1,0 +1,220 @@
+// Sontine Backend Schema
+// Manages off-chain data for Solana tontine program
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User model for authentication and profile
+model User {
+  id          String   @id @default(cuid())
+  walletAddress String @unique // Solana wallet address
+  email       String?  @unique
+  name        String?
+  avatar      String?
+  reputation  Int      @default(0)
+  isVerified  Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  groupMemberships GroupMember[]
+  createdGroups    Group[]       @relation("GroupCreator")
+  bids             Bid[]
+  transactions     Transaction[]
+  notifications    Notification[]
+
+  @@map("users")
+}
+
+// Group model - mirrors on-chain group data with additional metadata
+model Group {
+  id              String      @id @default(cuid())
+  onChainAddress  String      @unique // Solana account address
+  name            String
+  description     String?
+  maxMembers      Int
+  contributionAmount Decimal
+  roundDuration   Int         // in days
+  status          GroupStatus @default(CREATED)
+  creatorId       String
+  startDate       DateTime?
+  endDate         DateTime?
+  currentRound    Int         @default(0)
+  totalRounds     Int
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  // Relations
+  creator     User          @relation("GroupCreator", fields: [creatorId], references: [id])
+  members     GroupMember[]
+  rounds      Round[]
+  transactions Transaction[]
+
+  @@map("groups")
+}
+
+enum GroupStatus {
+  CREATED
+  ACTIVE
+  PAUSED
+  COMPLETED
+  CANCELLED
+}
+
+// Group membership model
+model GroupMember {
+  id        String           @id @default(cuid())
+  groupId   String
+  userId    String
+  status    MembershipStatus @default(PENDING)
+  joinedAt  DateTime         @default(now())
+  leftAt    DateTime?
+  position  Int? // Position in the group for round order
+
+  // Relations
+  group Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bids  Bid[]
+
+  @@unique([groupId, userId])
+  @@map("group_members")
+}
+
+enum MembershipStatus {
+  PENDING
+  ACTIVE
+  LEFT
+  KICKED
+}
+
+// Round model - tracks each tontine round
+model Round {
+  id              String      @id @default(cuid())
+  groupId         String
+  roundNumber     Int
+  onChainAddress  String?     @unique // Solana account address if exists
+  status          RoundStatus @default(PENDING)
+  startDate       DateTime?
+  endDate         DateTime?
+  winnerId        String?
+  totalBids       Int         @default(0)
+  highestBid      Decimal?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  // Relations
+  group Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  bids  Bid[]
+
+  @@unique([groupId, roundNumber])
+  @@map("rounds")
+}
+
+enum RoundStatus {
+  PENDING
+  ACTIVE
+  BIDDING
+  COMPLETED
+  CANCELLED
+}
+
+// Bid model - tracks member bids in auction rounds
+model Bid {
+  id        String   @id @default(cuid())
+  roundId   String
+  memberId  String
+  userId    String
+  amount    Decimal
+  timestamp DateTime @default(now())
+  txHash    String?  // Solana transaction hash
+
+  // Relations
+  round  Round       @relation(fields: [roundId], references: [id], onDelete: Cascade)
+  member GroupMember @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  user   User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([roundId, memberId])
+  @@map("bids")
+}
+
+// Transaction model - tracks all blockchain transactions
+model Transaction {
+  id          String            @id @default(cuid())
+  txHash      String            @unique // Solana transaction hash
+  type        TransactionType
+  status      TransactionStatus @default(PENDING)
+  amount      Decimal?
+  groupId     String?
+  userId      String
+  roundId     String?
+  blockHeight BigInt?
+  timestamp   DateTime          @default(now())
+  errorMessage String?
+
+  // Relations
+  user  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  group Group? @relation(fields: [groupId], references: [id], onDelete: SetNull)
+
+  @@map("transactions")
+}
+
+enum TransactionType {
+  CREATE_GROUP
+  JOIN_GROUP
+  LEAVE_GROUP
+  CONTRIBUTE
+  PLACE_BID
+  DISTRIBUTE_FUNDS
+  EMERGENCY_REFUND
+}
+
+enum TransactionStatus {
+  PENDING
+  CONFIRMED
+  FAILED
+}
+
+// Notification model
+model Notification {
+  id        String             @id @default(cuid())
+  userId    String
+  type      NotificationType
+  title     String
+  message   String
+  data      Json? // Additional data as JSON
+  read      Boolean            @default(false)
+  createdAt DateTime           @default(now())
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("notifications")
+}
+
+enum NotificationType {
+  GROUP_CREATED
+  GROUP_JOINED
+  ROUND_STARTED
+  BID_PLACED
+  ROUND_WON
+  FUNDS_DISTRIBUTED
+  PAYMENT_DUE
+  EMERGENCY_PAUSE
+}
+
+// Settings model for app configuration
+model Settings {
+  id    String @id @default(cuid())
+  key   String @unique
+  value String
+  type  String @default("string") // string, number, boolean, json
+
+  @@map("settings")
+}
