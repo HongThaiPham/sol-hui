@@ -59,7 +59,6 @@ export function HeaderTitleWithIcon({
         variant="titleMedium"
         style={{
           color: textColor,
-          fontWeight: 'bold',
         }}
       >
         {title}
