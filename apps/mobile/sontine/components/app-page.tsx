@@ -5,7 +5,7 @@ import { useAppTheme } from '@/components/app-theme'
 export function AppPage({ children, ...props }: PropsWithChildren<AppViewProps>) {
   const { spacing } = useAppTheme()
   return (
-    <AppView style={{ flex: 1, gap: spacing.md, padding: spacing.md }} {...props}>
+    <AppView style={{ flex: 1, gap: spacing.md, padding: spacing.sm }} {...props}>
       {children}
     </AppView>
   )

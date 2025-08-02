@@ -67,15 +67,17 @@ export default function BrowseTontinesScreen() {
     { key: 'high', label: '> 50 SOL' },
   ]
 
-  const filteredTontines = mockAvailableTontines.filter(tontine => {
-    const matchesSearch = tontine.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         tontine.description.toLowerCase().includes(searchQuery.toLowerCase())
-    
-    const matchesFilter = selectedFilter === 'all' ||
-                         (selectedFilter === 'low' && tontine.contributionAmount < 20) ||
-                         (selectedFilter === 'medium' && tontine.contributionAmount >= 20 && tontine.contributionAmount <= 50) ||
-                         (selectedFilter === 'high' && tontine.contributionAmount > 50)
-    
+  const filteredTontines = mockAvailableTontines.filter((tontine) => {
+    const matchesSearch =
+      tontine.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      tontine.description.toLowerCase().includes(searchQuery.toLowerCase())
+
+    const matchesFilter =
+      selectedFilter === 'all' ||
+      (selectedFilter === 'low' && tontine.contributionAmount < 20) ||
+      (selectedFilter === 'medium' && tontine.contributionAmount >= 20 && tontine.contributionAmount <= 50) ||
+      (selectedFilter === 'high' && tontine.contributionAmount > 50)
+
     return matchesSearch && matchesFilter
   })
 
@@ -87,22 +89,20 @@ export default function BrowseTontinesScreen() {
     <AppPage>
       <View style={{ flex: 1 }}>
         {/* Search and Filters */}
-        <View style={{ 
-          padding: spacing.md,
-          backgroundColor: colors.surface,
-        }}>
+        <View
+          style={{
+            padding: spacing.md,
+            backgroundColor: colors.surface,
+          }}
+        >
           <SontineInput
-            placeholder="Search tontines..."
+            placeholder="Search tontines groups..."
             value={searchQuery}
             onChangeText={setSearchQuery}
             style={{ marginBottom: spacing.md }}
           />
-          
-          <ScrollView 
-            horizontal 
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{ gap: spacing.sm }}
-          >
+
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: spacing.sm }}>
             {filters.map((filter) => (
               <SontineButton
                 key={filter.key}
@@ -118,14 +118,17 @@ export default function BrowseTontinesScreen() {
 
         {/* Results */}
         <View style={{ flex: 1, padding: spacing.md }}>
-          <AppText variant="titleMedium" style={{ 
-            color: colors.onSurface,
-            fontWeight: 'bold',
-            marginBottom: spacing.md,
-          }}>
+          <AppText
+            variant="titleMedium"
+            style={{
+              color: colors.onSurface,
+              fontWeight: 'bold',
+              marginBottom: spacing.md,
+            }}
+          >
             Available Tontines ({filteredTontines.length})
           </AppText>
-          
+
           <FlatList
             data={filteredTontines}
             renderItem={renderTontine}

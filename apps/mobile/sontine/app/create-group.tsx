@@ -26,29 +26,49 @@ const createCycleDuration = (duration: 'weekly' | 'monthly' | 'custom', customDa
 const getStyles = (theme: ReturnType<typeof useAppTheme>) => {
   const { spacing, colors, borderRadius } = theme
   return {
+    container: {
+      padding: spacing.sm,
+      paddingBottom: spacing.xl,
+    },
     sectionTitle: {
       color: colors.onSurface,
+      marginBottom: spacing.sm,
+    },
+    sectionDescription: {
+      color: colors.onSurface,
+      opacity: 0.7,
       marginBottom: spacing.md,
     },
     optionButton: {
       // flex: 1,
-      marginHorizontal: spacing.xs,
     },
     optionRow: {
       // flexDirection: 'row' as const,
-      flexDirection: 'column' as const,
       gap: spacing.sm,
       marginBottom: spacing.md,
+    },
+    inputRow: {
+      flexDirection: 'row' as const,
+      gap: spacing.sm,
+    },
+    inputHalf: {
+      flex: 1,
     },
     auctionConfigContainer: {
       padding: spacing.md,
       borderRadius: borderRadius.lg,
       marginTop: spacing.md,
     },
-    summaryRow: {
+    summaryItem: {
       flexDirection: 'row' as const,
       justifyContent: 'space-between' as const,
-      marginBottom: spacing.xs,
+      alignItems: 'center' as const,
+      paddingVertical: spacing.xs,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.outline + '20',
+    },
+    summaryItemLast: {
+      borderBottomWidth: 0,
     },
   }
 }
@@ -171,26 +191,9 @@ export default function CreateGroupScreen() {
           headerShown: true,
         }}
       />
-      <ScrollView
-        style={{ flex: 1 }}
-        contentContainerStyle={{
-          padding: spacing.sm,
-          paddingBottom: spacing.xl,
-        }}
-      >
-        <AppText
-          variant="titleLarge"
-          style={{
-            color: colors.onSurface,
-            marginBottom: spacing.lg,
-            textAlign: 'center',
-          }}
-        >
-          Create New Tontine
-        </AppText>
-
+      <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.container}>
         {/* Basic Configuration */}
-        <SontineCard padding="md" style={{ marginBottom: spacing.lg }}>
+        <SontineCard variant="elevated" padding="lg" style={{ marginBottom: spacing.lg }}>
           <SontineCardContent>
             <AppText variant="titleMedium" style={styles.sectionTitle}>
               Basic Configuration
@@ -207,44 +210,39 @@ export default function CreateGroupScreen() {
               containerStyle={{ marginBottom: spacing.md }}
             />
 
-            <SontineInput
-              label="Maximum Members"
-              placeholder="10"
-              value={formData.maxMembers}
-              onChangeText={(text) => setFormData((prev) => ({ ...prev, maxMembers: text }))}
-              keyboardType="numeric"
-              error={!!errors.maxMembers}
-              helperText={errors.maxMembers}
-              containerStyle={{ marginBottom: spacing.md }}
-            />
+            <View style={styles.inputRow}>
+              <SontineInput
+                label="Max Members"
+                placeholder="10"
+                value={formData.maxMembers}
+                onChangeText={(text) => setFormData((prev) => ({ ...prev, maxMembers: text }))}
+                keyboardType="numeric"
+                error={!!errors.maxMembers}
+                helperText={errors.maxMembers}
+                containerStyle={styles.inputHalf}
+              />
 
-            <SontineInput
-              label="Minimum Members to Start"
-              placeholder="5"
-              value={formData.minMembersToStart}
-              onChangeText={(text) => setFormData((prev) => ({ ...prev, minMembersToStart: text }))}
-              keyboardType="numeric"
-              error={!!errors.minMembersToStart}
-              helperText={errors.minMembersToStart}
-            />
+              <SontineInput
+                label="Min to Start"
+                placeholder="5"
+                value={formData.minMembersToStart}
+                onChangeText={(text) => setFormData((prev) => ({ ...prev, minMembersToStart: text }))}
+                keyboardType="numeric"
+                error={!!errors.minMembersToStart}
+                helperText={errors.minMembersToStart}
+                containerStyle={styles.inputHalf}
+              />
+            </View>
           </SontineCardContent>
         </SontineCard>
 
-        {/* Selection Method */}
-        <SontineCard variant="elevated" padding="lg" style={{ marginBottom: spacing.lg }}>
+        {/* Selection Method & Cycle Duration */}
+        <SontineCard variant="elevated" padding="sm" style={{ marginBottom: spacing.lg }}>
           <SontineCardContent>
             <AppText variant="titleMedium" style={styles.sectionTitle}>
               Selection Method
             </AppText>
-
-            <AppText
-              variant="bodyMedium"
-              style={{
-                color: colors.onSurface,
-                opacity: 0.7,
-                marginBottom: spacing.md,
-              }}
-            >
+            <AppText variant="bodyMedium" style={styles.sectionDescription}>
               How should recipients be chosen each round?
             </AppText>
 
@@ -273,72 +271,63 @@ export default function CreateGroupScreen() {
               >
                 Auction
               </SontineButton>
+              {/* Auction Configuration */}
+              {formData.selectionMethod === 'auction' && (
+                <View style={styles.auctionConfigContainer}>
+                  <AppText variant="titleSmall" style={styles.sectionTitle}>
+                    Auction Configuration
+                  </AppText>
+
+                  <View style={styles.inputRow}>
+                    <SontineInput
+                      label="Duration (hours)"
+                      placeholder="24"
+                      value={
+                        formData.auctionDuration ? String(Math.floor(parseInt(formData.auctionDuration) / 3600)) : ''
+                      }
+                      onChangeText={(text) =>
+                        setFormData((prev) => ({ ...prev, auctionDuration: String(parseInt(text || '0') * 3600) }))
+                      }
+                      keyboardType="numeric"
+                      error={!!errors.auctionDuration}
+                      helperText={errors.auctionDuration}
+                      containerStyle={styles.inputHalf}
+                    />
+
+                    <SontineInput
+                      label="Min Bid (%)"
+                      placeholder="1"
+                      value={formData.minBidIncrement ? String(parseInt(formData.minBidIncrement) / 100) : ''}
+                      onChangeText={(text) =>
+                        setFormData((prev) => ({ ...prev, minBidIncrement: String(parseFloat(text || '0') * 100) }))
+                      }
+                      keyboardType="numeric"
+                      error={!!errors.minBidIncrement}
+                      helperText={errors.minBidIncrement}
+                      containerStyle={styles.inputHalf}
+                    />
+                  </View>
+
+                  <SontineInput
+                    label="Max Interest Rate (%)"
+                    placeholder="20"
+                    value={formData.maxInterestRate ? String(parseInt(formData.maxInterestRate) / 100) : ''}
+                    onChangeText={(text) =>
+                      setFormData((prev) => ({ ...prev, maxInterestRate: String(parseFloat(text || '0') * 100) }))
+                    }
+                    keyboardType="numeric"
+                    error={!!errors.maxInterestRate}
+                    helperText={errors.maxInterestRate}
+                  />
+                </View>
+              )}
             </View>
 
-            {/* Auction Configuration */}
-            {formData.selectionMethod === 'auction' && (
-              <View style={styles.auctionConfigContainer}>
-                <AppText
-                  variant="titleSmall"
-                  style={{
-                    color: colors.onSurface,
-                    marginBottom: spacing.md,
-                  }}
-                >
-                  Auction Configuration
-                </AppText>
-
-                <SontineInput
-                  label="Auction Duration (seconds)"
-                  placeholder="86400"
-                  value={formData.auctionDuration}
-                  onChangeText={(text) => setFormData((prev) => ({ ...prev, auctionDuration: text }))}
-                  keyboardType="numeric"
-                  error={!!errors.auctionDuration}
-                  helperText={errors.auctionDuration || '24 hours = 86400 seconds'}
-                  containerStyle={{ marginBottom: spacing.md }}
-                />
-
-                <SontineInput
-                  label="Min Bid Increment (basis points)"
-                  placeholder="100"
-                  value={formData.minBidIncrement}
-                  onChangeText={(text) => setFormData((prev) => ({ ...prev, minBidIncrement: text }))}
-                  keyboardType="numeric"
-                  error={!!errors.minBidIncrement}
-                  helperText={errors.minBidIncrement || '100 basis points = 1%'}
-                  containerStyle={{ marginBottom: spacing.md }}
-                />
-
-                <SontineInput
-                  label="Max Interest Rate (basis points)"
-                  placeholder="2000"
-                  value={formData.maxInterestRate}
-                  onChangeText={(text) => setFormData((prev) => ({ ...prev, maxInterestRate: text }))}
-                  keyboardType="numeric"
-                  error={!!errors.maxInterestRate}
-                  helperText={errors.maxInterestRate || '2000 basis points = 20%'}
-                />
-              </View>
-            )}
-          </SontineCardContent>
-        </SontineCard>
-
-        {/* Cycle Duration */}
-        <SontineCard variant="elevated" padding="lg" style={{ marginBottom: spacing.lg }}>
-          <SontineCardContent>
-            <AppText variant="titleMedium" style={styles.sectionTitle}>
+            {/* Cycle Duration */}
+            <AppText variant="titleMedium" style={[styles.sectionTitle, { marginTop: spacing.lg }]}>
               Cycle Duration
             </AppText>
-
-            <AppText
-              variant="bodyMedium"
-              style={{
-                color: colors.onSurface,
-                opacity: 0.7,
-                marginBottom: spacing.md,
-              }}
-            >
+            <AppText variant="bodyMedium" style={styles.sectionDescription}>
               How often should rounds occur?
             </AppText>
 
@@ -359,17 +348,17 @@ export default function CreateGroupScreen() {
               >
                 Monthly
               </SontineButton>
-              <SontineButton
+              {/* <SontineButton
                 variant={formData.cycleDuration === 'custom' ? 'primary' : 'outline'}
                 size="sm"
                 style={styles.optionButton}
                 onPress={() => setFormData((prev) => ({ ...prev, cycleDuration: 'custom' }))}
               >
                 Custom
-              </SontineButton>
+              </SontineButton> */}
             </View>
 
-            {formData.cycleDuration === 'custom' && (
+            {/* {formData.cycleDuration === 'custom' && (
               <SontineInput
                 label="Custom Duration (days)"
                 placeholder="30"
@@ -380,30 +369,48 @@ export default function CreateGroupScreen() {
                 helperText={errors.customDurationDays}
                 containerStyle={{ marginTop: spacing.md }}
               />
-            )}
+            )} */}
           </SontineCardContent>
         </SontineCard>
 
         {/* Summary */}
-        <SontineCard variant="elevated" padding="lg" style={{ marginBottom: spacing.lg }}>
+        <SontineCard variant="outlined" padding="lg" style={{ marginBottom: spacing.lg }}>
           <SontineCardContent>
             <AppText variant="titleMedium" style={styles.sectionTitle}>
               Summary
             </AppText>
 
-            <View style={styles.summaryRow}>
-              <AppText variant="bodyMedium" style={{ color: colors.onSurface }}>
-                Total Pool Value
+            <View style={styles.summaryItem}>
+              <AppText variant="bodyMedium" style={{ color: colors.onSurface, opacity: 0.8 }}>
+                Contribution Amount
+              </AppText>
+              <AppText variant="titleSmall" style={{ color: colors.primary }}>
+                {formData.contributionAmount || '0'} USDC
+              </AppText>
+            </View>
+
+            <View style={styles.summaryItem}>
+              <AppText variant="bodyMedium" style={{ color: colors.onSurface, opacity: 0.8 }}>
+                Members (Max / Min to Start)
               </AppText>
               <AppText variant="bodyMedium" style={{ color: colors.onSurface }}>
+                {formData.maxMembers || '0'} / {formData.minMembersToStart || '0'}
+              </AppText>
+            </View>
+
+            <View style={styles.summaryItem}>
+              <AppText variant="bodyMedium" style={{ color: colors.onSurface, opacity: 0.8 }}>
+                Total Pool Value
+              </AppText>
+              <AppText variant="titleSmall" style={{ color: colors.primary }}>
                 {formData.contributionAmount && formData.maxMembers
                   ? `${parseFloat(formData.contributionAmount) * parseInt(formData.maxMembers)} USDC`
                   : '0 USDC'}
               </AppText>
             </View>
 
-            <View style={styles.summaryRow}>
-              <AppText variant="bodyMedium" style={{ color: colors.onSurface }}>
+            <View style={styles.summaryItem}>
+              <AppText variant="bodyMedium" style={{ color: colors.onSurface, opacity: 0.8 }}>
                 Selection Method
               </AppText>
               <AppText variant="bodyMedium" style={{ color: colors.onSurface }}>
@@ -411,14 +418,72 @@ export default function CreateGroupScreen() {
               </AppText>
             </View>
 
-            <View style={styles.summaryRow}>
-              <AppText variant="bodyMedium" style={{ color: colors.onSurface }}>
+            <View style={styles.summaryItem}>
+              <AppText variant="bodyMedium" style={{ color: colors.onSurface, opacity: 0.8 }}>
                 Cycle Duration
               </AppText>
               <AppText variant="bodyMedium" style={{ color: colors.onSurface }}>
                 {formData.cycleDuration === 'custom'
-                  ? `${formData.customDurationDays} days`
+                  ? `${formData.customDurationDays || '0'} days`
                   : formData.cycleDuration.charAt(0).toUpperCase() + formData.cycleDuration.slice(1)}
+              </AppText>
+            </View>
+
+            {/* Auction Configuration Summary */}
+            {formData.selectionMethod === 'auction' && (
+              <>
+                <View style={styles.summaryItem}>
+                  <AppText variant="bodyMedium" style={{ color: colors.onSurface, opacity: 0.8 }}>
+                    Auction Duration
+                  </AppText>
+                  <AppText variant="bodyMedium" style={{ color: colors.onSurface }}>
+                    {formData.auctionDuration
+                      ? `${Math.floor(parseInt(formData.auctionDuration) / 3600)} hours`
+                      : '0 hours'}
+                  </AppText>
+                </View>
+
+                <View style={styles.summaryItem}>
+                  <AppText variant="bodyMedium" style={{ color: colors.onSurface, opacity: 0.8 }}>
+                    Min Bid Increment
+                  </AppText>
+                  <AppText variant="bodyMedium" style={{ color: colors.onSurface }}>
+                    {formData.minBidIncrement ? `${parseInt(formData.minBidIncrement) / 100}%` : '0%'}
+                  </AppText>
+                </View>
+
+                <View style={styles.summaryItem}>
+                  <AppText variant="bodyMedium" style={{ color: colors.onSurface, opacity: 0.8 }}>
+                    Max Interest Rate
+                  </AppText>
+                  <AppText variant="bodyMedium" style={{ color: colors.onSurface }}>
+                    {formData.maxInterestRate ? `${parseInt(formData.maxInterestRate) / 100}%` : '0%'}
+                  </AppText>
+                </View>
+              </>
+            )}
+
+            <View style={[styles.summaryItem, styles.summaryItemLast]}>
+              <AppText variant="bodyMedium" style={{ color: colors.onSurface, opacity: 0.8 }}>
+                Estimated Duration
+              </AppText>
+              <AppText variant="bodyMedium" style={{ color: colors.onSurface }}>
+                {(() => {
+                  const maxMembers = parseInt(formData.maxMembers) || 0
+                  if (maxMembers === 0) return 'N/A'
+
+                  let cycleDays = 0
+                  if (formData.cycleDuration === 'weekly') cycleDays = 7
+                  else if (formData.cycleDuration === 'monthly') cycleDays = 30
+                  else if (formData.cycleDuration === 'custom') cycleDays = parseInt(formData.customDurationDays) || 0
+
+                  const totalDays = maxMembers * cycleDays
+                  if (totalDays === 0) return 'N/A'
+
+                  if (totalDays < 30) return `${totalDays} days`
+                  else if (totalDays < 365) return `${Math.round(totalDays / 30)} months`
+                  else return `${Math.round(totalDays / 365)} years`
+                })()}
               </AppText>
             </View>
           </SontineCardContent>

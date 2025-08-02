@@ -80,11 +80,6 @@ export function useSontineProgram() {
       console.log('Creating group')
       const groupId = new anchor.BN(Math.floor(Math.random() * 1000000))
 
-      console.log({
-        yyy: payload.contributionAmount,
-        xxx: new anchor.BN(payload.contributionAmount * 10 ** USDC_DECIMALS),
-      })
-
       return await sontineProgram.methods
         .createGroup(
           groupId,
@@ -93,7 +88,13 @@ export function useSontineProgram() {
           new anchor.BN(payload.contributionAmount * 10 ** USDC_DECIMALS),
           payload.cycleDuration,
           payload.minMembersToStart,
-          payload.auctionConfig,
+          payload.auctionConfig
+            ? {
+                auctionDuration: new anchor.BN(payload.auctionConfig.auctionDuration),
+                minBidIncrement: payload.auctionConfig.minBidIncrement,
+                maxInterestRate: payload.auctionConfig.maxInterestRate,
+              }
+            : null,
         )
         .accounts({
           admin: anchorWallet?.publicKey,
