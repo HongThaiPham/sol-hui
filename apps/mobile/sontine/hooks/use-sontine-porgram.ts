@@ -17,8 +17,10 @@ type AuctionConfig = {
   maxInterestRate: number
 }
 
-const USDC_MINT = 'A43qEjwWtEkNUzSxd1d9eEe6tDhwR12wFnRdA1gGRvxG'
-const USDC_DECIMALS = 6
+export const USDC_MINT = 'A43qEjwWtEkNUzSxd1d9eEe6tDhwR12wFnRdA1gGRvxG'
+export const USDC_DECIMALS = 6
+export const CURRENCY_SYMBOL = 'USDC'
+
 
 export function useSontineProgram() {
   const connection = useConnection()
@@ -62,7 +64,7 @@ export function useSontineProgram() {
     enabled: !!sontineProgram,
   })
 
-  // Reset counter mutation
+  // Create group mutation
   const createGroup = useMutation({
     mutationKey: ['create-group'],
     mutationFn: async (payload: {
@@ -90,10 +92,10 @@ export function useSontineProgram() {
           payload.minMembersToStart,
           payload.auctionConfig
             ? {
-                auctionDuration: new anchor.BN(payload.auctionConfig.auctionDuration),
-                minBidIncrement: payload.auctionConfig.minBidIncrement,
-                maxInterestRate: payload.auctionConfig.maxInterestRate,
-              }
+              auctionDuration: new anchor.BN(payload.auctionConfig.auctionDuration),
+              minBidIncrement: payload.auctionConfig.minBidIncrement,
+              maxInterestRate: payload.auctionConfig.maxInterestRate,
+            }
             : null,
         )
         .accounts({

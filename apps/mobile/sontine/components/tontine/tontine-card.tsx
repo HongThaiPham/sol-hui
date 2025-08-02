@@ -6,6 +6,9 @@ import { SontineCard, SontineCardContent } from '@/components/ui/sontine-card'
 import { UiIconSymbol } from '@/components/ui/ui-icon-symbol'
 import { useAppTheme } from '@/components/app-theme'
 import { Tontine } from './tontine-list'
+import { CURRENCY_SYMBOL } from '@/hooks/use-sontine-porgram'
+import { SontineActionButton } from '../ui/sontine-button'
+import { Button } from 'react-native-paper'
 
 interface TontineCardProps {
   tontine: Tontine
@@ -45,8 +48,8 @@ export function TontineCard({ tontine, style }: TontineCardProps) {
   const progress = (tontine.currentRound / tontine.totalRounds) * 100
 
   return (
-    <TouchableOpacity onPress={() => router.push(`/(tabs)/tontines/${tontine.id}`)} style={style}>
-      <SontineCard variant="elevated" padding="md">
+    <Button mode="text" onPress={() => router.push(`/(tabs)/tontines/${tontine.id}`)}>
+      <SontineCard padding="md" style={{ width: '100%' }}>
         <SontineCardContent>
           {/* Header */}
           <View
@@ -62,14 +65,13 @@ export function TontineCard({ tontine, style }: TontineCardProps) {
                 variant="titleMedium"
                 style={{
                   color: colors.onSurface,
-                  fontWeight: 'bold',
                   marginBottom: spacing.xs,
                 }}
               >
                 {tontine.name}
               </AppText>
 
-              <AppText
+              {/* <AppText
                 variant="bodyMedium"
                 style={{
                   color: colors.onSurface,
@@ -77,7 +79,7 @@ export function TontineCard({ tontine, style }: TontineCardProps) {
                 }}
               >
                 {tontine.description}
-              </AppText>
+              </AppText> */}
             </View>
 
             <View
@@ -118,10 +120,9 @@ export function TontineCard({ tontine, style }: TontineCardProps) {
                 variant="titleSmall"
                 style={{
                   color: colors.onSurface,
-                  fontWeight: 'bold',
                 }}
               >
-                {tontine.totalAmount} SOL
+                {tontine.totalAmount} {CURRENCY_SYMBOL}
               </AppText>
               <AppText
                 variant="bodySmall"
@@ -139,10 +140,9 @@ export function TontineCard({ tontine, style }: TontineCardProps) {
                 variant="titleSmall"
                 style={{
                   color: colors.onSurface,
-                  fontWeight: 'bold',
                 }}
               >
-                {tontine.contributionAmount} SOL
+                {tontine.contributionAmount} {CURRENCY_SYMBOL}
               </AppText>
               <AppText
                 variant="bodySmall"
@@ -160,7 +160,6 @@ export function TontineCard({ tontine, style }: TontineCardProps) {
                 variant="titleSmall"
                 style={{
                   color: colors.onSurface,
-                  fontWeight: 'bold',
                 }}
               >
                 {tontine.members}
@@ -287,6 +286,6 @@ export function TontineCard({ tontine, style }: TontineCardProps) {
           )}
         </SontineCardContent>
       </SontineCard>
-    </TouchableOpacity>
+    </Button>
   )
 }

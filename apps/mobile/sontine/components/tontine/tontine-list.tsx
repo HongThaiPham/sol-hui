@@ -107,7 +107,7 @@ export function TontineList({ filter }: TontineListProps) {
   const { spacing, colors } = useAppTheme()
   const data = mockTontines[filter]
 
-  const renderTontine = ({ item }: { item: (typeof mockTontines.active)[0] }) => (
+  const renderTontine = ({ item }: { item: Tontine }) => (
     <TontineCard tontine={item} style={{ marginBottom: spacing.md }} />
   )
 
