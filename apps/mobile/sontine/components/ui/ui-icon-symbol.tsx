@@ -49,6 +49,8 @@ const MAPPING: Record<string, string> = {
   'square.and.arrow.down.fill': 'download',
   'square.and.arrow.up.fill': 'upload',
   'network.fill': 'network-check',
+  'hand.wave.fill': 'waving-hand',
+  'auto-awesome': 'auto-awesome',
 }
 
 /**

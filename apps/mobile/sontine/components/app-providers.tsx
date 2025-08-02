@@ -4,6 +4,7 @@ import { ClusterProvider } from './cluster/cluster-provider'
 import { SolanaProvider } from '@/components/solana/solana-provider'
 import { AppTheme } from '@/components/app-theme'
 import { AuthProvider } from '@/components/auth/auth-provider'
+import { OnboardingProvider } from '@/hooks/use-onboarding'
 
 const queryClient = new QueryClient()
 
@@ -13,7 +14,9 @@ export function AppProviders({ children }: PropsWithChildren) {
       <QueryClientProvider client={queryClient}>
         <ClusterProvider>
           <SolanaProvider>
-            <AuthProvider>{children}</AuthProvider>
+            <AuthProvider>
+              <OnboardingProvider>{children}</OnboardingProvider>
+            </AuthProvider>
           </SolanaProvider>
         </ClusterProvider>
       </QueryClientProvider>
