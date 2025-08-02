@@ -4,6 +4,56 @@
       "path": "./media/app_icon.png",
       "sha256": "fp0gvAHYGwJ7D9wWRNo/APHDDTUwIovshdJ7N1xvPWU=",
       "uri": "https://arweave.net/j4vLzlOX7u5uZ0rm-vtQD7lRPgCcqwT5h8NHq4eakdw"
+    },
+    "./media/banner.png": {
+      "path": "./media/banner.png",
+      "sha256": "i4j8BRllCaVbVRyl/Axtlpstty3WDg2CVKbicWvFKG4=",
+      "uri": "https://arweave.net/UKDZlmf2vdpTOm8lzP-yGoSYzg0huBSFGzrKl8k9Oyw"
+    },
+    "./media/release_icon.png": {
+      "path": "./media/release_icon.png",
+      "sha256": "fp0gvAHYGwJ7D9wWRNo/APHDDTUwIovshdJ7N1xvPWU=",
+      "uri": "https://arweave.net/7i38taxIKMrKVPg0d8dFRaGBF5Qze9WJcvxX-GvqKyo"
+    },
+    "./media/feature_graphic.png": {
+      "path": "./media/feature_graphic.png",
+      "sha256": "7DUKpBEW4qurcaiMEtT7DI/sIM2i64ET1SKg4aP1p4I=",
+      "uri": "https://arweave.net/efKEcjPa58fnLFCD0GXSDzkWXW2wES8A2VSnS0a7qbQ"
+    },
+    "./media/screenshot_5.png": {
+      "path": "./media/screenshot_5.png",
+      "sha256": "7zbfHZkrFdBH5t2UK6GY+ECdlouXH7RwLq8MRcJtCNg=",
+      "uri": "https://arweave.net/ow8hB7IKRa2fNaur344NLS94dulZJljx3XDEs869dNM"
+    },
+    "./media/screenshot_4.png": {
+      "path": "./media/screenshot_4.png",
+      "sha256": "sFbu9cG3+dJ0r9BSJzwhgq9+K/cohnCRyyIhi+odFsM=",
+      "uri": "https://arweave.net/iErYnnxRzQbVqBN7pMBY67anpMj7Q3LtCb3eLlV94T4"
+    },
+    "./media/screenshot_6.png": {
+      "path": "./media/screenshot_6.png",
+      "sha256": "HIWlh3lX1mNkjHVlB0X4UbhWhZlw6qTmPPhENKV3U0U=",
+      "uri": "https://arweave.net/0Xstw8h-9aPFPVNM2H7Nog0uQ7bcx-FKUQMXafR5byE"
+    },
+    "./media/screenshot_2.png": {
+      "path": "./media/screenshot_2.png",
+      "sha256": "TvghS42PFQb42IXKBj1MghgEqaacxudSRGnjcovb3s4=",
+      "uri": "https://arweave.net/sGfcgu3CNUI5inmBvVrH0PrkcGa2UIY2PUi15nVhijo"
+    },
+    "./media/screenshot_3.png": {
+      "path": "./media/screenshot_3.png",
+      "sha256": "km/o2c2xjYu2nBPE4JZUcKgu+vWwfcKUJdluBYMCcHk=",
+      "uri": "https://arweave.net/L0uGnWVD6oA_VTqI_QnJ6K8QReTPHzDahDe8iQCIpe4"
+    },
+    "./media/screenshot_1.png": {
+      "path": "./media/screenshot_1.png",
+      "sha256": "t6JMdzILOIb2aQgMbUpUhJuIabV5/lofGR4OGh5cl8s=",
+      "uri": "https://arweave.net/oioYNZqOhc6-v9NQGkbelVrSSMqz2E4A2ZXzQTS537s"
+    },
+    "./files/sontine-release.apk": {
+      "path": "./files/sontine-release.apk",
+      "sha256": "WoUsmxxJXlcl/pikwVTUFEFAfKRLcM9KLWFkWK7IsPw=",
+      "uri": "https://arweave.net/hF33s9dyENJEqchpt4AsPNw13xs-gfKd6_n8Avk0OF0"
     }
   }
 }
