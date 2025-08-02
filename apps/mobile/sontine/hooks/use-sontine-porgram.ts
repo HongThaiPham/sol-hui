@@ -1,3 +1,4 @@
+import { PublicKey } from '@solana/web3.js';
 import { useConnection } from '@/components/solana/solana-provider'
 import { useAnchorWallet } from './use-anchor-wallet'
 import * as anchor from '@coral-xyz/anchor'
@@ -64,6 +65,11 @@ export function useSontineProgram() {
     enabled: !!sontineProgram,
   })
 
+
+
+
+
+
   // Create group mutation
   const createGroup = useMutation({
     mutationKey: ['create-group'],
@@ -121,4 +127,57 @@ export function useSontineProgram() {
     groupAccounts,
     createGroup,
   }
+}
+
+// Custom hook to get a specific group by address
+export function useGetGroup(groupAddress: string) {
+  const { sontineProgram } = useSontineProgram()
+
+  return useQuery({
+    queryKey: ['get-group', { groupAddress }],
+    queryFn: async () => {
+      if (!sontineProgram || !groupAddress) {
+        return null
+      }
+
+      try {
+        const account = await sontineProgram.account.group.fetch(groupAddress)
+        return account
+      } catch (error) {
+        console.error('Error fetching group:', error)
+        throw error
+      }
+    },
+    enabled: !!sontineProgram && !!groupAddress,
+  })
+}
+
+
+export function useGroupMembers(groupAddress: string, limit: number = 10, offset: number = 0) {
+  const { sontineProgram } = useSontineProgram()
+
+  return useQuery({
+    queryKey: ['get-group-members', { groupAddress }],
+    queryFn: async () => {
+      if (!sontineProgram || !groupAddress) {
+        return null
+      }
+
+      try {
+        const accounts = await sontineProgram.account.member.all([
+          {
+            memcmp: {
+              offset: 8 + 32, // Discriminator + admin pubkey
+              bytes: groupAddress,
+            },
+          },
+        ])
+        return accounts
+      } catch (error) {
+        console.error('Error fetching group members:', error)
+        throw error
+      }
+    },
+    enabled: !!sontineProgram && !!groupAddress,
+  })
 }

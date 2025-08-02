@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, StyleProp, ViewStyle, TouchableOpacity } from 'react-native'
+import { View, StyleProp, ViewStyle } from 'react-native'
 import { useRouter } from 'expo-router'
 import { AppText } from '@/components/app-text'
 import { SontineCard, SontineCardContent } from '@/components/ui/sontine-card'
@@ -7,7 +7,6 @@ import { UiIconSymbol } from '@/components/ui/ui-icon-symbol'
 import { useAppTheme } from '@/components/app-theme'
 import { Tontine } from './tontine-list'
 import { CURRENCY_SYMBOL } from '@/hooks/use-sontine-porgram'
-import { SontineActionButton } from '../ui/sontine-button'
 import { Button } from 'react-native-paper'
 
 interface TontineCardProps {

@@ -17,6 +17,7 @@ export interface Tontine {
   status: 'active' | 'pending' | 'completed'
   myTurn: boolean
   biddingOpen: boolean
+  gid: string
 }
 
 // Mock tontine data
@@ -35,6 +36,7 @@ const mockTontines = {
       status: 'active' as const,
       myTurn: false,
       biddingOpen: true,
+      gid: '1',
     },
     {
       id: '2',
@@ -49,6 +51,7 @@ const mockTontines = {
       status: 'active' as const,
       myTurn: true,
       biddingOpen: false,
+      gid: '2',
     },
     {
       id: '3',
@@ -63,6 +66,7 @@ const mockTontines = {
       status: 'active' as const,
       myTurn: false,
       biddingOpen: false,
+      gid: '3',
     },
   ],
   pending: [
@@ -79,6 +83,7 @@ const mockTontines = {
       status: 'pending' as const,
       myTurn: false,
       biddingOpen: false,
+      gid: '4',
     },
   ],
   completed: [
@@ -95,6 +100,7 @@ const mockTontines = {
       status: 'completed' as const,
       myTurn: false,
       biddingOpen: false,
+      gid: '5',
     },
   ],
 }

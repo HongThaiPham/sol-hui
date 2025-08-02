@@ -99,6 +99,7 @@ const convertGroupToTontine = (groupAccount: any): Tontine => {
     status: getStatusString(group.status),
     myTurn: false, // We don't have this data from the group account
     biddingOpen: group.selectionMethod?.auction !== undefined && getStatusString(group.status) === 'active',
+    gid: group.groupId.toString(),
   }
 }
 

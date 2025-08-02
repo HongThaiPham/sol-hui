@@ -51,6 +51,7 @@ const MAPPING: Record<string, string> = {
   'network.fill': 'network-check',
   'hand.wave.fill': 'waving-hand',
   'auto-awesome': 'auto-awesome',
+  'supervised-user-circle': 'supervised-user-circle',
 }
 
 /**
