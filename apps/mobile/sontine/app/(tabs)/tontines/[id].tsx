@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { ScrollView, View } from 'react-native'
+import { Alert, ScrollView, View } from 'react-native'
 import { useLocalSearchParams } from 'expo-router'
 import { AppPage } from '@/components/app-page'
 import { AppText } from '@/components/app-text'
@@ -7,8 +7,18 @@ import { SontineCard, SontineCardContent } from '@/components/ui/sontine-card'
 import { SontineActionButton, SontineButton } from '@/components/ui/sontine-button'
 import { UiIconSymbol } from '@/components/ui/ui-icon-symbol'
 import { useAppTheme } from '@/components/app-theme'
-import { useGetGroup, USDC_DECIMALS, CURRENCY_SYMBOL } from '@/hooks/use-sontine-porgram'
+import {
+  useGetGroup,
+  USDC_DECIMALS,
+  CURRENCY_SYMBOL,
+  useMemberAccount,
+  useSontineProgram,
+} from '@/hooks/use-sontine-porgram'
 import { MembersTab } from '@/components/tontine/MembersTab'
+import { RoundInfo } from '@/components/tontine/RoundInfo'
+import { useAnchorWallet } from '@/hooks/use-anchor-wallet'
+
+import * as Haptics from 'expo-haptics'
 
 export default function TontineDetailScreen() {
   const { spacing, colors } = useAppTheme()
@@ -18,6 +28,17 @@ export default function TontineDetailScreen() {
   // Get group data from blockchain using the id as group address
   const groupAddress = Array.isArray(id) ? id[0] : id || ''
   const { data: groupData, isLoading, error } = useGetGroup(groupAddress)
+
+  // Get current user's wallet and check membership
+  const anchorWallet = useAnchorWallet()
+  const { joinGroup } = useSontineProgram()
+  const currentUserAddress = anchorWallet?.publicKey?.toString() || ''
+
+  // Check if current user is already a member of this group
+  const { data: memberAccount, isLoading: memberLoading } = useMemberAccount(groupAddress, currentUserAddress)
+
+  // Determine if user is a member (memberAccount exists and is not null)
+  const isUserMember = !!memberAccount
 
   // If loading, show loading state
   if (isLoading) {
@@ -73,7 +94,6 @@ export default function TontineDetailScreen() {
   // Transform blockchain data to display format
   const contributionAmount = groupData.contributionAmount.toNumber() / 10 ** USDC_DECIMALS
   const totalAmount = contributionAmount * groupData.maxMembers
-  const progress = 50 // TODO: Calculate actual progress based on current cycle
 
   return (
     <AppPage>
@@ -184,77 +204,105 @@ export default function TontineDetailScreen() {
           </View>
         </View>
 
-        {/* Progress Bar */}
+        {/* Membership Status & Join Group */}
         <View
           style={{
             padding: spacing.md,
             backgroundColor: colors.surface,
           }}
         >
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              marginBottom: spacing.xs,
-            }}
-          >
-            <AppText
-              variant="bodyMedium"
-              style={{
-                color: colors.onSurface,
-                fontWeight: '600',
-              }}
-            >
-              Progress
-            </AppText>
-            <AppText
-              variant="bodyMedium"
-              style={{
-                color: colors.onSurface,
-                fontWeight: '600',
-              }}
-            >
-              {Math.round(progress)}%
-            </AppText>
-          </View>
+          {memberLoading ? (
+            <View style={{ alignItems: 'center', padding: spacing.sm }}>
+              <AppText
+                variant="bodyMedium"
+                style={{
+                  color: colors.onSurface,
+                  opacity: 0.7,
+                }}
+              >
+                Checking membership status...
+              </AppText>
+            </View>
+          ) : isUserMember ? (
+            // User is already a member
+            <SontineCard variant="elevated" padding="md">
+              <SontineCardContent>
+                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                  <UiIconSymbol
+                    name="checkmark.circle.fill"
+                    size={24}
+                    color={colors.primary}
+                    style={{ marginRight: spacing.sm }}
+                  />
+                  <AppText
+                    variant="titleMedium"
+                    style={{
+                      color: colors.primary,
+                      fontWeight: 'bold',
+                    }}
+                  >
+                    You are a member of this group
+                  </AppText>
+                </View>
+                <AppText
+                  variant="bodyMedium"
+                  style={{
+                    color: colors.onSurface,
+                    opacity: 0.8,
+                    textAlign: 'center',
+                    marginTop: spacing.xs,
+                  }}
+                >
+                  You can participate in contributions and activities
+                </AppText>
+              </SontineCardContent>
+            </SontineCard>
+          ) : (
+            // User is not a member but has wallet connected
+            <View>
+              <SontineActionButton
+                variant="outline"
+                onPress={() => {
+                  joinGroup.mutate(groupAddress, {
+                    onSuccess: () => {
+                      Alert.alert('Success', 'Joined group successfully!')
+                      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
+                    },
+                  })
+                }}
+                icon="account-group"
+                disabled={joinGroup.isPending}
+              >
+                {joinGroup.isPending ? 'Joining Group...' : 'Join Group'}
+              </SontineActionButton>
 
-          <View
-            style={{
-              height: 8,
-              backgroundColor: colors.outline,
-              borderRadius: 4,
-              overflow: 'hidden',
-            }}
-          >
-            <View
-              style={{
-                height: '100%',
-                width: `${progress}%`,
-                backgroundColor: colors.primary,
-              }}
-            />
-          </View>
+              {/* Show error message if join failed */}
+              {joinGroup.error && (
+                <View style={{ marginTop: spacing.sm }}>
+                  <AppText
+                    variant="bodySmall"
+                    style={{
+                      color: colors.error,
+                      textAlign: 'center',
+                    }}
+                  >
+                    Failed to join group: {joinGroup.error.message}
+                  </AppText>
+                </View>
+              )}
+            </View>
+          )}
         </View>
 
-        {/* Action Buttons */}
-        {groupData.selectionMethod.auction && (
-          <View
-            style={{
-              padding: spacing.md,
-              backgroundColor: colors.surface,
-            }}
-          >
-            <SontineActionButton
-              variant="primary"
-              onPress={() => {
-                /* Handle bidding */
-              }}
-              icon="chart-bell-curve-cumulative"
-            >
-              Submit Bid
-            </SontineActionButton>
-          </View>
-        )}
+        {/* Round Information */}
+        <View
+          style={{
+            padding: spacing.md,
+            backgroundColor: colors.surface,
+          }}
+        >
+          <RoundInfo groupData={groupData} isUserMember={isUserMember} showActions={true} isCurrentRound={true} />
+        </View>
 
         {/* Tab Navigation */}
         <View
