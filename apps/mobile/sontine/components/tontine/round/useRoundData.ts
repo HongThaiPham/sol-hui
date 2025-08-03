@@ -1,48 +1,50 @@
 import { useMemo } from 'react'
-import { useRoundAccount, useMemberAccount, USDC_DECIMALS } from '@/hooks/use-sontine-porgram'
+import { useRoundAccount, useMemberAccount, USDC_DECIMALS, useGetGroup } from '@/hooks/use-sontine-porgram'
 import { useAnchorWallet } from '@/hooks/use-anchor-wallet'
 import { useAppTheme } from '@/components/app-theme'
 
 interface UseRoundDataProps {
-  groupData: any
+  groupAddress: string
+  groupData: Awaited<ReturnType<typeof useGetGroup>>['data']
   roundNumber?: number
   isCurrentRound: boolean
 }
 
-export function useRoundData({ groupData, roundNumber, isCurrentRound }: UseRoundDataProps) {
+export function useRoundData({ groupAddress, groupData, roundNumber, isCurrentRound }: UseRoundDataProps) {
   const { colors } = useAppTheme()
   const anchorWallet = useAnchorWallet()
 
   // Calculate round numbers
-  const actualRoundNumber = roundNumber !== undefined ? roundNumber : groupData.currentRound
+  const actualRoundNumber = roundNumber ?? (groupData?.currentRound || 0)
   const displayRoundNumber = actualRoundNumber + 1 // Display as 1-indexed
-  const totalRounds = groupData.totalRounds
+  const totalRounds = groupData?.totalRounds || 0
   const roundProgress = (displayRoundNumber / totalRounds) * 100
 
   // Get round account data
   const { data: roundData, isLoading: roundLoading } = useRoundAccount(
-    groupData.publicKey?.toString() || '',
+    groupAddress,
     actualRoundNumber,
     isCurrentRound
   )
+  console.log('roundData', roundData)
 
   // Get member account data to check contribution status
   const currentUserAddress = anchorWallet?.publicKey?.toString() || ''
   const { data: memberData } = useMemberAccount(
-    groupData.publicKey?.toString() || '',
+    groupAddress,
     currentUserAddress
   )
 
   // Calculate amounts
-  const contributionAmount = groupData.contributionAmount.toNumber() / 10 ** USDC_DECIMALS
-  
-  const targetAmount = roundData 
+  const contributionAmount = Number(groupData?.contributionAmount / 10 ** USDC_DECIMALS)
+
+  const targetAmount = roundData
     ? roundData.targetAmount.toNumber() / 10 ** USDC_DECIMALS
-    : contributionAmount * groupData.currentMembers
-  
+    : contributionAmount * (groupData?.currentMembers || 0)
+
   const collectedAmount = roundData
-    ? roundData.collectedAmount.toNumber() / 10 ** USDC_DECIMALS
-    : groupData.totalCollected.toNumber() / 10 ** USDC_DECIMALS
+    ? Number(roundData.collectedAmount / 10 ** USDC_DECIMALS)
+    : Number(groupData?.totalCollected / 10 ** USDC_DECIMALS)
 
   const collectionProgress = targetAmount > 0 ? (collectedAmount / targetAmount) * 100 : 0
 
@@ -52,16 +54,16 @@ export function useRoundData({ groupData, roundNumber, isCurrentRound }: UseRoun
   // Determine round status
   const roundStatus = useMemo(() => {
     if (!isCurrentRound && roundNumber !== undefined) {
-      if (roundNumber < groupData.currentRound) {
+      if (roundNumber < (groupData?.currentRound || 0)) {
         return { status: 'Completed', color: colors.primary, icon: 'checkmark.circle.fill' }
       }
-      if (roundNumber > groupData.currentRound) {
+      if (roundNumber > (groupData?.currentRound || 0)) {
         return { status: 'Upcoming', color: colors.outline, icon: 'clock' }
       }
     }
 
     // Current round logic
-    if (!groupData.startedAt) {
+    if (!groupData?.startedAt) {
       return { status: 'Not Started', color: colors.outline, icon: 'clock' }
     }
     if (collectionProgress >= 100) {
@@ -72,7 +74,7 @@ export function useRoundData({ groupData, roundNumber, isCurrentRound }: UseRoun
 
   // Contributors info
   const contributorsCount = roundData?.contributorsCount || 0
-  const expectedContributors = roundData?.expectedContributors || groupData.currentMembers
+  const expectedContributors = roundData?.expectedContributors || groupData?.currentMembers
 
   return {
     // Round info
@@ -80,23 +82,23 @@ export function useRoundData({ groupData, roundNumber, isCurrentRound }: UseRoun
     totalRounds,
     roundProgress,
     roundStatus,
-    
+
     // Amounts
     contributionAmount,
     targetAmount,
     collectedAmount,
     collectionProgress,
-    
+
     // Contributors
     contributorsCount,
     expectedContributors,
-    
+
     // User status
     hasUserContributed,
-    
+
     // Loading states
     roundLoading,
-    
+
     // Raw data
     roundData,
     memberData,

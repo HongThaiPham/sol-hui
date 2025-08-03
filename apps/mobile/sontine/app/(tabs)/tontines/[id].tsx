@@ -283,7 +283,13 @@ export default function TontineDetailScreen() {
             backgroundColor: colors.surface,
           }}
         >
-          <RoundInfo groupData={groupData} isUserMember={isUserMember} showActions={true} isCurrentRound={true} />
+          <RoundInfo
+            groupData={groupData}
+            isUserMember={isUserMember}
+            showActions={true}
+            isCurrentRound={true}
+            groupAddress={groupAddress}
+          />
         </View>
 
         {/* Tab Navigation */}

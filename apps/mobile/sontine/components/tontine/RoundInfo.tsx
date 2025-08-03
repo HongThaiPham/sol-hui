@@ -2,7 +2,7 @@ import React from 'react'
 import { View } from 'react-native'
 import { SontineCard, SontineCardContent } from '@/components/ui/sontine-card'
 import { useAppTheme } from '@/components/app-theme'
-import { useSontineProgram, CURRENCY_SYMBOL } from '@/hooks/use-sontine-porgram'
+import { useSontineProgram, CURRENCY_SYMBOL, useGetGroup } from '@/hooks/use-sontine-porgram'
 
 // Import sub-components
 import { RoundHeader } from './round/RoundHeader'
@@ -12,7 +12,8 @@ import { RoundActions } from './round/RoundActions'
 import { useRoundData } from './round/useRoundData'
 
 interface RoundInfoProps {
-  groupData: any
+  groupAddress: string
+  groupData: Awaited<ReturnType<typeof useGetGroup>>['data']
   roundNumber?: number // If not provided, uses current round
   isUserMember: boolean
   showActions?: boolean // Whether to show action buttons
@@ -25,12 +26,14 @@ export function RoundInfo({
   isUserMember,
   showActions = true,
   isCurrentRound = true,
+  groupAddress,
 }: RoundInfoProps) {
   const { spacing } = useAppTheme()
   const { contribute } = useSontineProgram()
 
   // Use custom hook to get all round data
   const roundData = useRoundData({
+    groupAddress,
     groupData,
     roundNumber,
     isCurrentRound,
@@ -38,7 +41,7 @@ export function RoundInfo({
 
   // Handle contribute action
   const handleContribute = () => {
-    contribute.mutate(groupData.publicKey?.toString() || '')
+    contribute.mutate(groupAddress)
   }
 
   // Handle bid action
@@ -54,7 +57,7 @@ export function RoundInfo({
           <RoundHeader
             displayRoundNumber={roundData.displayRoundNumber}
             totalRounds={roundData.totalRounds}
-            cycleDuration={groupData.cycleDuration}
+            cycleDuration={groupData?.cycleDuration}
             roundStatus={roundData.roundStatus}
           />
 
@@ -78,8 +81,8 @@ export function RoundInfo({
 
           <RoundStats
             contributionAmount={roundData.contributionAmount}
-            contributorsCount={roundData.contributorsCount}
-            expectedContributors={roundData.expectedContributors}
+            contributorsCount={roundData?.contributorsCount}
+            expectedContributors={roundData?.expectedContributors || 0}
             collectionProgress={roundData.collectionProgress}
             currency={CURRENCY_SYMBOL}
           />
@@ -92,9 +95,9 @@ export function RoundInfo({
           isUserMember={isUserMember}
           isCurrentRound={isCurrentRound}
           hasUserContributed={roundData.hasUserContributed}
-          isGroupStarted={!!groupData.startedAt}
+          isGroupStarted={!!groupData?.startedAt}
           isRoundActive={roundData.roundStatus.status === 'Active'}
-          isAuctionMethod={!!groupData.selectionMethod.auction}
+          isAuctionMethod={!!groupData?.selectionMethod.auction}
           contributionAmount={roundData.contributionAmount}
           currency={CURRENCY_SYMBOL}
           onContribute={handleContribute}
