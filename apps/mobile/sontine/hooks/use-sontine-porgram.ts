@@ -79,7 +79,7 @@ export function useSontineProgram() {
       auctionConfig: AuctionConfig | null
     }) => {
       if (!sontineProgram) {
-        throw Error('Counter program not instantiated')
+        throw Error('Sontine program not instantiated')
       }
 
       console.log('Creating group')
@@ -123,7 +123,7 @@ export function useSontineProgram() {
     mutationKey: ['join-group'],
     mutationFn: async (groupAddress: string) => {
       if (!sontineProgram) {
-        throw Error('Counter program not instantiated')
+        throw Error('Sontine program not instantiated')
       }
 
       return await sontineProgram.methods
@@ -160,7 +160,7 @@ export function useSontineProgram() {
     mutationKey: ['start-group'],
     mutationFn: async (groupAddress: string) => {
       if (!sontineProgram) {
-        throw Error('Counter program not instantiated')
+        throw Error('Sontine program not instantiated')
       }
 
       return await sontineProgram.methods
@@ -193,7 +193,7 @@ export function useSontineProgram() {
     mutationKey: ['contribute'],
     mutationFn: async (groupAddress: string) => {
       if (!sontineProgram || !anchorWallet) {
-        throw Error('Counter program not instantiated')
+        throw Error('Sontine program not instantiated')
       }
 
       const group = await sontineProgram.account.group.fetch(groupAddress)
@@ -234,7 +234,7 @@ export function useSontineProgram() {
     mutationKey: ['start-round'],
     mutationFn: async ({ groupAddress, roundNumber }: { groupAddress: string; roundNumber: number }) => {
       if (!sontineProgram) {
-        throw Error('Counter program not instantiated')
+        throw Error('Sontine program not instantiated')
       }
 
       return await sontineProgram.methods
