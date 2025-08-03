@@ -9,7 +9,7 @@ import { useAppTheme } from '@/components/app-theme'
 
 export default function SettingsScreen() {
   const { spacing, colors } = useAppTheme()
-  
+
   const [settings, setSettings] = useState({
     notifications: true,
     biddingAlerts: true,
@@ -20,18 +20,20 @@ export default function SettingsScreen() {
   })
 
   const toggleSetting = (key: keyof typeof settings) => {
-    setSettings(prev => ({ ...prev, [key]: !prev[key] }))
+    setSettings((prev) => ({ ...prev, [key]: !prev[key] }))
   }
 
   const handleSignOut = () => {
-    Alert.alert(
-      'Sign Out',
-      'Are you sure you want to sign out?',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        { text: 'Sign Out', style: 'destructive', onPress: () => {/* Handle sign out */} }
-      ]
-    )
+    Alert.alert('Sign Out', 'Are you sure you want to sign out?', [
+      { text: 'Cancel', style: 'cancel' },
+      {
+        text: 'Sign Out',
+        style: 'destructive',
+        onPress: () => {
+          /* Handle sign out */
+        },
+      },
+    ])
   }
 
   const settingSections = [
@@ -62,7 +64,7 @@ export default function SettingsScreen() {
           description: 'Get notified when you receive payouts',
           icon: 'trophy.fill',
         },
-      ]
+      ],
     },
     {
       title: 'Security',
@@ -73,7 +75,7 @@ export default function SettingsScreen() {
           description: 'Use fingerprint or face ID to unlock app',
           icon: 'shield.checkmark.fill',
         },
-      ]
+      ],
     },
     {
       title: 'Appearance',
@@ -84,26 +86,29 @@ export default function SettingsScreen() {
           description: 'Use dark theme for the app',
           icon: 'moon.fill',
         },
-      ]
-    }
+      ],
+    },
   ]
 
   return (
     <AppPage>
-      <ScrollView 
+      <ScrollView
         style={{ flex: 1 }}
-        contentContainerStyle={{ 
+        contentContainerStyle={{
           padding: spacing.md,
           paddingBottom: spacing.xl,
         }}
       >
         {settingSections.map((section, sectionIndex) => (
           <View key={sectionIndex} style={{ marginBottom: spacing.lg }}>
-            <AppText variant="titleMedium" style={{ 
-              color: colors.onSurface,
-              fontWeight: 'bold',
-              marginBottom: spacing.md,
-            }}>
+            <AppText
+              variant="titleMedium"
+              style={{
+                color: colors.onSurface,
+
+                marginBottom: spacing.md,
+              }}
+            >
               {section.title}
             </AppText>
 
@@ -111,49 +116,57 @@ export default function SettingsScreen() {
               {section.items.map((item, itemIndex) => (
                 <View key={item.key}>
                   <SontineCardContent style={{ padding: spacing.md }}>
-                    <View style={{ 
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                    }}>
-                      <View style={{ 
+                    <View
+                      style={{
                         flexDirection: 'row',
                         alignItems: 'center',
-                        flex: 1,
-                      }}>
-                        <View style={{
-                          width: 40,
-                          height: 40,
-                          borderRadius: 20,
-                          backgroundColor: `${colors.primary}20`,
+                        justifyContent: 'space-between',
+                      }}
+                    >
+                      <View
+                        style={{
+                          flexDirection: 'row',
                           alignItems: 'center',
-                          justifyContent: 'center',
-                          marginRight: spacing.md,
-                        }}>
-                          <UiIconSymbol 
-                            name={item.icon as any}
-                            size={20}
-                            color={colors.primary}
-                          />
+                          flex: 1,
+                        }}
+                      >
+                        <View
+                          style={{
+                            width: 40,
+                            height: 40,
+                            borderRadius: 20,
+                            backgroundColor: `${colors.primary}20`,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            marginRight: spacing.md,
+                          }}
+                        >
+                          <UiIconSymbol name={item.icon as any} size={20} color={colors.primary} />
                         </View>
-                        
+
                         <View style={{ flex: 1 }}>
-                          <AppText variant="titleSmall" style={{ 
-                            color: colors.onSurface,
-                            fontWeight: 'bold',
-                            marginBottom: spacing.xs,
-                          }}>
+                          <AppText
+                            variant="titleSmall"
+                            style={{
+                              color: colors.onSurface,
+
+                              marginBottom: spacing.xs,
+                            }}
+                          >
                             {item.title}
                           </AppText>
-                          <AppText variant="bodySmall" style={{ 
-                            color: colors.onSurface,
-                            opacity: 0.7,
-                          }}>
+                          <AppText
+                            variant="bodySmall"
+                            style={{
+                              color: colors.onSurface,
+                              opacity: 0.7,
+                            }}
+                          >
                             {item.description}
                           </AppText>
                         </View>
                       </View>
-                      
+
                       <Switch
                         value={settings[item.key]}
                         onValueChange={() => toggleSetting(item.key)}
@@ -162,14 +175,16 @@ export default function SettingsScreen() {
                       />
                     </View>
                   </SontineCardContent>
-                  
+
                   {itemIndex < section.items.length - 1 && (
-                    <View style={{
-                      height: 1,
-                      backgroundColor: colors.outline,
-                      marginLeft: spacing.md + 40 + spacing.md,
-                      marginRight: spacing.md,
-                    }} />
+                    <View
+                      style={{
+                        height: 1,
+                        backgroundColor: colors.outline,
+                        marginLeft: spacing.md + 40 + spacing.md,
+                        marginRight: spacing.md,
+                      }}
+                    />
                   )}
                 </View>
               ))}
@@ -180,14 +195,17 @@ export default function SettingsScreen() {
         {/* App Info */}
         <SontineCard variant="outlined" padding="md" style={{ marginBottom: spacing.lg }}>
           <SontineCardContent>
-            <AppText variant="titleSmall" style={{ 
-              color: colors.onSurface,
-              fontWeight: 'bold',
-              marginBottom: spacing.sm,
-            }}>
+            <AppText
+              variant="titleSmall"
+              style={{
+                color: colors.onSurface,
+
+                marginBottom: spacing.sm,
+              }}
+            >
               App Information
             </AppText>
-            
+
             <View style={{ gap: spacing.sm }}>
               <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                 <AppText variant="bodyMedium" style={{ color: colors.onSurface, opacity: 0.7 }}>
@@ -197,7 +215,7 @@ export default function SettingsScreen() {
                   1.0.0
                 </AppText>
               </View>
-              
+
               <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                 <AppText variant="bodyMedium" style={{ color: colors.onSurface, opacity: 0.7 }}>
                   Build
@@ -220,9 +238,7 @@ export default function SettingsScreen() {
             borderColor: '#DC2626',
           }}
         >
-          <AppText style={{ color: '#DC2626', fontWeight: 'bold' }}>
-            Sign Out
-          </AppText>
+          <AppText style={{ color: '#DC2626', fontWeight: 'bold' }}>Sign Out</AppText>
         </SontineButton>
       </ScrollView>
     </AppPage>

@@ -54,6 +54,31 @@ export function useMobileWallet() {
     [authorizeSession],
   )
 
+  const signTransaction = useCallback(
+    async <T extends Transaction | VersionedTransaction>(transaction: T): Promise<T> => {
+      return await transact(async (wallet) => {
+        await authorizeSession(wallet)
+        const signedTransactions = await wallet.signTransactions({
+          transactions: [transaction],
+        })
+        return signedTransactions[0]
+      })
+    },
+    [authorizeSession],
+  )
+
+  const signAllTransactions = useCallback(
+    async <T extends Transaction | VersionedTransaction>(transactions: T[]): Promise<T[]> => {
+      return await transact(async (wallet) => {
+        await authorizeSession(wallet)
+        return await wallet.signTransactions({
+          transactions,
+        })
+      })
+    },
+    [authorizeSession],
+  )
+
   return useMemo(
     () => ({
       connect,
@@ -61,7 +86,9 @@ export function useMobileWallet() {
       disconnect,
       signAndSendTransaction,
       signMessage,
+      signTransaction,
+      signAllTransactions,
     }),
-    [connect, disconnect, signAndSendTransaction, signIn, signMessage],
+    [connect, disconnect, signAndSendTransaction, signIn, signMessage, signTransaction, signAllTransactions],
   )
 }

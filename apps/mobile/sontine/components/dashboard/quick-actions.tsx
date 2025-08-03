@@ -14,7 +14,6 @@ const getStyles = ({ spacing, colors }: AppTheme) =>
     sectionTitle: {
       marginBottom: spacing.lg,
       color: colors.onSurface,
-      fontWeight: 'bold',
     },
     actionsContainer: {
       gap: spacing.md,
@@ -44,7 +43,7 @@ export function QuickActions() {
       icon: 'account-group',
       variant: 'accent' as const,
       iconColor: '#0E151A',
-      onPress: () => router.push('/(tabs)/tontines/create'),
+      onPress: () => router.push('/create-group'),
     },
     {
       title: 'My Wallet',

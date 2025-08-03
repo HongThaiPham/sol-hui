@@ -1,6 +1,6 @@
 import React from 'react'
 import { TextInput, TextInputProps, HelperText } from 'react-native-paper'
-import { View, StyleProp, ViewStyle } from 'react-native'
+import { View, StyleProp, ViewStyle, TextStyle } from 'react-native'
 import { useAppTheme } from '@/components/app-theme'
 
 export interface SontineInputProps extends TextInputProps {
@@ -22,8 +22,8 @@ export function SontineInput({
 }: SontineInputProps) {
   const { paperTheme, colors, spacing, borderRadius } = useAppTheme()
 
-  const getInputStyle = (): StyleProp<ViewStyle> => {
-    const baseStyle: ViewStyle = {
+  const getInputStyle = (): StyleProp<TextStyle> => {
+    const baseStyle: TextStyle = {
       backgroundColor: variant === 'flat' ? colors.surfaceVariant : 'transparent',
     }
 

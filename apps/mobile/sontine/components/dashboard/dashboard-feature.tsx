@@ -7,6 +7,7 @@ import { QuickActions } from './quick-actions'
 import { ActivityFeed } from './activity-feed'
 import { ReputationDisplay } from './reputation-display'
 import { GradientBackground } from '@/components/ui/gradient-background'
+import { DashboardTour } from '@/components/onboarding/dashboard-tour'
 
 const getStyles = ({ spacing, colors }: AppTheme) =>
   StyleSheet.create({
@@ -112,6 +113,9 @@ export function DashboardFeature() {
           <ActivityFeed />
         </View>
       </Animated.ScrollView>
+
+      {/* Dashboard Tour */}
+      <DashboardTour />
     </SafeAreaView>
   )
 }

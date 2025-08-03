@@ -12,7 +12,7 @@ const getStyles = ({ spacing, colors }: AppTheme) =>
     },
     sectionTitle: {
       fontSize: 20,
-      fontWeight: 'bold',
+
       color: colors.onSurface,
       marginBottom: spacing.md,
     },

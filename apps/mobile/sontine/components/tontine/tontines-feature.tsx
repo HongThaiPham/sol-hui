@@ -40,12 +40,7 @@ export function TontinesFeature() {
           Browse
         </SontineButton>
 
-        <SontineButton
-          variant="accent"
-          size="md"
-          style={{ flex: 1 }}
-          onPress={() => router.push('/(tabs)/tontines/create')}
-        >
+        <SontineButton variant="accent" size="md" style={{ flex: 1 }} onPress={() => router.push('/create-group')}>
           <UiIconSymbol name="plus.circle.fill" size={16} color="#0E151A" />
           Create
         </SontineButton>

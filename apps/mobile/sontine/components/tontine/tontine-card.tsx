@@ -1,11 +1,14 @@
 import React from 'react'
-import { View, StyleProp, ViewStyle, TouchableOpacity } from 'react-native'
+import { View, StyleProp, ViewStyle } from 'react-native'
 import { useRouter } from 'expo-router'
 import { AppText } from '@/components/app-text'
 import { SontineCard, SontineCardContent } from '@/components/ui/sontine-card'
 import { UiIconSymbol } from '@/components/ui/ui-icon-symbol'
 import { useAppTheme } from '@/components/app-theme'
 import { Tontine } from './tontine-list'
+import { CURRENCY_SYMBOL } from '@/hooks/use-sontine-porgram'
+import { Button } from 'react-native-paper'
+import { getGroupStatusInfo, formatGroupStatus, type GroupStatus } from '@/utils/groupStatus'
 
 interface TontineCardProps {
   tontine: Tontine
@@ -16,37 +19,29 @@ export function TontineCard({ tontine, style }: TontineCardProps) {
   const { spacing, colors } = useAppTheme()
   const router = useRouter()
 
-  const getStatusColor = () => {
-    switch (tontine.status) {
+  // Convert old status format to new GroupStatus format
+  const convertToGroupStatus = (status: string): GroupStatus => {
+    switch (status) {
       case 'active':
-        return colors.primary // Green
+        return { active: {} }
       case 'pending':
-        return '#134158' // Navy blue
+        return { forming: {} }
       case 'completed':
-        return '#14F1B2' // Bright mint
+        return { completed: {} }
       default:
-        return colors.primary
+        return { forming: {} }
     }
   }
 
-  const getStatusIcon = () => {
-    switch (tontine.status) {
-      case 'active':
-        return 'checkmark.circle.fill'
-      case 'pending':
-        return 'clock.fill'
-      case 'completed':
-        return 'trophy.fill'
-      default:
-        return 'checkmark.circle.fill'
-    }
-  }
+  // Get status information using utility function
+  const groupStatus = convertToGroupStatus(tontine.status)
+  const statusInfo = getGroupStatusInfo(groupStatus)
 
-  const progress = (tontine.currentRound / tontine.totalRounds) * 100
+  const progress = ((tontine.currentRound + 1) / tontine.totalRounds) * 100
 
   return (
-    <TouchableOpacity onPress={() => router.push(`/(tabs)/tontines/${tontine.id}`)} style={style}>
-      <SontineCard variant="elevated" padding="md">
+    <Button mode="text" onPress={() => router.push(`/(tabs)/tontines/${tontine.id}`)}>
+      <SontineCard padding="sm" style={{ width: '100%' }}>
         <SontineCardContent>
           {/* Header */}
           <View
@@ -62,7 +57,6 @@ export function TontineCard({ tontine, style }: TontineCardProps) {
                 variant="titleMedium"
                 style={{
                   color: colors.onSurface,
-                  fontWeight: 'bold',
                   marginBottom: spacing.xs,
                 }}
               >
@@ -76,7 +70,7 @@ export function TontineCard({ tontine, style }: TontineCardProps) {
                   opacity: 0.7,
                 }}
               >
-                {tontine.description}
+                {statusInfo.description}
               </AppText>
             </View>
 
@@ -84,23 +78,23 @@ export function TontineCard({ tontine, style }: TontineCardProps) {
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
-                backgroundColor: `${getStatusColor()}20`,
+                backgroundColor: `${statusInfo.color}20`,
                 paddingHorizontal: spacing.sm,
                 paddingVertical: spacing.xs,
                 borderRadius: 12,
               }}
             >
-              <UiIconSymbol name={getStatusIcon() as any} size={14} color={getStatusColor()} />
+              <UiIconSymbol name={statusInfo.icon as any} size={14} color={statusInfo.color} />
               <AppText
                 variant="bodySmall"
                 style={{
-                  color: getStatusColor(),
+                  color: statusInfo.color,
                   fontWeight: '600',
                   marginLeft: spacing.xs,
                   textTransform: 'capitalize',
                 }}
               >
-                {tontine.status}
+                {statusInfo.label}
               </AppText>
             </View>
           </View>
@@ -118,10 +112,9 @@ export function TontineCard({ tontine, style }: TontineCardProps) {
                 variant="titleSmall"
                 style={{
                   color: colors.onSurface,
-                  fontWeight: 'bold',
                 }}
               >
-                {tontine.totalAmount} SOL
+                {tontine.totalAmount} {CURRENCY_SYMBOL}
               </AppText>
               <AppText
                 variant="bodySmall"
@@ -139,10 +132,9 @@ export function TontineCard({ tontine, style }: TontineCardProps) {
                 variant="titleSmall"
                 style={{
                   color: colors.onSurface,
-                  fontWeight: 'bold',
                 }}
               >
-                {tontine.contributionAmount} SOL
+                {tontine.contributionAmount} {CURRENCY_SYMBOL}
               </AppText>
               <AppText
                 variant="bodySmall"
@@ -151,7 +143,7 @@ export function TontineCard({ tontine, style }: TontineCardProps) {
                   opacity: 0.6,
                 }}
               >
-                Per Round
+                {statusInfo.status === 'forming' ? 'To Join' : 'Per Round'}
               </AppText>
             </View>
 
@@ -160,7 +152,6 @@ export function TontineCard({ tontine, style }: TontineCardProps) {
                 variant="titleSmall"
                 style={{
                   color: colors.onSurface,
-                  fontWeight: 'bold',
                 }}
               >
                 {tontine.members}
@@ -176,6 +167,33 @@ export function TontineCard({ tontine, style }: TontineCardProps) {
               </AppText>
             </View>
           </View>
+
+          {/* Status-specific Information */}
+          {!statusInfo.isActive && (
+            <View
+              style={{
+                backgroundColor: `${statusInfo.color}10`,
+                padding: spacing.sm,
+                borderRadius: 8,
+                marginBottom: spacing.md,
+                borderLeftWidth: 3,
+                borderLeftColor: statusInfo.color,
+              }}
+            >
+              <AppText
+                variant="bodySmall"
+                style={{
+                  color: statusInfo.color,
+                  fontWeight: '600',
+                }}
+              >
+                {statusInfo.status === 'forming' && 'Accepting new members'}
+                {statusInfo.status === 'completed' && 'All rounds completed successfully'}
+                {statusInfo.status === 'paused' && 'Temporarily suspended'}
+                {statusInfo.status === 'cancelled' && 'Group has been disbanded'}
+              </AppText>
+            </View>
+          )}
 
           {/* Progress */}
           <View style={{ marginBottom: spacing.md }}>
@@ -193,39 +211,45 @@ export function TontineCard({ tontine, style }: TontineCardProps) {
                   opacity: 0.7,
                 }}
               >
-                Round {tontine.currentRound} of {tontine.totalRounds}
+                {statusInfo.isActive
+                  ? `Round ${tontine.currentRound + 1} of ${tontine.totalRounds}`
+                  : `${tontine.totalRounds} Rounds Total`}
               </AppText>
-              <AppText
-                variant="bodySmall"
-                style={{
-                  color: colors.onSurface,
-                  opacity: 0.7,
-                }}
-              >
-                {Math.round(progress)}%
-              </AppText>
+              {statusInfo.isActive && (
+                <AppText
+                  variant="bodySmall"
+                  style={{
+                    color: colors.onSurface,
+                    opacity: 0.7,
+                  }}
+                >
+                  {Math.round(progress)}%
+                </AppText>
+              )}
             </View>
 
-            <View
-              style={{
-                height: 4,
-                backgroundColor: colors.outline,
-                borderRadius: 2,
-                overflow: 'hidden',
-              }}
-            >
+            {statusInfo.isActive && (
               <View
                 style={{
-                  height: '100%',
-                  width: `${progress}%`,
-                  backgroundColor: getStatusColor(),
+                  height: 4,
+                  backgroundColor: colors.outline,
+                  borderRadius: 2,
+                  overflow: 'hidden',
                 }}
-              />
-            </View>
+              >
+                <View
+                  style={{
+                    height: '100%',
+                    width: `${progress}%`,
+                    backgroundColor: statusInfo.color,
+                  }}
+                />
+              </View>
+            )}
           </View>
 
           {/* Action Indicators */}
-          {tontine.status === 'active' && (
+          {statusInfo.isActive && (
             <View
               style={{
                 flexDirection: 'row',
@@ -285,8 +309,35 @@ export function TontineCard({ tontine, style }: TontineCardProps) {
               )}
             </View>
           )}
+
+          {/* Status-specific Call to Action */}
+          {statusInfo.status === 'forming' && (
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                backgroundColor: `${statusInfo.color}15`,
+                paddingHorizontal: spacing.sm,
+                paddingVertical: spacing.xs,
+                borderRadius: 8,
+                marginTop: spacing.sm,
+              }}
+            >
+              <UiIconSymbol name="badge" size={14} color={statusInfo.color} />
+              <AppText
+                variant="bodySmall"
+                style={{
+                  color: statusInfo.color,
+                  fontWeight: '600',
+                  marginLeft: spacing.xs,
+                }}
+              >
+                Join this group
+              </AppText>
+            </View>
+          )}
         </SontineCardContent>
       </SontineCard>
-    </TouchableOpacity>
+    </Button>
   )
 }

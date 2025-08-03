@@ -63,73 +63,86 @@ const mockNotifications = [
 export default function NotificationsScreen() {
   const { spacing, colors } = useAppTheme()
 
-  const renderNotification = ({ item }: { item: typeof mockNotifications[0] }) => (
-    <SontineCard 
-      variant="default" 
-      padding="md" 
-      style={{ 
+  const renderNotification = ({ item }: { item: (typeof mockNotifications)[0] }) => (
+    <SontineCard
+      variant="default"
+      padding="md"
+      style={{
         marginBottom: spacing.sm,
         opacity: item.read ? 0.8 : 1,
       }}
     >
       <SontineCardContent>
-        <View style={{ 
-          flexDirection: 'row', 
-          alignItems: 'flex-start',
-          gap: spacing.md,
-        }}>
-          <View style={{
-            width: 40,
-            height: 40,
-            borderRadius: 20,
-            backgroundColor: `${item.color}20`,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
-            <UiIconSymbol 
-              name={item.icon as any}
-              size={20}
-              color={item.color}
-            />
-          </View>
-          
-          <View style={{ flex: 1 }}>
-            <View style={{ 
-              flexDirection: 'row',
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'flex-start',
+            gap: spacing.md,
+          }}
+        >
+          <View
+            style={{
+              width: 40,
+              height: 40,
+              borderRadius: 20,
+              backgroundColor: `${item.color}20`,
               alignItems: 'center',
-              justifyContent: 'space-between',
-              marginBottom: spacing.xs,
-            }}>
-              <AppText variant="titleSmall" style={{ 
-                color: colors.onSurface,
-                fontWeight: 'bold',
-                flex: 1,
-              }}>
+              justifyContent: 'center',
+            }}
+          >
+            <UiIconSymbol name={item.icon as any} size={20} color={item.color} />
+          </View>
+
+          <View style={{ flex: 1 }}>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                marginBottom: spacing.xs,
+              }}
+            >
+              <AppText
+                variant="titleSmall"
+                style={{
+                  color: colors.onSurface,
+
+                  flex: 1,
+                }}
+              >
                 {item.title}
               </AppText>
-              
+
               {!item.read && (
-                <View style={{
-                  width: 8,
-                  height: 8,
-                  borderRadius: 4,
-                  backgroundColor: colors.primary,
-                }} />
+                <View
+                  style={{
+                    width: 8,
+                    height: 8,
+                    borderRadius: 4,
+                    backgroundColor: colors.primary,
+                  }}
+                />
               )}
             </View>
-            
-            <AppText variant="bodyMedium" style={{ 
-              color: colors.onSurface,
-              opacity: 0.8,
-              marginBottom: spacing.xs,
-            }}>
+
+            <AppText
+              variant="bodyMedium"
+              style={{
+                color: colors.onSurface,
+                opacity: 0.8,
+                marginBottom: spacing.xs,
+              }}
+            >
               {item.message}
             </AppText>
-            
-            <AppText variant="bodySmall" style={{ 
-              color: colors.onSurface,
-              opacity: 0.6,
-            }}>
+
+            <AppText
+              variant="bodySmall"
+              style={{
+                color: colors.onSurface,
+                opacity: 0.6,
+              }}
+            >
               {item.timestamp}
             </AppText>
           </View>

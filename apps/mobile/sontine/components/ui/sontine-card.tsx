@@ -11,6 +11,15 @@ export interface SontineCardProps extends CardProps {
 export function SontineCard({ variant = 'default', padding = 'md', style, children, ...props }: SontineCardProps) {
   const { paperTheme, colors, spacing, borderRadius, shadows } = useAppTheme()
 
+  // Helper function to extract shadow styles without elevation for Card component
+  const getShadowStyleWithoutElevation = (shadowStyle: typeof shadows.sm) => {
+    const { elevation, ...shadowWithoutElevation } = shadowStyle
+    return shadowWithoutElevation
+  }
+
+  // Filter out elevation from props to avoid type conflicts
+  const { elevation, ...cardProps } = props as any
+
   const getCardStyle = (): StyleProp<ViewStyle> => {
     const baseStyle: ViewStyle = {
       borderRadius: borderRadius.xl,
@@ -29,7 +38,7 @@ export function SontineCard({ variant = 'default', padding = 'md', style, childr
       case 'elevated':
         return {
           ...baseStyle,
-          ...shadows.md,
+          ...getShadowStyleWithoutElevation(shadows.md),
         }
       case 'outlined':
         return {
@@ -42,36 +51,36 @@ export function SontineCard({ variant = 'default', padding = 'md', style, childr
         return {
           ...baseStyle,
           backgroundColor: colors.primary,
-          ...shadows.sm,
+          ...getShadowStyleWithoutElevation(shadows.sm),
         }
       case 'accent':
         return {
           ...baseStyle,
           backgroundColor: colors.secondary,
-          ...shadows.sm,
+          ...getShadowStyleWithoutElevation(shadows.sm),
         }
       case 'mint':
         return {
           ...baseStyle,
           backgroundColor: '#8DFFF0', // Light mint
-          ...shadows.sm,
+          ...getShadowStyleWithoutElevation(shadows.sm),
         }
       case 'navy':
         return {
           ...baseStyle,
           backgroundColor: '#134158', // Navy blue
-          ...shadows.sm,
+          ...getShadowStyleWithoutElevation(shadows.sm),
         }
       default:
         return {
           ...baseStyle,
-          ...shadows.sm,
+          ...getShadowStyleWithoutElevation(shadows.sm),
         }
     }
   }
 
   return (
-    <Card style={[getCardStyle(), style]} theme={paperTheme} {...props}>
+    <Card style={[getCardStyle(), style]} theme={paperTheme} {...cardProps}>
       {children}
     </Card>
   )
