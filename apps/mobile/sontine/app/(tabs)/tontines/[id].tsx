@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { ScrollView, View } from 'react-native'
-import { useLocalSearchParams, useRouter } from 'expo-router'
+import { useLocalSearchParams } from 'expo-router'
 import { AppPage } from '@/components/app-page'
 import { AppText } from '@/components/app-text'
 import { SontineCard, SontineCardContent } from '@/components/ui/sontine-card'
@@ -13,7 +13,6 @@ import { MembersTab } from '@/components/tontine/MembersTab'
 export default function TontineDetailScreen() {
   const { spacing, colors } = useAppTheme()
   const { id } = useLocalSearchParams()
-  const router = useRouter()
   const [activeTab, setActiveTab] = useState<'overview' | 'members' | 'activity'>('overview')
 
   // Get group data from blockchain using the id as group address
@@ -266,9 +265,9 @@ export default function TontineDetailScreen() {
           }}
         >
           {[
-            { key: 'overview', label: 'Overview' },
-            { key: 'members', label: 'Members' },
-            { key: 'activity', label: 'Activity' },
+            { key: 'overview', label: 'Overview', icon: 'info.circle.fill' },
+            { key: 'members', label: 'Members', icon: 'person.3.fill' },
+            { key: 'activity', label: 'Activity', icon: 'chart.line.uptrend.xyaxis' },
           ].map((tab) => (
             <SontineButton
               key={tab.key}
@@ -277,7 +276,11 @@ export default function TontineDetailScreen() {
               style={{ flex: 1, marginHorizontal: spacing.xs }}
               onPress={() => setActiveTab(tab.key as any)}
             >
-              {tab.label}
+              <UiIconSymbol
+                name={tab.icon as any}
+                size={20}
+                color={activeTab === tab.key ? colors.onPrimary : colors.primary}
+              />
             </SontineButton>
           ))}
         </View>

@@ -104,14 +104,14 @@ export function SontineButton({
     if (!fontsLoaded) return {}
 
     return {
-      fontFamily: fontFamily.primary, // Sử dụng PixeloidSans-Regular cho button text
+      fontFamily: fontFamily.primary,
       fontSize: size === 'sm' ? 14 : size === 'md' ? 16 : 18,
     }
   }
 
   const getContentStyle = () => {
     return {
-      paddingHorizontal: props.icon ? spacing.xs : 0, // Điều chỉnh padding khi có icon
+      paddingHorizontal: props.icon ? spacing.xs : 0,
       flexDirection: 'row' as const,
       alignItems: 'center' as const,
     }

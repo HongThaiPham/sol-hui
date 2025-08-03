@@ -8,7 +8,7 @@ import idl from '@/assets/idls/sontine.json'
 import { Sontine } from '@/assets/idls/sontine'
 import { useMemo } from 'react'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { TOKEN_2022_PROGRAM_ID } from '@solana/spl-token'
+import { getAssociatedTokenAddress, TOKEN_2022_PROGRAM_ID } from '@solana/spl-token'
 import { CycleDuration, SelectionMethod } from '@/utils/sontine.type'
 
 // Define AuctionConfig type locally since it's not exported from sontine.type
@@ -66,10 +66,6 @@ export function useSontineProgram() {
   })
 
 
-
-
-
-
   // Create group mutation
   const createGroup = useMutation({
     mutationKey: ['create-group'],
@@ -122,12 +118,100 @@ export function useSontineProgram() {
     },
   })
 
+  const joinGroup = useMutation({
+    mutationKey: ['join-group'],
+    mutationFn: async (groupAddress: string) => {
+      if (!sontineProgram) {
+        throw Error('Counter program not instantiated')
+      }
+
+      return await sontineProgram.methods
+        .joinGroup()
+        .accounts({
+          group: groupAddress,
+          member: anchorWallet?.publicKey,
+        })
+        .rpc()
+    },
+    onSuccess: async (signature: string) => {
+      console.log('Joined group:', signature)
+      const { value: latestBlockhash } = await connection.getLatestBlockhashAndContext()
+      await connection.confirmTransaction({ signature, ...latestBlockhash }, 'confirmed')
+    },
+    onError: (error: Error) => {
+      console.log('Join group error:', error)
+    },
+  })
+
+  const startGroup = useMutation({
+    mutationKey: ['start-group'],
+    mutationFn: async (groupAddress: string) => {
+      if (!sontineProgram) {
+        throw Error('Counter program not instantiated')
+      }
+
+      return await sontineProgram.methods
+        .startGroup()
+        .accounts({
+          group: groupAddress,
+          admin: anchorWallet?.publicKey,
+        })
+        .rpc()
+    },
+    onSuccess: async (signature: string) => {
+      console.log('Started group:', signature)
+      const { value: latestBlockhash } = await connection.getLatestBlockhashAndContext()
+      await connection.confirmTransaction({ signature, ...latestBlockhash }, 'confirmed')
+    },
+    onError: (error: Error) => {
+      console.log('Start group error:', error)
+    },
+  })
+
+  const contribute = useMutation({
+    mutationKey: ['contribute'],
+    mutationFn: async (groupAddress: string) => {
+      if (!sontineProgram || !anchorWallet) {
+        throw Error('Counter program not instantiated')
+      }
+
+      const group = await sontineProgram.account.group.fetch(groupAddress)
+      const roundNumber = group.currentRound
+      const contributeAmount = group.contributionAmount
+      const [memberAccount] = getMemberPDA(sontineProgram, new PublicKey(groupAddress), anchorWallet?.publicKey)
+      return await sontineProgram.methods
+        .contribute(roundNumber, contributeAmount)
+        .accounts({
+          group: groupAddress,
+          member: anchorWallet?.publicKey,
+          mint: USDC_MINT,
+          tokenProgram: TOKEN_2022_PROGRAM_ID,
+          memberAccount,
+          memberTokenAccount: await getMemberTokenAccount(anchorWallet?.publicKey),
+        })
+        .rpc()
+    },
+    onSuccess: async (signature: string) => {
+      console.log('Contributed to group:', signature)
+      const { value: latestBlockhash } = await connection.getLatestBlockhashAndContext()
+      await connection.confirmTransaction({ signature, ...latestBlockhash }, 'confirmed')
+    },
+    onError: (error: Error) => {
+      console.log('Contribute error:', error)
+    },
+  })
+
   return {
     sontineProgram,
     groupAccounts,
     createGroup,
+    joinGroup,
+    startGroup,
+    contribute
   }
 }
+
+
 
 // Custom hook to get a specific group by address
 export function useGetGroup(groupAddress: string) {
@@ -180,4 +264,28 @@ export function useGroupMembers(groupAddress: string, limit: number = 10, offset
     },
     enabled: !!sontineProgram && !!groupAddress,
   })
+}
+
+
+
+export function getMemberPDA(
+  program: Program<Sontine>,
+  group: PublicKey,
+  member: PublicKey
+): [PublicKey, number] {
+  return PublicKey.findProgramAddressSync(
+    [Buffer.from("member"), group.toBuffer(), member.toBuffer()],
+    program.programId
+  );
+}
+
+export function getMemberTokenAccount(
+  member: PublicKey
+): Promise<PublicKey> {
+  return getAssociatedTokenAddress(
+    new PublicKey(USDC_MINT),
+    member,
+    false,
+    TOKEN_2022_PROGRAM_ID
+  );
 }
