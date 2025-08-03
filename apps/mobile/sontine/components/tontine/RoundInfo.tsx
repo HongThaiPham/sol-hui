@@ -95,7 +95,7 @@ export function RoundInfo({
           isUserMember={isUserMember}
           isCurrentRound={isCurrentRound}
           hasUserContributed={roundData.hasUserContributed}
-          isGroupStarted={!!groupData?.startedAt}
+          isGroupStarted={!!groupData?.status?.active}
           isRoundActive={roundData.roundStatus.status === 'Active'}
           isAuctionMethod={!!groupData?.selectionMethod.auction}
           contributionAmount={roundData.contributionAmount}

@@ -37,22 +37,12 @@ export function RoundActions({
 }: RoundActionsProps) {
   const { spacing, colors } = useAppTheme()
 
-  const shouldShowContributeButton = 
-    isUserMember && 
-    isCurrentRound && 
-    isGroupStarted && 
-    isRoundActive && 
-    !hasUserContributed
+  const shouldShowContributeButton =
+    isUserMember && isCurrentRound && isGroupStarted && isRoundActive && !hasUserContributed
 
-  const shouldShowContributedMessage = 
-    isUserMember && 
-    isCurrentRound && 
-    hasUserContributed
+  const shouldShowContributedMessage = isUserMember && isCurrentRound && hasUserContributed
 
-  const shouldShowBidButton = 
-    isAuctionMethod && 
-    isCurrentRound && 
-    isRoundActive
+  const shouldShowBidButton = isAuctionMethod && isCurrentRound && isRoundActive
 
   return (
     <View style={{ gap: spacing.sm }}>
@@ -61,7 +51,7 @@ export function RoundActions({
         <SontineActionButton
           variant="primary"
           onPress={onContribute}
-          icon="plus.circle.fill"
+          icon="plus-circle"
           disabled={isContributing}
           isLoading={isContributing}
           loadingText="Contributing..."
@@ -97,17 +87,13 @@ export function RoundActions({
 
       {/* Auction Bid Button */}
       {shouldShowBidButton && (
-        <SontineActionButton
-          variant="accent"
-          onPress={onBid}
-          icon="chart-bell-curve-cumulative"
-        >
+        <SontineActionButton variant="accent" onPress={onBid} icon="chart-bell-curve-cumulative">
           Submit Bid
         </SontineActionButton>
       )}
 
       {/* Error Message */}
-      {contributeError && (
+      {/* {contributeError && (
         <View style={{ marginTop: spacing.sm }}>
           <AppText
             variant="bodySmall"
@@ -116,10 +102,10 @@ export function RoundActions({
               textAlign: 'center',
             }}
           >
-            Failed to contribute: {contributeError}
+            Failed to contribute, try again later.
           </AppText>
         </View>
-      )}
+      )} */}
     </View>
   )
 }
