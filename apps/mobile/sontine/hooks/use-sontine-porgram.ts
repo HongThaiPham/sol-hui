@@ -186,6 +186,9 @@ export function useSontineProgram() {
     },
   })
 
+
+
+
   const contribute = useMutation({
     mutationKey: ['contribute'],
     mutationFn: async (groupAddress: string) => {
@@ -227,12 +230,46 @@ export function useSontineProgram() {
     },
   })
 
+  const startRound = useMutation({
+    mutationKey: ['start-round'],
+    mutationFn: async ({ groupAddress, roundNumber }: { groupAddress: string; roundNumber: number }) => {
+      if (!sontineProgram) {
+        throw Error('Counter program not instantiated')
+      }
+
+      return await sontineProgram.methods
+        .startRound(roundNumber)
+        .accounts({
+          group: groupAddress,
+          admin: anchorWallet?.publicKey,
+        })
+        .rpc()
+    },
+    onSuccess: async (signature: string) => {
+      console.log('Started round:', signature)
+      const { value: latestBlockhash } = await connection.getLatestBlockhashAndContext()
+      await connection.confirmTransaction({ signature, ...latestBlockhash }, 'confirmed')
+
+      // refetch get-group, get-round-account
+      queryClient.invalidateQueries({
+        queryKey: ['get-group'],
+      })
+      queryClient.invalidateQueries({
+        queryKey: ['get-round-account'],
+      })
+    },
+    onError: (error: Error) => {
+      console.log('Start round error:', error)
+    },
+  })
+
   return {
     sontineProgram,
     groupAccounts,
     createGroup,
     joinGroup,
     startGroup,
+    startRound,
     contribute
   }
 }

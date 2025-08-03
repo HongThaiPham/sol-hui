@@ -52,6 +52,7 @@ const MAPPING: Record<string, string> = {
   'hand.wave.fill': 'waving-hand',
   'auto-awesome': 'auto-awesome',
   'supervised-user-circle': 'supervised-user-circle',
+  'group-add': 'group-add',
 }
 
 /**

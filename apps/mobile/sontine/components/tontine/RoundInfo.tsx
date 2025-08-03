@@ -58,21 +58,21 @@ export function RoundInfo({
             roundStatus={roundData.roundStatus}
           />
 
-          <RoundProgressBar
+          {/* <RoundProgressBar
             title="Round Progress"
             progress={roundData.roundProgress}
             progressColor={roundData.roundStatus.color}
-          />
+          /> */}
 
           <RoundProgressBar
-            title="Collection Progress"
+            title="Progress"
             progress={roundData.collectionProgress}
             progressColor={roundData.roundStatus.color}
-            subtitle={
-              isCurrentRound 
-                ? `${roundData.collectedAmount.toFixed(2)} / ${roundData.targetAmount.toFixed(2)} ${CURRENCY_SYMBOL}`
-                : `${roundData.targetAmount.toFixed(2)} ${CURRENCY_SYMBOL}`
-            }
+            // subtitle={
+            //   isCurrentRound
+            //     ? `${roundData.collectedAmount.toFixed(2)} / ${roundData.targetAmount.toFixed(2)} ${CURRENCY_SYMBOL}`
+            //     : `${roundData.targetAmount.toFixed(2)} ${CURRENCY_SYMBOL}`
+            // }
             height={6}
           />
 

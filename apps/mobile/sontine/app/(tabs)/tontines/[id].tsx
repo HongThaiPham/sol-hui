@@ -16,7 +16,9 @@ import {
 } from '@/hooks/use-sontine-porgram'
 import { MembersTab } from '@/components/tontine/MembersTab'
 import { RoundInfo } from '@/components/tontine/RoundInfo'
+import { TontineHeader } from '@/components/tontine/TontineHeader'
 import { useAnchorWallet } from '@/hooks/use-anchor-wallet'
+import { getGroupStatusInfo } from '@/utils/groupStatus'
 
 import * as Haptics from 'expo-haptics'
 
@@ -39,6 +41,9 @@ export default function TontineDetailScreen() {
 
   // Determine if user is a member (memberAccount exists and is not null)
   const isUserMember = !!memberAccount
+
+  // Get group status information
+  const statusInfo = getGroupStatusInfo(groupData?.status || { forming: {} })
 
   // If loading, show loading state
   if (isLoading) {
@@ -104,105 +109,12 @@ export default function TontineDetailScreen() {
         }}
       >
         {/* Header */}
-        <View
-          style={{
-            padding: spacing.md,
-            backgroundColor: colors.primary,
-          }}
-        >
-          <AppText
-            variant="titleLarge"
-            style={{
-              color: colors.onPrimary,
-              fontWeight: 'bold',
-              marginBottom: spacing.xs,
-            }}
-          >
-            Group #{groupData.groupId.toString()}
-          </AppText>
-
-          <AppText
-            variant="bodyMedium"
-            style={{
-              color: colors.onPrimary,
-              opacity: 0.9,
-              marginBottom: spacing.md,
-            }}
-          >
-            {groupData.selectionMethod.random ? 'Random Selection' : 'Auction Based'} Tontine Group
-          </AppText>
-
-          {/* Quick Stats */}
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-            }}
-          >
-            <View style={{ alignItems: 'center' }}>
-              <AppText
-                variant="titleMedium"
-                style={{
-                  color: colors.onPrimary,
-                  fontWeight: 'bold',
-                }}
-              >
-                {totalAmount.toFixed(2)} {CURRENCY_SYMBOL}
-              </AppText>
-              <AppText
-                variant="bodySmall"
-                style={{
-                  color: colors.onPrimary,
-                  opacity: 0.8,
-                }}
-              >
-                Total Pool
-              </AppText>
-            </View>
-
-            <View style={{ alignItems: 'center' }}>
-              <AppText
-                variant="titleMedium"
-                style={{
-                  color: colors.onPrimary,
-                  fontWeight: 'bold',
-                }}
-              >
-                1/{groupData.maxMembers}
-              </AppText>
-              <AppText
-                variant="bodySmall"
-                style={{
-                  color: colors.onPrimary,
-                  opacity: 0.8,
-                }}
-              >
-                Rounds
-              </AppText>
-            </View>
-
-            <View style={{ alignItems: 'center' }}>
-              <AppText
-                variant="titleMedium"
-                style={{
-                  color: colors.onPrimary,
-                  fontWeight: 'bold',
-                }}
-              >
-                {groupData.currentMembers}
-              </AppText>
-              <AppText
-                variant="bodySmall"
-                style={{
-                  color: colors.onPrimary,
-                  opacity: 0.8,
-                }}
-              >
-                Members
-              </AppText>
-            </View>
-          </View>
-        </View>
+        <TontineHeader
+          groupAddress={groupAddress}
+          groupData={groupData}
+          contributionAmount={contributionAmount}
+          totalAmount={totalAmount}
+        />
 
         {/* Membership Status & Join Group */}
         <View
@@ -257,8 +169,8 @@ export default function TontineDetailScreen() {
                 </AppText>
               </SontineCardContent>
             </SontineCard>
-          ) : (
-            // User is not a member but has wallet connected
+          ) : statusInfo.canJoin && anchorWallet ? (
+            // User is not a member but can join
             <View>
               <SontineActionButton
                 variant="outline"
@@ -291,6 +203,76 @@ export default function TontineDetailScreen() {
                 </View>
               )}
             </View>
+          ) : !anchorWallet ? (
+            // User needs to connect wallet
+            <SontineCard variant="outlined" padding="md">
+              <SontineCardContent>
+                <View style={{ alignItems: 'center' }}>
+                  <UiIconSymbol
+                    name="wallet.pass"
+                    size={24}
+                    color={colors.outline}
+                    style={{ marginBottom: spacing.sm }}
+                  />
+                  <AppText
+                    variant="titleMedium"
+                    style={{
+                      color: colors.onSurface,
+                      fontWeight: 'bold',
+                      textAlign: 'center',
+                      marginBottom: spacing.xs,
+                    }}
+                  >
+                    Connect Wallet to Join
+                  </AppText>
+                  <AppText
+                    variant="bodyMedium"
+                    style={{
+                      color: colors.onSurface,
+                      opacity: 0.7,
+                      textAlign: 'center',
+                    }}
+                  >
+                    Connect your wallet to join this tontine group
+                  </AppText>
+                </View>
+              </SontineCardContent>
+            </SontineCard>
+          ) : (
+            // Group cannot accept new members
+            <SontineCard variant="outlined" padding="md">
+              <SontineCardContent>
+                <View style={{ alignItems: 'center' }}>
+                  <UiIconSymbol
+                    name={statusInfo.icon as any}
+                    size={24}
+                    color={statusInfo.color}
+                    style={{ marginBottom: spacing.sm }}
+                  />
+                  <AppText
+                    variant="titleMedium"
+                    style={{
+                      color: colors.onSurface,
+                      fontWeight: 'bold',
+                      textAlign: 'center',
+                      marginBottom: spacing.xs,
+                    }}
+                  >
+                    Group {statusInfo.label}
+                  </AppText>
+                  <AppText
+                    variant="bodyMedium"
+                    style={{
+                      color: colors.onSurface,
+                      opacity: 0.7,
+                      textAlign: 'center',
+                    }}
+                  >
+                    {statusInfo.description}
+                  </AppText>
+                </View>
+              </SontineCardContent>
+            </SontineCard>
           )}
         </View>
 

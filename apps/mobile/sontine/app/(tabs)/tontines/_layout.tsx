@@ -3,8 +3,8 @@ import React from 'react'
 
 export default function TontinesLayout() {
   return (
-    <Stack 
-      screenOptions={{ 
+    <Stack
+      screenOptions={{
         headerShown: true,
         headerStyle: {
           backgroundColor: '#00B49F',
@@ -15,32 +15,26 @@ export default function TontinesLayout() {
         },
       }}
     >
-      <Stack.Screen 
-        name="index" 
-        options={{ 
-          headerTitle: 'My Tontines',
-        }} 
-      />
-      <Stack.Screen 
-        name="browse" 
-        options={{ 
+      <Stack.Screen
+        name="browse"
+        options={{
           headerTitle: 'Browse Tontines',
           headerBackTitle: 'Back',
-        }} 
+        }}
       />
-      <Stack.Screen 
-        name="create" 
-        options={{ 
+      <Stack.Screen
+        name="create"
+        options={{
           headerTitle: 'Create Tontine',
           headerBackTitle: 'Back',
-        }} 
+        }}
       />
-      <Stack.Screen 
-        name="[id]" 
-        options={{ 
+      <Stack.Screen
+        name="[id]"
+        options={{
           headerTitle: 'Tontine Details',
           headerBackTitle: 'Back',
-        }} 
+        }}
       />
     </Stack>
   )
