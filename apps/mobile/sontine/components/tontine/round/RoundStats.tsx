@@ -17,7 +17,6 @@ function StatItem({ value, label }: StatItemProps) {
         variant="titleMedium"
         style={{
           color: colors.onSurface,
-          fontWeight: 'bold',
         }}
       >
         {value}
@@ -43,29 +42,20 @@ interface RoundStatsProps {
   currency: string
 }
 
-export function RoundStats({ 
-  contributionAmount, 
-  contributorsCount, 
-  expectedContributors, 
+export function RoundStats({
+  contributionAmount,
+  contributorsCount,
+  expectedContributors,
   collectionProgress,
-  currency 
+  currency,
 }: RoundStatsProps) {
   return (
     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-      <StatItem
-        value={`${contributionAmount.toFixed(2)} ${currency}`}
-        label="Per Member"
-      />
-      
-      <StatItem
-        value={`${contributorsCount}/${expectedContributors}`}
-        label="Contributors"
-      />
-      
-      <StatItem
-        value={`${Math.round(collectionProgress)}%`}
-        label="Collected"
-      />
+      <StatItem value={`${contributionAmount.toFixed(2)} ${currency}`} label="Per Member" />
+
+      <StatItem value={`${contributorsCount}/${expectedContributors}`} label="Contributors" />
+
+      <StatItem value={`${Math.round(collectionProgress)}%`} label="Collected" />
     </View>
   )
 }

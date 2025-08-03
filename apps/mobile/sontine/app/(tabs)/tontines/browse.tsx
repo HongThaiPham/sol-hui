@@ -4,10 +4,12 @@ import { AppPage } from '@/components/app-page'
 import { AppText } from '@/components/app-text'
 import { SontineInput } from '@/components/ui/sontine-input'
 import { SontineButton } from '@/components/ui/sontine-button'
+import { UiIconSymbol } from '@/components/ui/ui-icon-symbol'
 import { TontineCard } from '@/components/tontine/tontine-card'
 import { useAppTheme } from '@/components/app-theme'
 import { Tontine } from '@/components/tontine/tontine-list'
 import { USDC_DECIMALS, useSontineProgram } from '@/hooks/use-sontine-porgram'
+import { getGroupStatusInfo, type GroupStatus } from '@/utils/groupStatus'
 
 // Helper function to convert Group account data to Tontine format
 const convertGroupToTontine = (groupAccount: any): Tontine => {
@@ -106,16 +108,20 @@ const convertGroupToTontine = (groupAccount: any): Tontine => {
 export default function BrowseTontinesScreen() {
   const { spacing, colors } = useAppTheme()
   const [searchQuery, setSearchQuery] = useState('')
-  const [selectedFilter, setSelectedFilter] = useState<'all' | 'low' | 'medium' | 'high'>('all')
+  const [selectedFilter, setSelectedFilter] = useState<
+    'all' | 'forming' | 'active' | 'completed' | 'paused' | 'cancelled'
+  >('all')
 
   // Use the hook to get group accounts
   const { groupAccounts } = useSontineProgram()
 
   const filters = [
-    { key: 'all', label: 'All' },
-    { key: 'low', label: '< 20 USDC' },
-    { key: 'medium', label: '20-50 USDC' },
-    { key: 'high', label: '> 50 USDC' },
+    { key: 'all', label: 'All Groups', icon: 'list.bullet' },
+    { key: 'forming', label: 'Forming', icon: 'group-add' },
+    { key: 'active', label: 'Active', icon: 'add.circle.outline' },
+    { key: 'completed', label: 'Completed', icon: 'workspace-premium' },
+    { key: 'paused', label: 'Paused', icon: 'pause-circle' },
+    { key: 'cancelled', label: 'Cancelled', icon: 'cancel' },
   ]
 
   // Convert group accounts to tontine format and apply filters
@@ -130,11 +136,24 @@ export default function BrowseTontinesScreen() {
         tontine.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         tontine.description.toLowerCase().includes(searchQuery.toLowerCase())
 
-      const matchesFilter =
-        selectedFilter === 'all' ||
-        (selectedFilter === 'low' && tontine.contributionAmount < 20) ||
-        (selectedFilter === 'medium' && tontine.contributionAmount >= 20 && tontine.contributionAmount <= 50) ||
-        (selectedFilter === 'high' && tontine.contributionAmount > 50)
+      // Convert tontine status to group status format for filtering
+      const getGroupStatusFromTontine = (status: string): GroupStatus => {
+        switch (status) {
+          case 'active':
+            return { active: {} }
+          case 'pending':
+            return { forming: {} }
+          case 'completed':
+            return { completed: {} }
+          default:
+            return { forming: {} }
+        }
+      }
+
+      const groupStatus = getGroupStatusFromTontine(tontine.status)
+      const statusInfo = getGroupStatusInfo(groupStatus)
+
+      const matchesFilter = selectedFilter === 'all' || statusInfo.status === selectedFilter
 
       return matchesSearch && matchesFilter
     })
@@ -162,31 +181,128 @@ export default function BrowseTontinesScreen() {
           />
 
           <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: spacing.sm }}>
-            {filters.map((filter) => (
-              <SontineButton
-                key={filter.key}
-                variant={selectedFilter === filter.key ? 'primary' : 'outline'}
-                size="sm"
-                onPress={() => setSelectedFilter(filter.key as any)}
-              >
-                {filter.label}
-              </SontineButton>
-            ))}
+            {filters.map((filter) => {
+              const isSelected = selectedFilter === filter.key
+
+              // Get status color for non-'all' filters
+              const getFilterColor = (key: string) => {
+                if (key === 'all') return colors.primary
+                const statusMap: Record<string, GroupStatus> = {
+                  forming: { forming: {} },
+                  active: { active: {} },
+                  completed: { completed: {} },
+                  paused: { paused: {} },
+                  cancelled: { cancelled: {} },
+                }
+                const status = statusMap[key]
+                return status ? getGroupStatusInfo(status).color : colors.primary
+              }
+
+              const filterColor = getFilterColor(filter.key)
+
+              return (
+                <View
+                  key={filter.key}
+                  style={{
+                    borderColor: isSelected ? filterColor : colors.outline,
+
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                  }}
+                >
+                  <SontineButton
+                    variant="outline"
+                    size="sm"
+                    onPress={() => setSelectedFilter(filter.key as any)}
+                    style={{
+                      backgroundColor: isSelected ? filterColor : 'transparent',
+                      borderColor: isSelected ? filterColor : colors.outline,
+                      paddingHorizontal: 0,
+                      paddingVertical: 0,
+                      minWidth: 0,
+                    }}
+                  >
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                      <UiIconSymbol
+                        name={filter.icon as any}
+                        size={16}
+                        color={isSelected ? 'white' : filterColor}
+                        style={{ marginRight: spacing.xs }}
+                      />
+                      <AppText
+                        variant="bodyMedium"
+                        style={{
+                          color: isSelected ? 'white' : filterColor,
+                          fontWeight: isSelected ? 'bold' : 'normal',
+                        }}
+                      >
+                        {filter.label}
+                      </AppText>
+                    </View>
+                  </SontineButton>
+                </View>
+              )
+            })}
           </ScrollView>
         </View>
 
         {/* Results */}
         <View style={{ flex: 1, padding: 0 }}>
-          <AppText
-            variant="titleMedium"
-            style={{
-              color: colors.onSurface,
-              marginBottom: spacing.md,
-              padding: spacing.sm,
-            }}
-          >
-            Available Tontines ({filteredTontines.length})
-          </AppText>
+          <View style={{ flexDirection: 'row', alignItems: 'center', padding: spacing.sm, marginBottom: spacing.md }}>
+            <AppText
+              variant="titleMedium"
+              style={{
+                color: colors.onSurface,
+                flex: 1,
+              }}
+            >
+              {selectedFilter === 'all'
+                ? `All Tontines (${filteredTontines.length})`
+                : `${filters.find((f) => f.key === selectedFilter)?.label} Groups (${filteredTontines.length})`}
+            </AppText>
+
+            {selectedFilter !== 'all' && (
+              <View
+                style={{
+                  backgroundColor:
+                    getGroupStatusInfo(
+                      selectedFilter === 'forming'
+                        ? { forming: {} }
+                        : selectedFilter === 'active'
+                          ? { active: {} }
+                          : selectedFilter === 'completed'
+                            ? { completed: {} }
+                            : selectedFilter === 'paused'
+                              ? { paused: {} }
+                              : { cancelled: {} },
+                    ).color + '20',
+                  paddingHorizontal: spacing.sm,
+                  paddingVertical: spacing.xs,
+                  borderRadius: 12,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}
+              >
+                <UiIconSymbol
+                  name={filters.find((f) => f.key === selectedFilter)?.icon as any}
+                  size={14}
+                  color={
+                    getGroupStatusInfo(
+                      selectedFilter === 'forming'
+                        ? { forming: {} }
+                        : selectedFilter === 'active'
+                          ? { active: {} }
+                          : selectedFilter === 'completed'
+                            ? { completed: {} }
+                            : selectedFilter === 'paused'
+                              ? { paused: {} }
+                              : { cancelled: {} },
+                    ).color
+                  }
+                />
+              </View>
+            )}
+          </View>
 
           {groupAccounts.isLoading ? (
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -226,7 +342,62 @@ export default function BrowseTontinesScreen() {
               </AppText>
             </View>
           ) : filteredTontines.length === 0 ? (
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: spacing.xl }}>
+              {selectedFilter !== 'all' && (
+                <View
+                  style={{
+                    backgroundColor:
+                      getGroupStatusInfo(
+                        selectedFilter === 'forming'
+                          ? { forming: {} }
+                          : selectedFilter === 'active'
+                            ? { active: {} }
+                            : selectedFilter === 'completed'
+                              ? { completed: {} }
+                              : selectedFilter === 'paused'
+                                ? { paused: {} }
+                                : { cancelled: {} },
+                      ).color + '20',
+                    padding: spacing.lg,
+                    borderRadius: 50,
+                    marginBottom: spacing.md,
+                  }}
+                >
+                  <UiIconSymbol
+                    name={filters.find((f) => f.key === selectedFilter)?.icon as any}
+                    size={32}
+                    color={
+                      getGroupStatusInfo(
+                        selectedFilter === 'forming'
+                          ? { forming: {} }
+                          : selectedFilter === 'active'
+                            ? { active: {} }
+                            : selectedFilter === 'completed'
+                              ? { completed: {} }
+                              : selectedFilter === 'paused'
+                                ? { paused: {} }
+                                : { cancelled: {} },
+                      ).color
+                    }
+                  />
+                </View>
+              )}
+
+              <AppText
+                variant="titleMedium"
+                style={{
+                  color: colors.onSurface,
+                  textAlign: 'center',
+                  marginBottom: spacing.sm,
+                }}
+              >
+                {availableTontines.length === 0
+                  ? 'No tontine groups available yet'
+                  : selectedFilter === 'all'
+                    ? 'No tontines match your search'
+                    : `No ${filters.find((f) => f.key === selectedFilter)?.label.toLowerCase()} groups found`}
+              </AppText>
+
               <AppText
                 variant="bodyMedium"
                 style={{
@@ -236,8 +407,10 @@ export default function BrowseTontinesScreen() {
                 }}
               >
                 {availableTontines.length === 0
-                  ? 'No tontine groups available yet'
-                  : 'No tontines match your search criteria'}
+                  ? 'Create a new group or wait for others to create one'
+                  : selectedFilter === 'all'
+                    ? 'Try adjusting your search terms'
+                    : `Try selecting a different status filter or search for specific groups`}
               </AppText>
             </View>
           ) : (

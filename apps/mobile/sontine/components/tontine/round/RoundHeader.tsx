@@ -32,13 +32,14 @@ export function RoundHeader({ displayRoundNumber, totalRounds, cycleDuration, ro
   }
 
   return (
-    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: spacing.md }}>
+    <View
+      style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: spacing.md }}
+    >
       <View>
         <AppText
           variant="titleLarge"
           style={{
             color: colors.onSurface,
-            fontWeight: 'bold',
           }}
         >
           Round {displayRoundNumber} of {totalRounds}
@@ -54,7 +55,7 @@ export function RoundHeader({ displayRoundNumber, totalRounds, cycleDuration, ro
           {formatCycleDuration(cycleDuration)} cycle
         </AppText>
       </View>
-      
+
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <UiIconSymbol
           name={roundStatus.icon as any}

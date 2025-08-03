@@ -84,7 +84,7 @@ export function MembersTab({ groupAddress }: MembersTabProps) {
                   variant="titleMedium"
                   style={{
                     color: colors.onSurface,
-                    fontWeight: 'bold',
+
                     marginLeft: spacing.xs,
                   }}
                 >
@@ -144,7 +144,7 @@ export function MembersTab({ groupAddress }: MembersTabProps) {
             variant="titleMedium"
             style={{
               color: colors.onSurface,
-              fontWeight: 'bold',
+
               marginBottom: spacing.sm,
               marginLeft: spacing.xs,
             }}
@@ -166,7 +166,6 @@ export function MembersTab({ groupAddress }: MembersTabProps) {
                       variant="titleSmall"
                       style={{
                         color: colors.onSurface,
-                        fontWeight: 'bold',
                       }}
                     >
                       Member #{index + 1}
@@ -222,7 +221,7 @@ export function MembersTab({ groupAddress }: MembersTabProps) {
                 variant="titleMedium"
                 style={{
                   color: colors.onSurface,
-                  fontWeight: 'bold',
+
                   marginTop: spacing.sm,
                   marginBottom: spacing.xs,
                 }}

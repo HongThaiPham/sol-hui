@@ -14,7 +14,6 @@ const getStyles = ({ spacing, colors }: AppTheme) =>
     sectionTitle: {
       marginBottom: spacing.lg,
       color: colors.onSurface,
-      fontWeight: 'bold',
     },
     actionsContainer: {
       gap: spacing.md,

@@ -323,7 +323,7 @@ export function TontineCard({ tontine, style }: TontineCardProps) {
                 marginTop: spacing.sm,
               }}
             >
-              <UiIconSymbol name="person.badge.plus" size={14} color={statusInfo.color} />
+              <UiIconSymbol name="badge" size={14} color={statusInfo.color} />
               <AppText
                 variant="bodySmall"
                 style={{

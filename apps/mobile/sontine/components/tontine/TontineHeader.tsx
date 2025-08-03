@@ -70,7 +70,7 @@ export function TontineHeader({ groupData, contributionAmount, totalAmount, grou
               Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
             },
             onError: (error) => {
-              Alert.alert('Error', `Failed to start group: ${error.message}`)
+              Alert.alert('Error', `Failed to start group`)
               Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)
             },
           })
@@ -104,7 +104,7 @@ export function TontineHeader({ groupData, contributionAmount, totalAmount, grou
                 Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
               },
               onError: (error) => {
-                Alert.alert('Error', `Failed to start round: ${error.message}`)
+                Alert.alert('Error', `Failed to start round`)
                 Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)
               },
             },
@@ -141,7 +141,7 @@ export function TontineHeader({ groupData, contributionAmount, totalAmount, grou
               variant="titleLarge"
               style={{
                 color: colors.onPrimary,
-                fontWeight: 'bold',
+               
                 marginRight: spacing.sm,
               }}
             >
@@ -278,7 +278,7 @@ export function TontineHeader({ groupData, contributionAmount, totalAmount, grou
             variant="titleMedium"
             style={{
               color: colors.onPrimary,
-              fontWeight: 'bold',
+              
             }}
           >
             {totalAmount.toFixed(2)} {CURRENCY_SYMBOL}
@@ -299,7 +299,7 @@ export function TontineHeader({ groupData, contributionAmount, totalAmount, grou
             variant="titleMedium"
             style={{
               color: colors.onPrimary,
-              fontWeight: 'bold',
+              
             }}
           >
             {statusInfo.isActive
@@ -322,7 +322,7 @@ export function TontineHeader({ groupData, contributionAmount, totalAmount, grou
             variant="titleMedium"
             style={{
               color: colors.onPrimary,
-              fontWeight: 'bold',
+              
             }}
           >
             {groupData?.currentMembers}
@@ -351,7 +351,7 @@ export function TontineHeader({ groupData, contributionAmount, totalAmount, grou
             borderTopColor: 'rgba(255, 255, 255, 0.2)',
           }}
         >
-          <UiIconSymbol name="hand.tap" size={14} color={colors.onPrimary} style={{ marginRight: spacing.xs }} />
+          <UiIconSymbol name="back-hand" size={14} color={colors.onPrimary} style={{ marginRight: spacing.xs }} />
           <AppText
             variant="bodySmall"
             style={{

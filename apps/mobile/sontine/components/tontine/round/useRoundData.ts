@@ -58,13 +58,13 @@ export function useRoundData({ groupAddress, groupData, roundNumber, isCurrentRo
         return { status: 'Completed', color: colors.primary, icon: 'checkmark.circle.fill' }
       }
       if (roundNumber > (groupData?.currentRound || 0)) {
-        return { status: 'Upcoming', color: colors.outline, icon: 'clock' }
+        return { status: 'Upcoming', color: colors.outline, icon: 'punch-clock' }
       }
     }
 
     // Current round logic
     if (!groupData?.startedAt) {
-      return { status: 'Not Started', color: colors.outline, icon: 'clock' }
+      return { status: 'Not Started', color: colors.outline, icon: 'punch-clock' }
     }
     if (collectionProgress >= 100) {
       return { status: 'Complete', color: colors.primary, icon: 'checkmark.circle.fill' }

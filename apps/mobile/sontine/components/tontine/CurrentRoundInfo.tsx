@@ -34,7 +34,7 @@ export function CurrentRoundInfo({ groupData, isUserMember }: CurrentRoundInfoPr
   // Determine round status
   const getRoundStatus = () => {
     if (!groupData.startedAt) {
-      return { status: 'Not Started', color: colors.outline, icon: 'clock' }
+      return { status: 'Not Started', color: colors.outline, icon: 'punch-clock' }
     }
     if (collectionProgress >= 100) {
       return { status: 'Complete', color: colors.primary, icon: 'checkmark.circle.fill' }
@@ -60,13 +60,19 @@ export function CurrentRoundInfo({ groupData, isUserMember }: CurrentRoundInfoPr
       {/* Round Header */}
       <SontineCard variant="elevated" padding="md" style={{ marginBottom: spacing.md }}>
         <SontineCardContent>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: spacing.md }}>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginBottom: spacing.md,
+            }}
+          >
             <View>
               <AppText
                 variant="titleLarge"
                 style={{
                   color: colors.onSurface,
-                  fontWeight: 'bold',
                 }}
               >
                 Round {currentRound} of {totalRounds}
@@ -82,7 +88,7 @@ export function CurrentRoundInfo({ groupData, isUserMember }: CurrentRoundInfoPr
                 {formatCycleDuration(groupData.cycleDuration)} cycle
               </AppText>
             </View>
-            
+
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <UiIconSymbol
                 name={roundStatus.icon as any}
@@ -203,7 +209,6 @@ export function CurrentRoundInfo({ groupData, isUserMember }: CurrentRoundInfoPr
                 variant="titleMedium"
                 style={{
                   color: colors.onSurface,
-                  fontWeight: 'bold',
                 }}
               >
                 {contributionAmount.toFixed(2)}
@@ -224,7 +229,6 @@ export function CurrentRoundInfo({ groupData, isUserMember }: CurrentRoundInfoPr
                 variant="titleMedium"
                 style={{
                   color: colors.onSurface,
-                  fontWeight: 'bold',
                 }}
               >
                 {groupData.currentMembers}
@@ -245,7 +249,6 @@ export function CurrentRoundInfo({ groupData, isUserMember }: CurrentRoundInfoPr
                 variant="titleMedium"
                 style={{
                   color: colors.onSurface,
-                  fontWeight: 'bold',
                 }}
               >
                 {Math.round(collectionProgress)}%

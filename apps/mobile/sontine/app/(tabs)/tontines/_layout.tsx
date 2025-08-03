@@ -10,9 +10,7 @@ export default function TontinesLayout() {
           backgroundColor: '#00B49F',
         },
         headerTintColor: '#FFFFFF',
-        headerTitleStyle: {
-          fontWeight: 'bold',
-        },
+        headerTitleStyle: {},
       }}
     >
       <Stack.Screen

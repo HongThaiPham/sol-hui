@@ -81,7 +81,7 @@ export default function TabSettingsScreen() {
                   variant="titleMedium"
                   style={{
                     color: colors.onSurface,
-                    fontWeight: 'bold',
+
                     marginBottom: spacing.xs / 2,
                   }}
                 >
@@ -109,7 +109,7 @@ export default function TabSettingsScreen() {
           variant="titleLarge"
           style={{
             color: colors.onSurface,
-            fontWeight: 'bold',
+
             marginBottom: spacing.lg,
             marginTop: spacing.lg,
           }}
@@ -155,7 +155,7 @@ export default function TabSettingsScreen() {
                     variant="titleSmall"
                     style={{
                       color: colors.onSurface,
-                      fontWeight: 'bold',
+
                       marginBottom: spacing.xs / 2,
                     }}
                   >
@@ -197,7 +197,7 @@ export default function TabSettingsScreen() {
             }}
           >
             Configure app info and clusters in{' '}
-            <AppText style={{ fontWeight: 'bold', color: colors.primary }}>constants/app-config.tsx</AppText>
+            <AppText style={{ color: colors.primary }}>constants/app-config.tsx</AppText>
           </AppText>
         </View>
       </View>

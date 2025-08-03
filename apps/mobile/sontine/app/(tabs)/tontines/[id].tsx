@@ -150,7 +150,6 @@ export default function TontineDetailScreen() {
                     variant="titleMedium"
                     style={{
                       color: colors.primary,
-                      fontWeight: 'bold',
                     }}
                   >
                     You are a member of this group
@@ -218,7 +217,7 @@ export default function TontineDetailScreen() {
                     variant="titleMedium"
                     style={{
                       color: colors.onSurface,
-                      fontWeight: 'bold',
+
                       textAlign: 'center',
                       marginBottom: spacing.xs,
                     }}
@@ -253,7 +252,7 @@ export default function TontineDetailScreen() {
                     variant="titleMedium"
                     style={{
                       color: colors.onSurface,
-                      fontWeight: 'bold',
+
                       textAlign: 'center',
                       marginBottom: spacing.xs,
                     }}
@@ -331,7 +330,7 @@ export default function TontineDetailScreen() {
                     variant="titleMedium"
                     style={{
                       color: colors.onSurface,
-                      fontWeight: 'bold',
+
                       marginBottom: spacing.md,
                     }}
                   >
@@ -391,7 +390,7 @@ export default function TontineDetailScreen() {
                       variant="titleMedium"
                       style={{
                         color: colors.onSurface,
-                        fontWeight: 'bold',
+
                         marginBottom: spacing.sm,
                       }}
                     >

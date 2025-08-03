@@ -93,7 +93,6 @@ export function DemoFeature() {
                   variant="bodySmall"
                   style={{
                     color: isOnboardingCompleted ? colors.primary : colors.secondary,
-                    fontWeight: 'bold',
                   }}
                 >
                   {isOnboardingCompleted ? 'Completed' : 'Not Completed'}

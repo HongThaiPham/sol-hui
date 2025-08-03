@@ -136,7 +136,7 @@ export default function ProfileScreen() {
                         variant="titleSmall"
                         style={{
                           color: colors.onSurface,
-                          fontWeight: 'bold',
+
                           marginBottom: spacing.xs / 2,
                         }}
                       >

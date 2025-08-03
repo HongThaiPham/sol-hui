@@ -12,9 +12,7 @@ export default function SettingsLayout() {
           backgroundColor: '#00B49F',
         },
         headerTintColor: '#FFFFFF',
-        headerTitleStyle: {
-          fontWeight: 'bold',
-        },
+        headerTitleStyle: {},
         headerRight: () => <WalletUiDropdown />,
       }}
     >

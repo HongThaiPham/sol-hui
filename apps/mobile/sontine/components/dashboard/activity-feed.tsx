@@ -77,7 +77,7 @@ export function ActivityFeed() {
               variant="titleSmall"
               style={{
                 color: colors.onSurface,
-                fontWeight: 'bold',
+
                 marginBottom: spacing.xs,
               }}
             >
@@ -124,7 +124,6 @@ export function ActivityFeed() {
           variant="titleMedium"
           style={{
             color: colors.onSurface,
-            fontWeight: 'bold',
           }}
         >
           Recent Activity

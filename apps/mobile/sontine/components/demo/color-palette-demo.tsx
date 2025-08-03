@@ -32,52 +32,66 @@ export function ColorPaletteDemo() {
 
   return (
     <ScrollView style={{ flex: 1 }} contentContainerStyle={{ padding: spacing.md }}>
-      <AppText variant="headlineMedium" style={{ 
-        marginBottom: spacing.lg,
-        color: colors.onSurface,
-        fontWeight: 'bold',
-      }}>
+      <AppText
+        variant="headlineMedium"
+        style={{
+          marginBottom: spacing.lg,
+          color: colors.onSurface,
+        }}
+      >
         New Color Palette
       </AppText>
 
       {/* Color Swatches */}
       <View style={{ marginBottom: spacing.xl }}>
-        <AppText variant="titleMedium" style={{ 
-          marginBottom: spacing.md,
-          color: colors.onSurface,
-          fontWeight: 'bold',
-        }}>
+        <AppText
+          variant="titleMedium"
+          style={{
+            marginBottom: spacing.md,
+            color: colors.onSurface,
+          }}
+        >
           Color Swatches
         </AppText>
-        
-        <View style={{ 
-          flexDirection: 'row', 
-          flexWrap: 'wrap',
-          gap: spacing.sm,
-        }}>
+
+        <View
+          style={{
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            gap: spacing.sm,
+          }}
+        >
           {colorPalette.map((item, index) => (
             <View key={index} style={{ width: '48%' }}>
-              <View style={{
-                backgroundColor: item.color,
-                padding: spacing.md,
-                borderRadius: 12,
-                alignItems: 'center',
-                minHeight: 80,
-                justifyContent: 'center',
-              }}>
-                <AppText variant="bodyMedium" style={{ 
-                  color: item.textColor,
-                  fontWeight: 'bold',
-                  textAlign: 'center',
-                }}>
+              <View
+                style={{
+                  backgroundColor: item.color,
+                  padding: spacing.md,
+                  borderRadius: 12,
+                  alignItems: 'center',
+                  minHeight: 80,
+                  justifyContent: 'center',
+                }}
+              >
+                <AppText
+                  variant="bodyMedium"
+                  style={{
+                    color: item.textColor,
+
+                    textAlign: 'center',
+                  }}
+                >
                   {item.name}
                 </AppText>
-                <AppText variant="bodySmall" style={{ 
-                  color: item.textColor,
-                  opacity: 0.8,
-                  textAlign: 'center',
-                  marginTop: spacing.xs,
-                }}>
+                <AppText
+                  variant="bodySmall"
+                  style={{
+                    color: item.textColor,
+                    opacity: 0.8,
+                    textAlign: 'center',
+                    marginTop: spacing.xs,
+                  }}
+                >
                   {item.color}
                 </AppText>
               </View>
@@ -88,29 +102,36 @@ export function ColorPaletteDemo() {
 
       {/* Gradient Backgrounds */}
       <View style={{ marginBottom: spacing.xl }}>
-        <AppText variant="titleMedium" style={{ 
-          marginBottom: spacing.md,
-          color: colors.onSurface,
-          fontWeight: 'bold',
-        }}>
+        <AppText
+          variant="titleMedium"
+          style={{
+            marginBottom: spacing.md,
+            color: colors.onSurface,
+          }}
+        >
           Gradient Backgrounds
         </AppText>
-        
+
         <View style={{ gap: spacing.sm }}>
           {gradientVariants.map((variant, index) => (
             <View key={index} style={{ height: 80, borderRadius: 12, overflow: 'hidden' }}>
               <GradientBackground variant={variant as any}>
-                <View style={{ 
-                  flex: 1, 
-                  justifyContent: 'center', 
-                  alignItems: 'center',
-                  paddingHorizontal: spacing.md,
-                }}>
-                  <AppText variant="titleSmall" style={{ 
-                    color: '#FFFFFF',
-                    fontWeight: 'bold',
-                    textAlign: 'center',
-                  }}>
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    paddingHorizontal: spacing.md,
+                  }}
+                >
+                  <AppText
+                    variant="titleSmall"
+                    style={{
+                      color: '#FFFFFF',
+
+                      textAlign: 'center',
+                    }}
+                  >
                     {variant}
                   </AppText>
                 </View>
@@ -122,22 +143,19 @@ export function ColorPaletteDemo() {
 
       {/* Button Variants */}
       <View style={{ marginBottom: spacing.xl }}>
-        <AppText variant="titleMedium" style={{ 
-          marginBottom: spacing.md,
-          color: colors.onSurface,
-          fontWeight: 'bold',
-        }}>
+        <AppText
+          variant="titleMedium"
+          style={{
+            marginBottom: spacing.md,
+            color: colors.onSurface,
+          }}
+        >
           Button Variants
         </AppText>
-        
+
         <View style={{ gap: spacing.sm }}>
           {buttonVariants.map((variant, index) => (
-            <SontineButton
-              key={index}
-              variant={variant as any}
-              size="md"
-              fullWidth
-            >
+            <SontineButton key={index} variant={variant as any} size="md" fullWidth>
               {variant.charAt(0).toUpperCase() + variant.slice(1)} Button
             </SontineButton>
           ))}
@@ -146,34 +164,43 @@ export function ColorPaletteDemo() {
 
       {/* Card Variants */}
       <View style={{ marginBottom: spacing.xl }}>
-        <AppText variant="titleMedium" style={{ 
-          marginBottom: spacing.md,
-          color: colors.onSurface,
-          fontWeight: 'bold',
-        }}>
+        <AppText
+          variant="titleMedium"
+          style={{
+            marginBottom: spacing.md,
+            color: colors.onSurface,
+          }}
+        >
           Card Variants
         </AppText>
-        
-        <View style={{ 
-          flexDirection: 'row', 
-          flexWrap: 'wrap',
-          gap: spacing.sm,
-        }}>
+
+        <View
+          style={{
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            gap: spacing.sm,
+          }}
+        >
           {cardVariants.map((variant, index) => (
             <View key={index} style={{ width: '48%' }}>
               <SontineCard variant={variant as any} padding="md">
                 <SontineCardContent>
-                  <AppText variant="bodyMedium" style={{ 
-                    fontWeight: 'bold',
-                    textAlign: 'center',
-                  }}>
+                  <AppText
+                    variant="bodyMedium"
+                    style={{
+                      textAlign: 'center',
+                    }}
+                  >
                     {variant.charAt(0).toUpperCase() + variant.slice(1)}
                   </AppText>
-                  <AppText variant="bodySmall" style={{ 
-                    opacity: 0.7,
-                    textAlign: 'center',
-                    marginTop: spacing.xs,
-                  }}>
+                  <AppText
+                    variant="bodySmall"
+                    style={{
+                      opacity: 0.7,
+                      textAlign: 'center',
+                      marginTop: spacing.xs,
+                    }}
+                  >
                     Card variant
                   </AppText>
                 </SontineCardContent>

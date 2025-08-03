@@ -53,6 +53,7 @@ const MAPPING: Record<string, string> = {
   'auto-awesome': 'auto-awesome',
   'supervised-user-circle': 'supervised-user-circle',
   'group-add': 'group-add',
+  'add.circle.outline': 'add-circle-outline',
 }
 
 /**
@@ -72,5 +73,5 @@ export function UiIconSymbol({
   style?: StyleProp<TextStyle>
   weight?: SymbolWeight
 }) {
-  return <MaterialIcons color={color} size={size} name={MAPPING[name] as any} style={style} />
+  return <MaterialIcons color={color} size={size} name={(MAPPING[name] as any) || name} style={style} />
 }
