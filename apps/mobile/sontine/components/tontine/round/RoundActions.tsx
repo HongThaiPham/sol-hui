@@ -19,6 +19,11 @@ interface RoundActionsProps {
   onBid: () => void
   isContributing: boolean
   contributeError?: string | null
+  // Admin props
+  isAdmin: boolean
+  canSelectWinner: boolean
+  onSelectWinner: () => void
+  isSelectingWinner: boolean
 }
 
 export function RoundActions({
@@ -34,18 +39,32 @@ export function RoundActions({
   onBid,
   isContributing,
   contributeError,
+  isAdmin,
+  canSelectWinner,
+  onSelectWinner,
+  isSelectingWinner,
 }: RoundActionsProps) {
   const { spacing, colors } = useAppTheme()
 
   const shouldShowContributeButton =
     isUserMember && isCurrentRound && isGroupStarted && isRoundActive && !hasUserContributed
 
-  const shouldShowContributedMessage = isUserMember && isCurrentRound && hasUserContributed
-
   const shouldShowBidButton = isAuctionMethod && isCurrentRound && isRoundActive
 
+  if (!shouldShowContributeButton && !shouldShowBidButton) {
+    return null
+  }
+
   return (
-    <View style={{ gap: spacing.sm }}>
+    <View
+      style={{
+        marginTop: spacing.md,
+        paddingTop: spacing.md,
+        borderTopWidth: 1,
+        borderTopColor: colors.outline,
+        gap: spacing.md,
+      }}
+    >
       {/* Contribute Button */}
       {shouldShowContributeButton && (
         <SontineActionButton
@@ -61,52 +80,12 @@ export function RoundActions({
         </SontineActionButton>
       )}
 
-      {/* Already Contributed Message */}
-      {shouldShowContributedMessage && (
-        <SontineCard variant="outlined" padding="md">
-          <SontineCardContent>
-            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-              <UiIconSymbol
-                name="checkmark.circle.fill"
-                size={20}
-                color={colors.primary}
-                style={{ marginRight: spacing.xs }}
-              />
-              <AppText
-                variant="bodyMedium"
-                style={{
-                  color: colors.primary,
-                  fontWeight: '600',
-                }}
-              >
-                You have contributed to this round
-              </AppText>
-            </View>
-          </SontineCardContent>
-        </SontineCard>
-      )}
-
       {/* Auction Bid Button */}
       {shouldShowBidButton && (
-        <SontineActionButton variant="accent" onPress={onBid} icon="chart-bell-curve-cumulative">
+        <SontineActionButton variant="primary" onPress={onBid} icon="chart-bell-curve-cumulative">
           Submit Bid
         </SontineActionButton>
       )}
-
-      {/* Error Message */}
-      {/* {contributeError && (
-        <View style={{ marginTop: spacing.sm }}>
-          <AppText
-            variant="bodySmall"
-            style={{
-              color: colors.error,
-              textAlign: 'center',
-            }}
-          >
-            Failed to contribute, try again later.
-          </AppText>
-        </View>
-      )} */}
     </View>
   )
 }

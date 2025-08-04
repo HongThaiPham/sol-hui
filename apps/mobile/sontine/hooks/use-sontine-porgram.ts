@@ -277,6 +277,55 @@ export function useSontineProgram() {
     },
   })
 
+  const selectWinner = useMutation({
+    mutationKey: ['select-winner'],
+    mutationFn: async ({ groupAddress }: { groupAddress: string }) => {
+      if (!sontineProgram) {
+        throw Error('Sontine program not instantiated')
+      }
+
+      const group = await sontineProgram.account.group.fetch(groupAddress)
+      const roundNumber = group.currentRound
+
+      const signature = await sontineProgram.methods
+        .selectWinner(roundNumber, [])
+        .accountsPartial({
+          group: groupAddress,
+          authority: anchorWallet?.publicKey,
+          auctionRound: group.selectionMethod.auction
+            ? getAuctionPDA(sontineProgram, new PublicKey(groupAddress), roundNumber)[0]
+            : null,
+        })
+        .rpc()
+
+      return { signature, groupAddress, roundNumber }
+    },
+    onSuccess: async ({
+      signature,
+      groupAddress,
+      roundNumber,
+    }: {
+      signature: string
+      groupAddress: string
+      roundNumber: number
+    }) => {
+      console.log('Selected winner:', signature)
+      const { value: latestBlockhash } = await connection.getLatestBlockhashAndContext()
+      await connection.confirmTransaction({ signature, ...latestBlockhash }, 'confirmed')
+
+      // refetch get-group, get-round-account
+      queryClient.invalidateQueries({
+        queryKey: ['get-group', { groupAddress }],
+      })
+      queryClient.invalidateQueries({
+        queryKey: ['get-round-account', { groupAddress, roundNumber }],
+      })
+    },
+    onError: (error: Error) => {
+      console.log('Select winner error:', error)
+    },
+  })
+
   return {
     sontineProgram,
     groupAccounts,
@@ -285,6 +334,7 @@ export function useSontineProgram() {
     startGroup,
     startRound,
     contribute,
+    selectWinner,
   }
 }
 
@@ -406,6 +456,13 @@ export function getMemberTokenAccount(member: PublicKey): Promise<PublicKey> {
 export function getRoundPDA(program: Program<Sontine>, group: PublicKey, roundNumber: number): [PublicKey, number] {
   return PublicKey.findProgramAddressSync(
     [Buffer.from('round'), group.toBuffer(), Buffer.from([roundNumber])],
+    program.programId,
+  )
+}
+
+export function getAuctionPDA(program: Program<Sontine>, group: PublicKey, roundNumber: number): [PublicKey, number] {
+  return PublicKey.findProgramAddressSync(
+    [Buffer.from('auction'), group.toBuffer(), Buffer.from([roundNumber])],
     program.programId,
   )
 }

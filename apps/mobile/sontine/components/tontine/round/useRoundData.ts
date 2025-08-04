@@ -67,7 +67,28 @@ export function useRoundData({ groupAddress, groupData, roundNumber, isCurrentRo
 
   // Contributors info
   const contributorsCount = roundData?.contributorsCount || 0
-  const expectedContributors = roundData?.expectedContributors || groupData?.currentMembers
+  const expectedContributors = roundData?.expectedContributors || groupData?.currentMembers || 0
+
+  // Check if round is completed and ready for winner selection
+  const isRoundCompleted = useMemo(() => {
+    if (!roundData || !contributorsCount || contributorsCount < expectedContributors) return false
+
+    const now = Date.now() / 1000 // Current time in seconds
+    const endTime = Number(roundData.endTime)
+
+    // Round is completed if:
+    // 1. All expected contributors have contributed, OR
+    // 2. Time has passed endTime AND at least one person has contributed
+    return contributorsCount >= (expectedContributors || 0) || (now >= endTime && contributorsCount > 0)
+  }, [roundData, isCurrentRound, contributorsCount, expectedContributors])
+
+  // Check if winner can be selected (round completed and no winner selected yet)
+  const canSelectWinner = useMemo(() => {
+    if (!roundData || !isRoundCompleted) return false
+
+    // Can select winner if round is completed and no winner has been selected yet
+    return !roundData.selectedMember && !roundData.finalized
+  }, [roundData, isRoundCompleted])
 
   return {
     // Round info
@@ -88,6 +109,10 @@ export function useRoundData({ groupAddress, groupData, roundNumber, isCurrentRo
 
     // User status
     hasUserContributed,
+
+    // Round completion status
+    isRoundCompleted,
+    canSelectWinner,
 
     // Loading states
     roundLoading,

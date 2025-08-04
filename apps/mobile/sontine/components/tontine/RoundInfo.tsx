@@ -1,8 +1,12 @@
 import React from 'react'
 import { View } from 'react-native'
+import { AppText } from '@/components/app-text'
 import { SontineCard, SontineCardContent } from '@/components/ui/sontine-card'
+import { SontineActionButton } from '@/components/ui/sontine-button'
+import { UiIconSymbol } from '@/components/ui/ui-icon-symbol'
 import { useAppTheme } from '@/components/app-theme'
 import { useSontineProgram, CURRENCY_SYMBOL, useGetGroup } from '@/hooks/use-sontine-porgram'
+import { useAnchorWallet } from '@/hooks/use-anchor-wallet'
 
 // Import sub-components
 import { RoundHeader } from './round/RoundHeader'
@@ -10,6 +14,7 @@ import { RoundProgressBar } from './round/RoundProgressBar'
 import { RoundStats } from './round/RoundStats'
 import { RoundActions } from './round/RoundActions'
 import { useRoundData } from './round/useRoundData'
+import { ellipsify } from '@/utils/ellipsify'
 
 interface RoundInfoProps {
   groupAddress: string
@@ -28,8 +33,12 @@ export function RoundInfo({
   isCurrentRound = true,
   groupAddress,
 }: RoundInfoProps) {
-  const { spacing } = useAppTheme()
-  const { contribute } = useSontineProgram()
+  const { spacing, colors, fontFamily } = useAppTheme()
+  const { contribute, selectWinner } = useSontineProgram()
+  const anchorWallet = useAnchorWallet()
+
+  // Check if current user is admin
+  const isAdmin = anchorWallet?.publicKey?.toString() === groupData?.admin.toBase58()
 
   // Use custom hook to get all round data
   const roundData = useRoundData({
@@ -49,6 +58,11 @@ export function RoundInfo({
     // TODO: Implement bidding logic
   }
 
+  // Handle select winner action
+  const handleSelectWinner = () => {
+    selectWinner.mutate({ groupAddress })
+  }
+
   return (
     <View>
       {/* Round Header */}
@@ -59,6 +73,9 @@ export function RoundInfo({
             totalRounds={roundData.totalRounds}
             cycleDuration={groupData?.cycleDuration}
             roundStatus={roundData.roundStatus}
+            isUserMember={isUserMember}
+            isCurrentRound={isCurrentRound}
+            hasUserContributed={roundData.hasUserContributed}
           />
 
           {/* <RoundProgressBar
@@ -86,25 +103,80 @@ export function RoundInfo({
             collectionProgress={roundData.collectionProgress}
             currency={CURRENCY_SYMBOL}
           />
+
+          {/* Action Buttons */}
+          {showActions && (
+            <RoundActions
+              isUserMember={isUserMember}
+              isCurrentRound={isCurrentRound}
+              hasUserContributed={roundData.hasUserContributed}
+              isGroupStarted={!!groupData?.status?.active}
+              isRoundActive={roundData.roundStatus.status === 'Active'}
+              isAuctionMethod={!!groupData?.selectionMethod.auction}
+              contributionAmount={roundData.contributionAmount}
+              currency={CURRENCY_SYMBOL}
+              onContribute={handleContribute}
+              onBid={handleBid}
+              isContributing={contribute.isPending}
+              contributeError={contribute.error?.message || null}
+              isAdmin={isAdmin}
+              canSelectWinner={roundData.canSelectWinner}
+              onSelectWinner={handleSelectWinner}
+              isSelectingWinner={selectWinner.isPending}
+            />
+          )}
+
+          {/* Admin Round Status Footer */}
+          {isAdmin && isCurrentRound && roundData.roundData && (
+            <View
+              style={{
+                marginTop: spacing.md,
+                paddingTop: spacing.md,
+                borderTopWidth: 1,
+                borderTopColor: colors.outline,
+              }}
+            >
+              <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: spacing.xs }}>
+                <UiIconSymbol name="shield-moon" size={16} color={colors.primary} style={{ marginRight: spacing.xs }} />
+                <AppText
+                  variant="bodySmall"
+                  style={{
+                    color: colors.primary,
+                  }}
+                >
+                  Result
+                </AppText>
+              </View>
+
+              <View style={{ justifyContent: 'space-between', flexWrap: 'wrap', gap: spacing.xs }}>
+                <AppText variant="bodySmall" style={{ color: colors.onSurface, opacity: 0.7 }}>
+                  Winner:{' '}
+                  {roundData.roundData.selectedMember
+                    ? ellipsify(roundData.roundData.selectedMember.toString(), 8)
+                    : 'Not Selected'}
+                </AppText>
+                <AppText variant="bodySmall" style={{ color: colors.onSurface, opacity: 0.7 }}>
+                  Status: {'selecting' in roundData.roundData.status ? 'Selected' : 'Waiting for Selection'}
+                </AppText>
+              </View>
+            </View>
+          )}
         </SontineCardContent>
       </SontineCard>
 
-      {/* Action Buttons */}
-      {showActions && (
-        <RoundActions
-          isUserMember={isUserMember}
-          isCurrentRound={isCurrentRound}
-          hasUserContributed={roundData.hasUserContributed}
-          isGroupStarted={!!groupData?.status?.active}
-          isRoundActive={roundData.roundStatus.status === 'Active'}
-          isAuctionMethod={!!groupData?.selectionMethod.auction}
-          contributionAmount={roundData.contributionAmount}
-          currency={CURRENCY_SYMBOL}
-          onContribute={handleContribute}
-          onBid={handleBid}
-          isContributing={contribute.isPending}
-          contributeError={contribute.error?.message || null}
-        />
+      {/* Admin Select Winner Action */}
+      {isAdmin && isCurrentRound && roundData.canSelectWinner && (
+        <SontineActionButton
+          variant="primary"
+          onPress={handleSelectWinner}
+          icon="trophy"
+          disabled={selectWinner.isPending}
+          isLoading={selectWinner.isPending}
+          loadingText="Selecting Winner..."
+          loading={selectWinner.isPending}
+        >
+          Select Winner
+        </SontineActionButton>
       )}
     </View>
   )
