@@ -21,19 +21,12 @@ export function useRoundData({ groupAddress, groupData, roundNumber, isCurrentRo
   const roundProgress = (displayRoundNumber / totalRounds) * 100
 
   // Get round account data
-  const { data: roundData, isLoading: roundLoading } = useRoundAccount(
-    groupAddress,
-    actualRoundNumber,
-    isCurrentRound
-  )
+  const { data: roundData, isLoading: roundLoading } = useRoundAccount(groupAddress, actualRoundNumber, isCurrentRound)
   console.log('roundData', roundData)
 
   // Get member account data to check contribution status
   const currentUserAddress = anchorWallet?.publicKey?.toString() || ''
-  const { data: memberData } = useMemberAccount(
-    groupAddress,
-    currentUserAddress
-  )
+  const { data: memberData } = useMemberAccount(groupAddress, currentUserAddress)
 
   // Calculate amounts
   const contributionAmount = Number(groupData?.contributionAmount / 10 ** USDC_DECIMALS)
@@ -55,7 +48,7 @@ export function useRoundData({ groupAddress, groupData, roundNumber, isCurrentRo
   const roundStatus = useMemo(() => {
     if (!isCurrentRound && roundNumber !== undefined) {
       if (roundNumber < (groupData?.currentRound || 0)) {
-        return { status: 'Completed', color: colors.primary, icon: 'checkmark.circle.fill' }
+        return { status: 'Completed', color: colors.primary, icon: 'check-circle' }
       }
       if (roundNumber > (groupData?.currentRound || 0)) {
         return { status: 'Upcoming', color: colors.outline, icon: 'punch-clock' }
@@ -67,9 +60,9 @@ export function useRoundData({ groupAddress, groupData, roundNumber, isCurrentRo
       return { status: 'Not Started', color: colors.outline, icon: 'punch-clock' }
     }
     if (collectionProgress >= 100) {
-      return { status: 'Complete', color: colors.primary, icon: 'checkmark.circle.fill' }
+      return { status: 'Complete', color: colors.primary, icon: 'check-circle' }
     }
-    return { status: 'Active', color: colors.secondary, icon: 'play.circle.fill' }
+    return { status: 'Active', color: colors.secondary, icon: 'play-circle-fill' }
   }, [isCurrentRound, roundNumber, groupData, collectionProgress, colors])
 
   // Contributors info

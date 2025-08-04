@@ -9,13 +9,13 @@ export class AppConfig {
     'Join the future of rotating savings with Sontine. Built on Solana blockchain for transparent, automated, and global tontine groups.'
   static uri = 'https://sontine.fun'
   static version = '1.0.0'
-  static build = '2024.01.15'
+  static build = '2025.07.01'
 
   static clusters: Cluster[] = [
     {
       id: 'solana:devnet',
       name: 'Devnet',
-      endpoint: clusterApiUrl('devnet'),
+      endpoint: 'https://devnet.helius-rpc.com/?api-key=b5f8c1a8-7580-49f7-8197-ed0d48aaa178', // clusterApiUrl('devnet'),
       network: ClusterNetwork.Devnet,
     },
     {

@@ -55,6 +55,7 @@ export function RoundActions({
           disabled={isContributing}
           isLoading={isContributing}
           loadingText="Contributing..."
+          loading={isContributing}
         >
           Contribute {contributionAmount.toFixed(2)} {currency}
         </SontineActionButton>

@@ -152,7 +152,7 @@ export default function TontineDetailScreen() {
                       color: colors.primary,
                     }}
                   >
-                    You are a member of this group
+                    You are a {groupData.admin.toBase58() === currentUserAddress ? 'Admin' : 'Member'} of this group
                   </AppText>
                 </View>
                 <AppText
@@ -164,7 +164,9 @@ export default function TontineDetailScreen() {
                     marginTop: spacing.xs,
                   }}
                 >
-                  You can participate in contributions and activities
+                  {groupData.admin.toBase58() === currentUserAddress
+                    ? 'You can manage the group and view activities'
+                    : 'You can participate in contributions and activities'}
                 </AppText>
               </SontineCardContent>
             </SontineCard>
@@ -183,6 +185,7 @@ export default function TontineDetailScreen() {
                 }}
                 icon="account-group"
                 disabled={joinGroup.isPending}
+                loading={joinGroup.isPending}
               >
                 {joinGroup.isPending ? 'Joining Group...' : 'Join Group'}
               </SontineActionButton>

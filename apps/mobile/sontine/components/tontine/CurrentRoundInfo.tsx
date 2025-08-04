@@ -39,7 +39,7 @@ export function CurrentRoundInfo({ groupData, isUserMember }: CurrentRoundInfoPr
     if (collectionProgress >= 100) {
       return { status: 'Complete', color: colors.primary, icon: 'checkmark.circle.fill' }
     }
-    return { status: 'Active', color: colors.secondary, icon: 'play.circle.fill' }
+    return { status: 'Active', color: colors.secondary, icon: 'play-circle-fill' }
   }
 
   const roundStatus = getRoundStatus()

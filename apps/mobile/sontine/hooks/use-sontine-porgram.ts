@@ -1,4 +1,4 @@
-import { PublicKey } from '@solana/web3.js';
+import { PublicKey } from '@solana/web3.js'
 import { useConnection } from '@/components/solana/solana-provider'
 import { useAnchorWallet } from './use-anchor-wallet'
 import * as anchor from '@coral-xyz/anchor'
@@ -21,7 +21,6 @@ type AuctionConfig = {
 export const USDC_MINT = 'A43qEjwWtEkNUzSxd1d9eEe6tDhwR12wFnRdA1gGRvxG'
 export const USDC_DECIMALS = 6
 export const CURRENCY_SYMBOL = 'USDC'
-
 
 export function useSontineProgram() {
   const connection = useConnection()
@@ -59,13 +58,12 @@ export function useSontineProgram() {
       if (!sontineProgram) {
         return []
       }
-
+      console.log('Fetching group accounts')
       const accounts = await sontineProgram.account.group.all()
       return accounts
     },
     enabled: !!sontineProgram,
   })
-
 
   // Create group mutation
   const createGroup = useMutation({
@@ -95,10 +93,10 @@ export function useSontineProgram() {
           payload.minMembersToStart,
           payload.auctionConfig
             ? {
-              auctionDuration: new anchor.BN(payload.auctionConfig.auctionDuration),
-              minBidIncrement: payload.auctionConfig.minBidIncrement,
-              maxInterestRate: payload.auctionConfig.maxInterestRate,
-            }
+                auctionDuration: new anchor.BN(payload.auctionConfig.auctionDuration),
+                minBidIncrement: payload.auctionConfig.minBidIncrement,
+                maxInterestRate: payload.auctionConfig.maxInterestRate,
+              }
             : null,
         )
         .accounts({
@@ -149,7 +147,6 @@ export function useSontineProgram() {
       queryClient.invalidateQueries({
         queryKey: ['get-member-account'],
       })
-
     },
     onError: (error: Error) => {
       console.log('Join group error:', error)
@@ -186,9 +183,6 @@ export function useSontineProgram() {
     },
   })
 
-
-
-
   const contribute = useMutation({
     mutationKey: ['contribute'],
     mutationFn: async (groupAddress: string) => {
@@ -200,7 +194,7 @@ export function useSontineProgram() {
       const roundNumber = group.currentRound
       const contributeAmount = group.contributionAmount
       const [memberAccount] = getMemberPDA(sontineProgram, new PublicKey(groupAddress), anchorWallet?.publicKey)
-      return await sontineProgram.methods
+      const signature = await sontineProgram.methods
         .contribute(roundNumber, contributeAmount)
         .accounts({
           group: groupAddress,
@@ -211,18 +205,28 @@ export function useSontineProgram() {
           memberTokenAccount: await getMemberTokenAccount(anchorWallet?.publicKey),
         })
         .rpc()
+
+      return { signature, groupAddress, roundNumber }
     },
-    onSuccess: async (signature: string) => {
-      console.log('Contributed to group:', signature)
+    onSuccess: async ({
+      signature,
+      groupAddress,
+      roundNumber,
+    }: {
+      signature: string
+      groupAddress: string
+      roundNumber: number
+    }) => {
+      console.log('Contributed to group:', signature, groupAddress, roundNumber)
       const { value: latestBlockhash } = await connection.getLatestBlockhashAndContext()
       await connection.confirmTransaction({ signature, ...latestBlockhash }, 'confirmed')
 
       // refetch get-member-account
       queryClient.invalidateQueries({
-        queryKey: ['get-group'],
+        queryKey: ['get-group', { groupAddress }],
       })
       queryClient.invalidateQueries({
-        queryKey: ['get-member-account'],
+        queryKey: ['get-round-account', { groupAddress, roundNumber }],
       })
     },
     onError: (error: Error) => {
@@ -237,25 +241,35 @@ export function useSontineProgram() {
         throw Error('Sontine program not instantiated')
       }
 
-      return await sontineProgram.methods
+      const signature = await sontineProgram.methods
         .startRound(roundNumber)
         .accounts({
           group: groupAddress,
           admin: anchorWallet?.publicKey,
         })
         .rpc()
+
+      return { signature, groupAddress, roundNumber }
     },
-    onSuccess: async (signature: string) => {
+    onSuccess: async ({
+      signature,
+      groupAddress,
+      roundNumber,
+    }: {
+      signature: string
+      groupAddress: string
+      roundNumber: number
+    }) => {
       console.log('Started round:', signature)
       const { value: latestBlockhash } = await connection.getLatestBlockhashAndContext()
       await connection.confirmTransaction({ signature, ...latestBlockhash }, 'confirmed')
 
       // refetch get-group, get-round-account
       queryClient.invalidateQueries({
-        queryKey: ['get-group'],
+        queryKey: ['get-group', { groupAddress }],
       })
       queryClient.invalidateQueries({
-        queryKey: ['get-round-account'],
+        queryKey: ['get-round-account', { groupAddress, roundNumber }],
       })
     },
     onError: (error: Error) => {
@@ -270,11 +284,9 @@ export function useSontineProgram() {
     joinGroup,
     startGroup,
     startRound,
-    contribute
+    contribute,
   }
 }
-
-
 
 // Custom hook to get a specific group by address
 export function useGetGroup(groupAddress: string) {
@@ -298,7 +310,6 @@ export function useGetGroup(groupAddress: string) {
     enabled: !!sontineProgram && !!groupAddress,
   })
 }
-
 
 export function useGroupMembers(groupAddress: string, limit: number = 10, offset: number = 0) {
   const { sontineProgram } = useSontineProgram()
@@ -340,7 +351,11 @@ export function useMemberAccount(groupAddress: string, memberAddress: string) {
       }
 
       try {
-        const [memberAccountAddress] = getMemberPDA(sontineProgram, new PublicKey(groupAddress), new PublicKey(memberAddress))
+        const [memberAccountAddress] = getMemberPDA(
+          sontineProgram,
+          new PublicKey(groupAddress),
+          new PublicKey(memberAddress),
+        )
         const account = await sontineProgram.account.member.fetch(memberAccountAddress)
         return account
       } catch (error) {
@@ -352,7 +367,6 @@ export function useMemberAccount(groupAddress: string, memberAddress: string) {
     enabled: !!sontineProgram && !!groupAddress && !!memberAddress,
   })
 }
-
 
 export function useRoundAccount(groupAddress: string, roundNumber: number, enabled: boolean = true) {
   const { sontineProgram } = useSontineProgram()
@@ -378,37 +392,20 @@ export function useRoundAccount(groupAddress: string, roundNumber: number, enabl
   })
 }
 
-
-export function getMemberPDA(
-  program: Program<Sontine>,
-  group: PublicKey,
-  member: PublicKey
-): [PublicKey, number] {
+export function getMemberPDA(program: Program<Sontine>, group: PublicKey, member: PublicKey): [PublicKey, number] {
   return PublicKey.findProgramAddressSync(
-    [Buffer.from("member"), group.toBuffer(), member.toBuffer()],
-    program.programId
-  );
+    [Buffer.from('member'), group.toBuffer(), member.toBuffer()],
+    program.programId,
+  )
 }
 
-export function getMemberTokenAccount(
-  member: PublicKey
-): Promise<PublicKey> {
-  return getAssociatedTokenAddress(
-    new PublicKey(USDC_MINT),
-    member,
-    false,
-    TOKEN_2022_PROGRAM_ID
-  );
+export function getMemberTokenAccount(member: PublicKey): Promise<PublicKey> {
+  return getAssociatedTokenAddress(new PublicKey(USDC_MINT), member, false, TOKEN_2022_PROGRAM_ID)
 }
 
-
-export function getRoundPDA(
-  program: Program<Sontine>,
-  group: PublicKey,
-  roundNumber: number
-): [PublicKey, number] {
+export function getRoundPDA(program: Program<Sontine>, group: PublicKey, roundNumber: number): [PublicKey, number] {
   return PublicKey.findProgramAddressSync(
-    [Buffer.from("round"), group.toBuffer(), Buffer.from([roundNumber])],
-    program.programId
-  );
+    [Buffer.from('round'), group.toBuffer(), Buffer.from([roundNumber])],
+    program.programId,
+  )
 }

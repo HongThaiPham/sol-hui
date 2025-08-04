@@ -93,11 +93,10 @@ export function MembersTab({ groupAddress }: MembersTabProps) {
               </View>
 
               <AppText
-                variant="bodyMedium"
+                variant="bodySmall"
                 style={{
                   color: colors.onSurface,
                   opacity: 0.8,
-                  fontFamily: 'monospace',
                 }}
               >
                 {groupData.admin.toBase58()}
@@ -194,7 +193,7 @@ export function MembersTab({ groupAddress }: MembersTabProps) {
                   </View>
 
                   <View style={{ alignItems: 'center' }}>
-                    <UiIconSymbol name="person.fill" size={20} color={colors.primary} />
+                    <UiIconSymbol name="person" size={20} color={colors.primary} />
                     <AppText
                       variant="bodySmall"
                       style={{

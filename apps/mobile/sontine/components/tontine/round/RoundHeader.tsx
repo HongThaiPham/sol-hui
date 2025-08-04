@@ -37,7 +37,7 @@ export function RoundHeader({ displayRoundNumber, totalRounds, cycleDuration, ro
     >
       <View>
         <AppText
-          variant="titleLarge"
+          variant="titleMedium"
           style={{
             color: colors.onSurface,
           }}
