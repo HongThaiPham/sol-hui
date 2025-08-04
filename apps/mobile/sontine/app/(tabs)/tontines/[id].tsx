@@ -181,6 +181,10 @@ export default function TontineDetailScreen() {
                       Alert.alert('Success', 'Joined group successfully!')
                       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
                     },
+                    onError: () => {
+                      Alert.alert('Error', 'Failed to join group')
+                      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)
+                    },
                   })
                 }}
                 icon="account-group"

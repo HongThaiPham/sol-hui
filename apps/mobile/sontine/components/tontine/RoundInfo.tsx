@@ -1,5 +1,5 @@
 import React from 'react'
-import { View } from 'react-native'
+import { Alert, View } from 'react-native'
 import { AppText } from '@/components/app-text'
 import { SontineCard, SontineCardContent } from '@/components/ui/sontine-card'
 import { SontineActionButton } from '@/components/ui/sontine-button'
@@ -7,6 +7,7 @@ import { UiIconSymbol } from '@/components/ui/ui-icon-symbol'
 import { useAppTheme } from '@/components/app-theme'
 import { useSontineProgram, CURRENCY_SYMBOL, useGetGroup } from '@/hooks/use-sontine-porgram'
 import { useAnchorWallet } from '@/hooks/use-anchor-wallet'
+import * as Haptics from 'expo-haptics'
 
 // Import sub-components
 import { RoundHeader } from './round/RoundHeader'
@@ -34,7 +35,7 @@ export function RoundInfo({
   groupAddress,
 }: RoundInfoProps) {
   const { spacing, colors, fontFamily } = useAppTheme()
-  const { contribute, selectWinner } = useSontineProgram()
+  const { contribute, selectWinner, distributeFunds } = useSontineProgram()
   const anchorWallet = useAnchorWallet()
 
   // Check if current user is admin
@@ -50,7 +51,16 @@ export function RoundInfo({
 
   // Handle contribute action
   const handleContribute = () => {
-    contribute.mutate(groupAddress)
+    contribute.mutate(groupAddress, {
+      onSuccess: () => {
+        Alert.alert('Success', 'Contributed successfully!')
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
+      },
+      onError: () => {
+        Alert.alert('Error', 'Failed to contribute')
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)
+      },
+    })
   }
 
   // Handle bid action
@@ -60,7 +70,40 @@ export function RoundInfo({
 
   // Handle select winner action
   const handleSelectWinner = () => {
-    selectWinner.mutate({ groupAddress })
+    selectWinner.mutate(
+      { groupAddress },
+      {
+        onSuccess: () => {
+          Alert.alert('Success', 'Winner selected successfully!')
+          Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
+        },
+        onError: () => {
+          Alert.alert('Error', 'Failed to select winner')
+          Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)
+        },
+      },
+    )
+  }
+
+  // Handle distribute funds action
+  const handleDistributeFunds = () => {
+    distributeFunds.mutate(
+      { groupAddress },
+      {
+        onSuccess: () => {
+          Alert.alert('Success', 'Funds distributed successfully!')
+          Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
+        },
+        onError: () => {
+          Alert.alert('Error', 'Failed to distribute funds')
+          Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)
+        },
+      },
+    )
+  }
+
+  if (!roundData.roundData) {
+    return null
   }
 
   return (
@@ -134,6 +177,8 @@ export function RoundInfo({
                 paddingTop: spacing.md,
                 borderTopWidth: 1,
                 borderTopColor: colors.outline,
+                flex: 1,
+                gap: spacing.md,
               }}
             >
               <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: spacing.xs }}>
@@ -156,28 +201,47 @@ export function RoundInfo({
                     : 'Not Selected'}
                 </AppText>
                 <AppText variant="bodySmall" style={{ color: colors.onSurface, opacity: 0.7 }}>
-                  Status: {'selecting' in roundData.roundData.status ? 'Selected' : 'Waiting for Selection'}
+                  Funds: {roundData.fundsDistributed ? 'Distributed' : 'Waiting for Distribution'}
+                </AppText>
+                <AppText variant="bodySmall" style={{ color: colors.onSurface, opacity: 0.7 }}>
+                  Status:{' '}
+                  {'selecting' in roundData.roundData.status ? 'Winner selected' : 'Waiting for selection winner'}
                 </AppText>
               </View>
+
+              {/* Admin Select Winner Action */}
+              {isAdmin && isCurrentRound && roundData.canSelectWinner && (
+                <SontineActionButton
+                  variant="primary"
+                  onPress={handleSelectWinner}
+                  icon="trophy"
+                  disabled={selectWinner.isPending}
+                  isLoading={selectWinner.isPending}
+                  loadingText="Selecting Winner..."
+                  loading={selectWinner.isPending}
+                >
+                  Select Winner
+                </SontineActionButton>
+              )}
+
+              {/* Distribute Funds Action - Available to all members */}
+              {isUserMember && isCurrentRound && roundData.canDistributeFunds && roundData.walletIsWinner && (
+                <SontineActionButton
+                  onPress={handleDistributeFunds}
+                  icon="piggy-bank"
+                  disabled={distributeFunds.isPending}
+                  isLoading={distributeFunds.isPending}
+                  loadingText="Distributing Funds..."
+                  loading={distributeFunds.isPending}
+                  size="sm"
+                >
+                  You are the winner! Claim
+                </SontineActionButton>
+              )}
             </View>
           )}
         </SontineCardContent>
       </SontineCard>
-
-      {/* Admin Select Winner Action */}
-      {isAdmin && isCurrentRound && roundData.canSelectWinner && (
-        <SontineActionButton
-          variant="primary"
-          onPress={handleSelectWinner}
-          icon="trophy"
-          disabled={selectWinner.isPending}
-          isLoading={selectWinner.isPending}
-          loadingText="Selecting Winner..."
-          loading={selectWinner.isPending}
-        >
-          Select Winner
-        </SontineActionButton>
-      )}
     </View>
   )
 }

@@ -160,15 +160,17 @@ export function useSontineProgram() {
         throw Error('Sontine program not instantiated')
       }
 
-      return await sontineProgram.methods
+      const signature = await sontineProgram.methods
         .startGroup()
         .accounts({
           group: groupAddress,
           admin: anchorWallet?.publicKey,
         })
         .rpc()
+
+      return { signature, groupAddress }
     },
-    onSuccess: async (signature: string) => {
+    onSuccess: async ({ signature, groupAddress }: { signature: string; groupAddress: string }) => {
       console.log('Started group:', signature)
       const { value: latestBlockhash } = await connection.getLatestBlockhashAndContext()
       await connection.confirmTransaction({ signature, ...latestBlockhash }, 'confirmed')
@@ -176,6 +178,13 @@ export function useSontineProgram() {
       // refetch get-group, get-group-members, get-member-account
       queryClient.invalidateQueries({
         queryKey: ['get-group'],
+      })
+      queryClient.invalidateQueries({
+        queryKey: ['get-group-members', { groupAddress }],
+      })
+
+      queryClient.invalidateQueries({
+        queryKey: ['get-round-account', { groupAddress, roundNumber: 0 }],
       })
     },
     onError: (error: Error) => {
@@ -348,10 +357,10 @@ export function useSontineProgram() {
         .distributeFunds(roundNumber)
         .accounts({
           group: groupAddress,
-          memberAccount: new PublicKey(winner),
+          memberAccount: winnerMemberPda,
           memberTokenAccount: await getMemberTokenAccount(new PublicKey(winner)),
           mint: USDC_MINT,
-          selectedMember: winnerMemberPda,
+          selectedMember: new PublicKey(winner),
           authority: anchorWallet?.publicKey,
           tokenProgram: TOKEN_2022_PROGRAM_ID,
         })
@@ -385,6 +394,52 @@ export function useSontineProgram() {
     },
   })
 
+  const finalizeRound = useMutation({
+    mutationKey: ['finalize-round'],
+    mutationFn: async ({ groupAddress }: { groupAddress: string }) => {
+      if (!sontineProgram) {
+        throw Error('Sontine program not instantiated')
+      }
+
+      const group = await sontineProgram.account.group.fetch(groupAddress)
+      const roundNumber = group.currentRound
+
+      const signature = await sontineProgram.methods
+        .finalizeRound(roundNumber)
+        .accounts({
+          group: groupAddress,
+          admin: anchorWallet?.publicKey,
+        })
+        .rpc()
+
+      return { signature, groupAddress, roundNumber }
+    },
+    onSuccess: async ({
+      signature,
+      groupAddress,
+      roundNumber,
+    }: {
+      signature: string
+      groupAddress: string
+      roundNumber: number
+    }) => {
+      console.log('Finalized round:', signature)
+      const { value: latestBlockhash } = await connection.getLatestBlockhashAndContext()
+      await connection.confirmTransaction({ signature, ...latestBlockhash }, 'confirmed')
+
+      // refetch get-group, get-round-account
+      queryClient.invalidateQueries({
+        queryKey: ['get-group', { groupAddress }],
+      })
+      queryClient.invalidateQueries({
+        queryKey: ['get-round-account', { groupAddress, roundNumber }],
+      })
+    },
+    onError: (error: Error) => {
+      console.log('Finalize round error:', error)
+    },
+  })
+
   return {
     sontineProgram,
     groupAccounts,
@@ -395,6 +450,7 @@ export function useSontineProgram() {
     contribute,
     selectWinner,
     distributeFunds,
+    finalizeRound,
   }
 }
 

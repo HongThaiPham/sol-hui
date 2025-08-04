@@ -16,6 +16,8 @@ export function useRoundData({ groupAddress, groupData, roundNumber, isCurrentRo
 
   // Calculate round numbers
   const actualRoundNumber = roundNumber ?? (groupData?.currentRound || 0)
+
+  console.log('actualRoundNumber', groupData?.currentRound)
   const displayRoundNumber = actualRoundNumber + 1 // Display as 1-indexed
   const totalRounds = groupData?.totalRounds || 0
   const roundProgress = (displayRoundNumber / totalRounds) * 100
@@ -27,6 +29,7 @@ export function useRoundData({ groupAddress, groupData, roundNumber, isCurrentRo
   // Get member account data to check contribution status
   const currentUserAddress = anchorWallet?.publicKey?.toString() || ''
   const { data: memberData } = useMemberAccount(groupAddress, currentUserAddress)
+  console.log('memberData', memberData, groupData?.currentRound, actualRoundNumber)
 
   // Calculate amounts
   const contributionAmount = Number(groupData?.contributionAmount / 10 ** USDC_DECIMALS)
@@ -42,7 +45,8 @@ export function useRoundData({ groupAddress, groupData, roundNumber, isCurrentRo
   const collectionProgress = targetAmount > 0 ? (collectedAmount / targetAmount) * 100 : 0
 
   // Check if current user has contributed to current round
-  const hasUserContributed = memberData?.contributedCurrentRound || false
+  const hasUserContributed =
+    (groupData?.currentRound === actualRoundNumber && memberData?.contributedCurrentRound) || false
 
   // Determine round status
   const roundStatus = useMemo(() => {
@@ -90,6 +94,28 @@ export function useRoundData({ groupAddress, groupData, roundNumber, isCurrentRo
     return !roundData.selectedMember && !roundData.finalized
   }, [roundData, isRoundCompleted])
 
+  // Check if funds can be distributed (winner selected but funds not distributed yet)
+  const canDistributeFunds = useMemo(() => {
+    if (!roundData || !isCurrentRound) return false
+
+    // Can distribute funds if:
+    // 1. Winner has been selected
+    // 2. Funds haven't been distributed yet (distributedAmount is 0)
+    // 3. Round is not finalized yet
+    return !!roundData.selectedMember && Number(roundData.distributedAmount) === 0 && !roundData.finalized
+  }, [roundData, isCurrentRound])
+
+  // Check if funds have been distributed
+  const fundsDistributed = useMemo(() => {
+    if (!roundData) return false
+    return Number(roundData.distributedAmount) > 0
+  }, [roundData])
+
+  const walletIsWinner = useMemo(() => {
+    if (!roundData || !currentUserAddress) return false
+    return roundData.selectedMember?.toString() === currentUserAddress
+  }, [roundData, currentUserAddress])
+
   return {
     // Round info
     displayRoundNumber,
@@ -113,6 +139,8 @@ export function useRoundData({ groupAddress, groupData, roundNumber, isCurrentRo
     // Round completion status
     isRoundCompleted,
     canSelectWinner,
+    canDistributeFunds,
+    fundsDistributed,
 
     // Loading states
     roundLoading,
@@ -121,5 +149,6 @@ export function useRoundData({ groupAddress, groupData, roundNumber, isCurrentRo
     roundData,
     memberData,
     groupData,
+    walletIsWinner,
   }
 }

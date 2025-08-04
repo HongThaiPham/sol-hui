@@ -1,5 +1,5 @@
 {
-  "address": "GorkwbJYHK36X3nmEu9RY8rgZ9sFnudx9voNQskjiF67",
+  "address": "9PZCzbuowY4pmsmJ4P6DAJm2jZVpxHbskKfpos3hVBo1",
   "metadata": {
     "name": "sontine",
     "version": "0.1.0",
@@ -1788,9 +1788,7 @@
     },
     {
       "name": "Group",
-      "docs": [
-        "Main group account that holds all group configuration and state"
-      ],
+      "docs": ["Main group account that holds all group configuration and state"],
       "type": {
         "kind": "struct",
         "fields": [
@@ -1834,9 +1832,7 @@
           },
           {
             "name": "contribution_amount",
-            "docs": [
-              "Amount each member must contribute per round (in lamports)"
-            ],
+            "docs": ["Amount each member must contribute per round (in lamports)"],
             "type": "u64"
           },
           {
@@ -1882,9 +1878,7 @@
           },
           {
             "name": "fixed_order",
-            "docs": [
-              "For fixed order selection: list of member pubkeys in order"
-            ],
+            "docs": ["For fixed order selection: list of member pubkeys in order"],
             "type": {
               "vec": "pubkey"
             }
@@ -1896,9 +1890,7 @@
           },
           {
             "name": "min_members_to_start",
-            "docs": [
-              "Minimum members required to start (default: max_members)"
-            ],
+            "docs": ["Minimum members required to start (default: max_members)"],
             "type": "u8"
           },
           {
@@ -2245,9 +2237,7 @@
     },
     {
       "name": "Member",
-      "docs": [
-        "Member account that tracks individual member state within a group"
-      ],
+      "docs": ["Member account that tracks individual member state within a group"],
       "type": {
         "kind": "struct",
         "fields": [
@@ -2299,9 +2289,7 @@
           },
           {
             "name": "current_bid",
-            "docs": [
-              "For auction method: member's current bid (interest rate in basis points)"
-            ],
+            "docs": ["For auction method: member's current bid (interest rate in basis points)"],
             "type": {
               "option": "u16"
             }
@@ -2656,9 +2644,7 @@
           },
           {
             "name": "interest_rate",
-            "docs": [
-              "Interest rate for this round (basis points) - for auction method"
-            ],
+            "docs": ["Interest rate for this round (basis points) - for auction method"],
             "type": {
               "option": "u16"
             }
@@ -2908,9 +2894,7 @@
     },
     {
       "name": "SelectionMethod",
-      "docs": [
-        "Selection method for determining who receives funds each round"
-      ],
+      "docs": ["Selection method for determining who receives funds each round"],
       "type": {
         "kind": "enum",
         "variants": [

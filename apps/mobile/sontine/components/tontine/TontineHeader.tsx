@@ -96,7 +96,7 @@ export function TontineHeader({ groupData, contributionAmount, totalAmount, grou
           startRound.mutate(
             {
               groupAddress: groupAddress,
-              roundNumber: nextRoundNumber,
+              roundNumber: groupData?.currentRound || 0,
             },
             {
               onSuccess: () => {
@@ -141,7 +141,7 @@ export function TontineHeader({ groupData, contributionAmount, totalAmount, grou
               variant="titleLarge"
               style={{
                 color: colors.onPrimary,
-               
+
                 marginRight: spacing.sm,
               }}
             >
@@ -208,7 +208,12 @@ export function TontineHeader({ groupData, contributionAmount, totalAmount, grou
               marginBottom: spacing.md,
             }}
           >
-            {groupData?.selectionMethod.random ? 'Random Selection' : 'Auction Based'} • {statusInfo.description}
+            {groupData?.selectionMethod.random
+              ? 'Random Selection'
+              : groupData?.selectionMethod.auction
+                ? 'Auction Based'
+                : 'Fixed Order'}{' '}
+            • {statusInfo.description}
           </AppText>
         </View>
 
@@ -248,7 +253,7 @@ export function TontineHeader({ groupData, contributionAmount, totalAmount, grou
               <Menu.Item
                 onPress={handleStartRound}
                 title="Start Round"
-                leadingIcon="timer-play"
+                leadingIcon="play"
                 titleStyle={{ color: colors.onSurface }}
               />
             )}
@@ -278,7 +283,6 @@ export function TontineHeader({ groupData, contributionAmount, totalAmount, grou
             variant="titleMedium"
             style={{
               color: colors.onPrimary,
-              
             }}
           >
             {totalAmount.toFixed(2)} {CURRENCY_SYMBOL}
@@ -299,7 +303,6 @@ export function TontineHeader({ groupData, contributionAmount, totalAmount, grou
             variant="titleMedium"
             style={{
               color: colors.onPrimary,
-              
             }}
           >
             {statusInfo.isActive
@@ -322,7 +325,6 @@ export function TontineHeader({ groupData, contributionAmount, totalAmount, grou
             variant="titleMedium"
             style={{
               color: colors.onPrimary,
-              
             }}
           >
             {groupData?.currentMembers}

@@ -1,9 +1,6 @@
 import React from 'react'
 import { View } from 'react-native'
-import { AppText } from '@/components/app-text'
-import { SontineCard, SontineCardContent } from '@/components/ui/sontine-card'
 import { SontineActionButton } from '@/components/ui/sontine-button'
-import { UiIconSymbol } from '@/components/ui/ui-icon-symbol'
 import { useAppTheme } from '@/components/app-theme'
 
 interface RoundActionsProps {
@@ -48,6 +45,14 @@ export function RoundActions({
 
   const shouldShowContributeButton =
     isUserMember && isCurrentRound && isGroupStarted && isRoundActive && !hasUserContributed
+
+  console.log({
+    isUserMember,
+    isCurrentRound,
+    hasUserContributed,
+    isGroupStarted,
+    isRoundActive,
+  })
 
   const shouldShowBidButton = isAuctionMethod && isCurrentRound && isRoundActive
 
