@@ -77,8 +77,8 @@ const convertGroupToTontine = (groupAccount: any): Tontine => {
       }
     }
 
-    const shortId = groupId.length > 4 ? groupId.slice(-4) : groupId
-    return `Tontine Group #${shortId} (${methodName})`
+    // const shortId = groupId.length > 4 ? groupId.slice(-4) : groupId
+    return `# ${groupId} (${methodName})`
   }
 
   // Generate description based on group properties
@@ -233,7 +233,6 @@ export default function BrowseTontinesScreen() {
                         variant="bodyMedium"
                         style={{
                           color: isSelected ? 'white' : filterColor,
-                          fontWeight: isSelected ? 'bold' : 'normal',
                         }}
                       >
                         {filter.label}

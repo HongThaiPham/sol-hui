@@ -20,11 +20,12 @@ export function SontineInput({
   style,
   ...props
 }: SontineInputProps) {
-  const { paperTheme, colors, spacing, borderRadius } = useAppTheme()
+  const { paperTheme, colors, spacing, borderRadius, fontFamily } = useAppTheme()
 
   const getInputStyle = (): StyleProp<TextStyle> => {
     const baseStyle: TextStyle = {
       backgroundColor: variant === 'flat' ? colors.surfaceVariant : 'transparent',
+      fontFamily: fontFamily.primary,
     }
 
     return baseStyle

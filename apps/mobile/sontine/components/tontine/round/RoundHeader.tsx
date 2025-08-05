@@ -15,10 +15,22 @@ interface RoundHeaderProps {
   totalRounds: number
   cycleDuration: any
   roundStatus: RoundStatus
+  isUserMember: boolean
+  isCurrentRound: boolean
+  hasUserContributed: boolean
 }
 
-export function RoundHeader({ displayRoundNumber, totalRounds, cycleDuration, roundStatus }: RoundHeaderProps) {
+export function RoundHeader({
+  displayRoundNumber,
+  totalRounds,
+  cycleDuration,
+  roundStatus,
+  isUserMember,
+  isCurrentRound,
+  hasUserContributed,
+}: RoundHeaderProps) {
   const { spacing, colors } = useAppTheme()
+  const shouldShowContributedMessage = isUserMember && isCurrentRound && hasUserContributed
 
   // Format cycle duration
   const formatCycleDuration = (cycleDuration: any) => {
@@ -37,7 +49,7 @@ export function RoundHeader({ displayRoundNumber, totalRounds, cycleDuration, ro
     >
       <View>
         <AppText
-          variant="titleLarge"
+          variant="titleMedium"
           style={{
             color: colors.onSurface,
           }}
@@ -64,13 +76,13 @@ export function RoundHeader({ displayRoundNumber, totalRounds, cycleDuration, ro
           style={{ marginRight: spacing.xs }}
         />
         <AppText
-          variant="bodyMedium"
+          variant="bodySmall"
           style={{
             color: roundStatus.color,
             fontWeight: '600',
           }}
         >
-          {roundStatus.status}
+          {shouldShowContributedMessage ? 'Contributed' : roundStatus.status}
         </AppText>
       </View>
     </View>

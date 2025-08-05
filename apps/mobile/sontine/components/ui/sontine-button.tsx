@@ -166,10 +166,10 @@ export function SontineActionButton({
 
   return (
     <SontineButton
-      {...props}
       disabled={disabled || isLoading}
       onPress={isLoading ? undefined : onPress}
       icon={isLoading ? () => <ActivityIndicator size="small" color={getLoadingIndicatorColor()} /> : props.icon}
+      {...props}
     >
       {isLoading && loadingText ? loadingText : children}
     </SontineButton>

@@ -65,7 +65,10 @@ function RootNavigator() {
             backgroundColor: '#00B49F',
           },
           headerTintColor: '#FFFFFF',
-          headerTitleStyle: {},
+          headerTitleStyle: {
+            fontFamily: 'PixeloidSans-Regular',
+            fontSize: 16,
+          },
         }}
       >
         <Stack.Protected guard={isAuthenticated}>

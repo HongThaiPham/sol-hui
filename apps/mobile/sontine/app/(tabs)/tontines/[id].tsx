@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Alert, ScrollView, View } from 'react-native'
-import { useLocalSearchParams } from 'expo-router'
+import { Stack, useLocalSearchParams } from 'expo-router'
 import { AppPage } from '@/components/app-page'
 import { AppText } from '@/components/app-text'
 import { SontineCard, SontineCardContent } from '@/components/ui/sontine-card'
@@ -102,6 +102,12 @@ export default function TontineDetailScreen() {
 
   return (
     <AppPage>
+      <Stack.Screen
+        options={{
+          headerTitle: `Tontine #${groupData.groupId.toString()}`,
+          headerBackTitle: 'Back',
+        }}
+      />
       <ScrollView
         style={{ flex: 1 }}
         contentContainerStyle={{
@@ -152,7 +158,7 @@ export default function TontineDetailScreen() {
                       color: colors.primary,
                     }}
                   >
-                    You are a member of this group
+                    You are a {groupData.admin.toBase58() === currentUserAddress ? 'Admin' : 'Member'} of this group
                   </AppText>
                 </View>
                 <AppText
@@ -164,7 +170,9 @@ export default function TontineDetailScreen() {
                     marginTop: spacing.xs,
                   }}
                 >
-                  You can participate in contributions and activities
+                  {groupData.admin.toBase58() === currentUserAddress
+                    ? 'You can manage the group and view activities'
+                    : 'You can participate in contributions and activities'}
                 </AppText>
               </SontineCardContent>
             </SontineCard>
@@ -179,10 +187,15 @@ export default function TontineDetailScreen() {
                       Alert.alert('Success', 'Joined group successfully!')
                       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
                     },
+                    onError: () => {
+                      Alert.alert('Error', 'Failed to join group')
+                      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)
+                    },
                   })
                 }}
                 icon="account-group"
                 disabled={joinGroup.isPending}
+                loading={joinGroup.isPending}
               >
                 {joinGroup.isPending ? 'Joining Group...' : 'Join Group'}
               </SontineActionButton>

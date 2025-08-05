@@ -11,7 +11,10 @@ export default function ProfileLayout() {
           backgroundColor: '#00B49F',
         },
         headerTintColor: '#FFFFFF',
-        headerTitleStyle: {},
+        headerTitleStyle: {
+          fontFamily: 'PixeloidSans-Regular',
+          fontSize: 16,
+        },
       }}
     >
       <Stack.Screen

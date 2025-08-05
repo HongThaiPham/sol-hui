@@ -1,9 +1,6 @@
 import React from 'react'
 import { View } from 'react-native'
-import { AppText } from '@/components/app-text'
-import { SontineCard, SontineCardContent } from '@/components/ui/sontine-card'
 import { SontineActionButton } from '@/components/ui/sontine-button'
-import { UiIconSymbol } from '@/components/ui/ui-icon-symbol'
 import { useAppTheme } from '@/components/app-theme'
 
 interface RoundActionsProps {
@@ -19,6 +16,12 @@ interface RoundActionsProps {
   onBid: () => void
   isContributing: boolean
   contributeError?: string | null
+  // Admin props
+  isAdmin: boolean
+  canSelectWinner: boolean
+  onSelectWinner: () => void
+  isSelectingWinner: boolean
+  collectionProgress: number
 }
 
 export function RoundActions({
@@ -34,18 +37,42 @@ export function RoundActions({
   onBid,
   isContributing,
   contributeError,
+  isAdmin,
+  canSelectWinner,
+  onSelectWinner,
+  isSelectingWinner,
+  collectionProgress,
 }: RoundActionsProps) {
   const { spacing, colors } = useAppTheme()
 
   const shouldShowContributeButton =
     isUserMember && isCurrentRound && isGroupStarted && isRoundActive && !hasUserContributed
 
-  const shouldShowContributedMessage = isUserMember && isCurrentRound && hasUserContributed
+  console.log({
+    isUserMember,
+    isCurrentRound,
+    hasUserContributed,
+    isGroupStarted,
+    isRoundActive,
+  })
 
-  const shouldShowBidButton = isAuctionMethod && isCurrentRound && isRoundActive
+  const shouldShowBidButton =
+    isAuctionMethod && isCurrentRound && isRoundActive && hasUserContributed && collectionProgress == 100
+
+  if (!shouldShowContributeButton && !shouldShowBidButton) {
+    return null
+  }
 
   return (
-    <View style={{ gap: spacing.sm }}>
+    <View
+      style={{
+        marginTop: spacing.md,
+        paddingTop: spacing.md,
+        borderTopWidth: 1,
+        borderTopColor: colors.outline,
+        gap: spacing.md,
+      }}
+    >
       {/* Contribute Button */}
       {shouldShowContributeButton && (
         <SontineActionButton
@@ -55,57 +82,18 @@ export function RoundActions({
           disabled={isContributing}
           isLoading={isContributing}
           loadingText="Contributing..."
+          loading={isContributing}
         >
           Contribute {contributionAmount.toFixed(2)} {currency}
         </SontineActionButton>
       )}
 
-      {/* Already Contributed Message */}
-      {shouldShowContributedMessage && (
-        <SontineCard variant="outlined" padding="md">
-          <SontineCardContent>
-            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-              <UiIconSymbol
-                name="checkmark.circle.fill"
-                size={20}
-                color={colors.primary}
-                style={{ marginRight: spacing.xs }}
-              />
-              <AppText
-                variant="bodyMedium"
-                style={{
-                  color: colors.primary,
-                  fontWeight: '600',
-                }}
-              >
-                You have contributed to this round
-              </AppText>
-            </View>
-          </SontineCardContent>
-        </SontineCard>
-      )}
-
       {/* Auction Bid Button */}
       {shouldShowBidButton && (
-        <SontineActionButton variant="accent" onPress={onBid} icon="chart-bell-curve-cumulative">
+        <SontineActionButton variant="primary" onPress={onBid} icon="chart-bell-curve-cumulative">
           Submit Bid
         </SontineActionButton>
       )}
-
-      {/* Error Message */}
-      {/* {contributeError && (
-        <View style={{ marginTop: spacing.sm }}>
-          <AppText
-            variant="bodySmall"
-            style={{
-              color: colors.error,
-              textAlign: 'center',
-            }}
-          >
-            Failed to contribute, try again later.
-          </AppText>
-        </View>
-      )} */}
     </View>
   )
 }

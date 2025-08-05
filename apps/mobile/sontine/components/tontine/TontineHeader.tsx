@@ -96,7 +96,7 @@ export function TontineHeader({ groupData, contributionAmount, totalAmount, grou
           startRound.mutate(
             {
               groupAddress: groupAddress,
-              roundNumber: nextRoundNumber,
+              roundNumber: groupData?.currentRound || 0,
             },
             {
               onSuccess: () => {
@@ -137,19 +137,19 @@ export function TontineHeader({ groupData, contributionAmount, totalAmount, grou
       >
         <View style={{ flex: 1 }}>
           <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: spacing.xs }}>
-            <AppText
+            {/* <AppText
               variant="titleLarge"
               style={{
                 color: colors.onPrimary,
-               
+
                 marginRight: spacing.sm,
               }}
             >
               Group #{groupData?.groupId.toString()}
-            </AppText>
+            </AppText> */}
 
             {/* Small status indicator dot */}
-            <View
+            {/* <View
               style={{
                 width: 8,
                 height: 8,
@@ -161,9 +161,23 @@ export function TontineHeader({ groupData, contributionAmount, totalAmount, grou
                 shadowRadius: 4,
                 elevation: 2,
               }}
-            />
+            /> */}
           </View>
-
+          <AppText
+            variant="bodyMedium"
+            style={{
+              color: colors.onPrimary,
+              opacity: 0.9,
+              marginBottom: spacing.md,
+            }}
+          >
+            {groupData?.selectionMethod.random
+              ? 'Random Selection'
+              : groupData?.selectionMethod.auction
+                ? 'Auction Based'
+                : 'Fixed Order'}{' '}
+            • {statusInfo.description}
+          </AppText>
           {/* Status Badge - Prominent */}
           <Animated.View
             style={{
@@ -199,17 +213,6 @@ export function TontineHeader({ groupData, contributionAmount, totalAmount, grou
               {statusInfo.label.toUpperCase()}
             </AppText>
           </Animated.View>
-
-          <AppText
-            variant="bodyMedium"
-            style={{
-              color: colors.onPrimary,
-              opacity: 0.9,
-              marginBottom: spacing.md,
-            }}
-          >
-            {groupData?.selectionMethod.random ? 'Random Selection' : 'Auction Based'} • {statusInfo.description}
-          </AppText>
         </View>
 
         {/* Admin Menu */}
@@ -248,7 +251,7 @@ export function TontineHeader({ groupData, contributionAmount, totalAmount, grou
               <Menu.Item
                 onPress={handleStartRound}
                 title="Start Round"
-                leadingIcon="timer-play"
+                leadingIcon="play"
                 titleStyle={{ color: colors.onSurface }}
               />
             )}
@@ -278,7 +281,6 @@ export function TontineHeader({ groupData, contributionAmount, totalAmount, grou
             variant="titleMedium"
             style={{
               color: colors.onPrimary,
-              
             }}
           >
             {totalAmount.toFixed(2)} {CURRENCY_SYMBOL}
@@ -299,7 +301,6 @@ export function TontineHeader({ groupData, contributionAmount, totalAmount, grou
             variant="titleMedium"
             style={{
               color: colors.onPrimary,
-              
             }}
           >
             {statusInfo.isActive
@@ -322,7 +323,6 @@ export function TontineHeader({ groupData, contributionAmount, totalAmount, grou
             variant="titleMedium"
             style={{
               color: colors.onPrimary,
-              
             }}
           >
             {groupData?.currentMembers}
