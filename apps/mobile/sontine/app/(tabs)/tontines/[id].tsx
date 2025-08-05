@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Alert, ScrollView, View } from 'react-native'
-import { useLocalSearchParams } from 'expo-router'
+import { Stack, useLocalSearchParams } from 'expo-router'
 import { AppPage } from '@/components/app-page'
 import { AppText } from '@/components/app-text'
 import { SontineCard, SontineCardContent } from '@/components/ui/sontine-card'
@@ -102,6 +102,12 @@ export default function TontineDetailScreen() {
 
   return (
     <AppPage>
+      <Stack.Screen
+        options={{
+          headerTitle: `Tontine #${groupData.groupId.toString()}`,
+          headerBackTitle: 'Back',
+        }}
+      />
       <ScrollView
         style={{ flex: 1 }}
         contentContainerStyle={{

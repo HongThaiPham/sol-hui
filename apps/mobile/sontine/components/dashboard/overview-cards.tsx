@@ -4,6 +4,7 @@ import { AppText } from '@/components/app-text'
 import { AppHeading, TontineAmount, TontineCount } from '@/components/ui/typography'
 import { UiIconSymbol } from '@/components/ui/ui-icon-symbol'
 import { useAppTheme, type AppTheme } from '@/components/app-theme'
+import { useSontineProgram, USDC_DECIMALS } from '@/hooks/use-sontine-porgram'
 
 const getStyles = ({ spacing, colors }: AppTheme) =>
   StyleSheet.create({
@@ -74,43 +75,42 @@ const getStyles = ({ spacing, colors }: AppTheme) =>
     },
   })
 
-// System overview data
-const systemData = {
-  totalGroups: 1247, // Tổng số group trong hệ thống
-  totalFundsRaised: 89432.5, // Tổng số tiền đã huy động (USDC)
-  activeMembers: 5683, // Số thành viên đang hoạt động
-  completedCycles: 892, // Số chu kỳ đã hoàn thành
-}
-
 export function OverviewCards() {
   const theme = useAppTheme()
   const { colors } = theme
+  const { getOverview } = useSontineProgram()
+
+  // Get overview data from the hook
+  const overviewData = getOverview.data
+
+  // Convert fundsRaised from raw USDC units to display units
+  const fundsRaisedInUsdc = overviewData?.fundsRaised ? overviewData.fundsRaised / 10 ** USDC_DECIMALS : 0
 
   const cards = [
     {
       title: 'Total Groups',
-      value: systemData.totalGroups,
+      value: overviewData?.totalGroups || 0,
       isCurrency: false,
       icon: 'person.3.fill',
       iconColor: colors.primary,
     },
     {
       title: 'Funds Raised',
-      value: systemData.totalFundsRaised,
+      value: fundsRaisedInUsdc,
       isCurrency: true,
       icon: 'dollarsign.circle.fill',
       iconColor: colors.secondary,
     },
     {
       title: 'Active Members',
-      value: systemData.activeMembers,
+      value: overviewData?.activeMembers || 0,
       isCurrency: false,
       icon: 'heart.fill',
       iconColor: colors.tertiary,
     },
     {
       title: 'Completed Cycles',
-      value: systemData.completedCycles,
+      value: overviewData?.completedCycles || 0,
       isCurrency: false,
       icon: 'checkmark.circle.fill',
       iconColor: colors.primary,

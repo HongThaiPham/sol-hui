@@ -137,7 +137,7 @@ export function TontineHeader({ groupData, contributionAmount, totalAmount, grou
       >
         <View style={{ flex: 1 }}>
           <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: spacing.xs }}>
-            <AppText
+            {/* <AppText
               variant="titleLarge"
               style={{
                 color: colors.onPrimary,
@@ -146,10 +146,10 @@ export function TontineHeader({ groupData, contributionAmount, totalAmount, grou
               }}
             >
               Group #{groupData?.groupId.toString()}
-            </AppText>
+            </AppText> */}
 
             {/* Small status indicator dot */}
-            <View
+            {/* <View
               style={{
                 width: 8,
                 height: 8,
@@ -161,9 +161,23 @@ export function TontineHeader({ groupData, contributionAmount, totalAmount, grou
                 shadowRadius: 4,
                 elevation: 2,
               }}
-            />
+            /> */}
           </View>
-
+          <AppText
+            variant="bodyMedium"
+            style={{
+              color: colors.onPrimary,
+              opacity: 0.9,
+              marginBottom: spacing.md,
+            }}
+          >
+            {groupData?.selectionMethod.random
+              ? 'Random Selection'
+              : groupData?.selectionMethod.auction
+                ? 'Auction Based'
+                : 'Fixed Order'}{' '}
+            • {statusInfo.description}
+          </AppText>
           {/* Status Badge - Prominent */}
           <Animated.View
             style={{
@@ -199,22 +213,6 @@ export function TontineHeader({ groupData, contributionAmount, totalAmount, grou
               {statusInfo.label.toUpperCase()}
             </AppText>
           </Animated.View>
-
-          <AppText
-            variant="bodyMedium"
-            style={{
-              color: colors.onPrimary,
-              opacity: 0.9,
-              marginBottom: spacing.md,
-            }}
-          >
-            {groupData?.selectionMethod.random
-              ? 'Random Selection'
-              : groupData?.selectionMethod.auction
-                ? 'Auction Based'
-                : 'Fixed Order'}{' '}
-            • {statusInfo.description}
-          </AppText>
         </View>
 
         {/* Admin Menu */}

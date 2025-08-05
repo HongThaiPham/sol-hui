@@ -60,7 +60,8 @@ export function useSontineProgram() {
       }
       console.log('Fetching group accounts')
       const accounts = await sontineProgram.account.group.all()
-      return accounts
+      // order accounts by id before returning
+      return accounts.sort((a, b) => a.account.groupId - b.account.groupId)
     },
     enabled: !!sontineProgram,
   })
@@ -111,6 +112,7 @@ export function useSontineProgram() {
       const { value: latestBlockhash } = await connection.getLatestBlockhashAndContext()
       await connection.confirmTransaction({ signature, ...latestBlockhash }, 'confirmed')
       await groupAccounts.refetch()
+      await getOverview.refetch()
     },
     onError: (error: Error) => {
       console.log('Create group error:', error)
@@ -147,6 +149,7 @@ export function useSontineProgram() {
       queryClient.invalidateQueries({
         queryKey: ['get-member-account'],
       })
+      await getOverview.refetch()
     },
     onError: (error: Error) => {
       console.log('Join group error:', error)
@@ -237,6 +240,7 @@ export function useSontineProgram() {
       queryClient.invalidateQueries({
         queryKey: ['get-round-account', { groupAddress, roundNumber }],
       })
+      await getOverview.refetch()
     },
     onError: (error: Error) => {
       console.log('Contribute error:', error)
@@ -440,6 +444,41 @@ export function useSontineProgram() {
     },
   })
 
+  const getOverview = useQuery({
+    queryKey: ['get-overview'],
+    queryFn: async () => {
+      if (!sontineProgram) {
+        return null
+      }
+
+      try {
+        const groupAccounts = await sontineProgram.account.group.all()
+        const fundsRaised = groupAccounts.reduce((acc, account) => acc + account.account.currentMembers, 0)
+        const memberAccounts = await sontineProgram.account.member.all()
+        // de-duplicate members base on field member in data
+        const activeMembers = memberAccounts.reduce((acc, item) => {
+          if (!acc.includes(item.account.member.toString())) {
+            acc.push(item.account.member.toString())
+          }
+          return acc
+        }, [] as string[])
+
+        const roundAccount = await sontineProgram.account.round.all()
+        const completedCycles = roundAccount.filter((account) => account.account.status === 3).length
+        return {
+          totalGroups: groupAccounts.length,
+          fundsRaised,
+          activeMembers: activeMembers.length,
+          completedCycles,
+        }
+      } catch (error) {
+        console.error('Error fetching overview:', error)
+        throw error
+      }
+    },
+    enabled: !!sontineProgram,
+  })
+
   return {
     sontineProgram,
     groupAccounts,
@@ -451,6 +490,7 @@ export function useSontineProgram() {
     selectWinner,
     distributeFunds,
     finalizeRound,
+    getOverview,
   }
 }
 
