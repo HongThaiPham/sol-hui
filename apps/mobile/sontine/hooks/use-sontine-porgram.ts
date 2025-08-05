@@ -18,7 +18,7 @@ type AuctionConfig = {
   maxInterestRate: number
 }
 
-export const USDC_MINT = 'A43qEjwWtEkNUzSxd1d9eEe6tDhwR12wFnRdA1gGRvxG'
+export const USDC_MINT = 'A43qEjwWtEkNUzSxd1d9eEe6tDhwR12wFnRdA1gGRvxG' //fake USDC mint for testing
 export const USDC_DECIMALS = 6
 export const CURRENCY_SYMBOL = 'USDC'
 
@@ -479,6 +479,56 @@ export function useSontineProgram() {
     enabled: !!sontineProgram,
   })
 
+  const placeBid = useMutation({
+    mutationKey: ['place-bid'],
+    mutationFn: async ({ groupAddress, bidAmount }: { groupAddress: string; bidAmount: number }) => {
+      if (!sontineProgram || !anchorWallet) {
+        throw Error('Sontine program not instantiated')
+      }
+
+      const group = await sontineProgram.account.group.fetch(groupAddress)
+      const roundNumber = group.currentRound
+      const [memberAccount] = getMemberPDA(sontineProgram, new PublicKey(groupAddress), anchorWallet?.publicKey)
+      const [auctionRound] = getAuctionPDA(sontineProgram, new PublicKey(groupAddress), roundNumber)
+
+      const signature = await sontineProgram.methods
+        .placeBid(roundNumber, bidAmount)
+        .accountsPartial({
+          group: groupAddress,
+          memberAccount,
+          auctionRound,
+          member: anchorWallet?.publicKey,
+        })
+        .rpc()
+
+      return { signature, groupAddress, roundNumber }
+    },
+    onSuccess: async ({
+      signature,
+      groupAddress,
+      roundNumber,
+    }: {
+      signature: string
+      groupAddress: string
+      roundNumber: number
+    }) => {
+      console.log('Placed bid:', signature)
+      const { value: latestBlockhash } = await connection.getLatestBlockhashAndContext()
+      await connection.confirmTransaction({ signature, ...latestBlockhash }, 'confirmed')
+
+      // refetch get-group, get-round-account
+      queryClient.invalidateQueries({
+        queryKey: ['get-group', { groupAddress }],
+      })
+      queryClient.invalidateQueries({
+        queryKey: ['get-round-account', { groupAddress, roundNumber }],
+      })
+    },
+    onError: (error: Error) => {
+      console.log('Place bid error:', error)
+    },
+  })
+
   return {
     sontineProgram,
     groupAccounts,
@@ -491,6 +541,7 @@ export function useSontineProgram() {
     distributeFunds,
     finalizeRound,
     getOverview,
+    placeBid,
   }
 }
 

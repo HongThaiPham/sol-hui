@@ -21,6 +21,7 @@ interface RoundActionsProps {
   canSelectWinner: boolean
   onSelectWinner: () => void
   isSelectingWinner: boolean
+  collectionProgress: number
 }
 
 export function RoundActions({
@@ -40,6 +41,7 @@ export function RoundActions({
   canSelectWinner,
   onSelectWinner,
   isSelectingWinner,
+  collectionProgress,
 }: RoundActionsProps) {
   const { spacing, colors } = useAppTheme()
 
@@ -54,7 +56,8 @@ export function RoundActions({
     isRoundActive,
   })
 
-  const shouldShowBidButton = isAuctionMethod && isCurrentRound && isRoundActive
+  const shouldShowBidButton =
+    isAuctionMethod && isCurrentRound && isRoundActive && hasUserContributed && collectionProgress == 100
 
   if (!shouldShowContributeButton && !shouldShowBidButton) {
     return null

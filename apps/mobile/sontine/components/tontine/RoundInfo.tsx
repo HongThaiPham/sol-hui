@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Alert, View } from 'react-native'
 import { AppText } from '@/components/app-text'
 import { SontineCard, SontineCardContent } from '@/components/ui/sontine-card'
@@ -16,6 +16,7 @@ import { RoundStats } from './round/RoundStats'
 import { RoundActions } from './round/RoundActions'
 import { useRoundData } from './round/useRoundData'
 import { ellipsify } from '@/utils/ellipsify'
+import { BidAmountModal } from './BidAmountModal'
 
 interface RoundInfoProps {
   groupAddress: string
@@ -34,9 +35,12 @@ export function RoundInfo({
   isCurrentRound = true,
   groupAddress,
 }: RoundInfoProps) {
-  const { spacing, colors, fontFamily } = useAppTheme()
-  const { contribute, selectWinner, distributeFunds } = useSontineProgram()
+  const { spacing, colors } = useAppTheme()
+  const { contribute, selectWinner, distributeFunds, placeBid } = useSontineProgram()
   const anchorWallet = useAnchorWallet()
+
+  // Modal state
+  const [showBidModal, setShowBidModal] = useState(false)
 
   // Check if current user is admin
   const isAdmin = anchorWallet?.publicKey?.toString() === groupData?.admin.toBase58()
@@ -65,7 +69,26 @@ export function RoundInfo({
 
   // Handle bid action
   const handleBid = () => {
-    // TODO: Implement bidding logic
+    setShowBidModal(true)
+  }
+
+  // Handle bid confirmation from modal
+  const handleBidConfirm = (bidAmount: number) => {
+    placeBid.mutate(
+      { groupAddress, bidAmount },
+      {
+        onSuccess: () => {
+          setShowBidModal(false)
+          Alert.alert('Success', 'Bid placed successfully!')
+          Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
+        },
+        onError: () => {
+          setShowBidModal(false)
+          Alert.alert('Error', 'Failed to place bid')
+          Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)
+        },
+      },
+    )
   }
 
   // Handle select winner action
@@ -108,6 +131,15 @@ export function RoundInfo({
 
   return (
     <View>
+      {/* Bid Amount Modal */}
+      <BidAmountModal
+        visible={showBidModal}
+        onClose={() => setShowBidModal(false)}
+        onConfirm={handleBidConfirm}
+        currency={CURRENCY_SYMBOL}
+        isLoading={placeBid.isPending}
+      />
+
       {/* Round Header */}
       <SontineCard variant="elevated" padding="md" style={{ marginBottom: showActions ? spacing.md : 0 }}>
         <SontineCardContent>
@@ -166,6 +198,7 @@ export function RoundInfo({
               canSelectWinner={roundData.canSelectWinner}
               onSelectWinner={handleSelectWinner}
               isSelectingWinner={selectWinner.isPending}
+              collectionProgress={roundData.collectionProgress}
             />
           )}
 
